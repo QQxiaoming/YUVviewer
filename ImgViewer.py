@@ -4,7 +4,7 @@
 import sys
 import os
 from PyQt5 import QtCore
-from PyQt5.QtWidgets import QWidget, QFileDialog, QMessageBox
+from PyQt5.QtWidgets import QWidget, QFileDialog, QMessageBox, QDesktopWidget
 from PyQt5.QtCore import QPoint, Qt, QThread, pyqtSignal
 from PyQt5.QtGui import QPixmap, QImage, QPainter
 from UI_ImgViewer import Ui_ImgViewerWindow
@@ -54,9 +54,13 @@ class ImgViewerWindow(QWidget, Ui_ImgViewerWindow):
         super(ImgViewerWindow, self).__init__()
         self.ui = Ui_ImgViewerWindow()
         self.ui.setupUi(self)
-
+		
         self.parentWindow = parentWindow
         self.setWindowTitle('loading file, please wait ....')
+        screen = QDesktopWidget().screenGeometry()
+        size = self.geometry()
+        self.move((screen.width() - size.width()) / 2, (screen.height() - size.height()) / 2)
+
         self.ui.left_PushButton.setFlat(True)
         self.ui.right_PushButton.setFlat(True)
         self.ui.left_PushButton.clicked.connect(self.previousImg)

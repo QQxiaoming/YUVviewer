@@ -4,12 +4,12 @@
 import sys
 import os
 from PyQt5 import QtCore, QtWidgets
-from PyQt5.QtWidgets import QFileDialog, QMessageBox
+from PyQt5.QtWidgets import QFileDialog, QMessageBox, QDesktopWidget
 from UI_YUVviewer import Ui_MainWindow
 from configFile import ConfigFile
 from ImgViewer import ImgViewerWindow
 
-VERSION = 'V0.2.1'
+VERSION = 'V0.2.2'
 
 class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
     def __init__(self):
@@ -17,6 +17,10 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
         self.setWindowTitle('YUVviewer ' + VERSION + ' by liwq')
+        screen = QDesktopWidget().screenGeometry()
+        size = self.geometry()
+        self.move((screen.width() - size.width()) / 2, (screen.height() - size.height()) / 2)
+
         self.YUVviewerConfigFile = ConfigFile(os.path.join(os.getcwd(),'YUVViewer.ini'));
 
         if self.YUVviewerConfigFile.config_dict['frameSizeType'] == 'Other':
