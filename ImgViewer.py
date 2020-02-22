@@ -57,10 +57,6 @@ class ImgViewerWindow(QWidget, Ui_ImgViewerWindow):
 		
         self.parentWindow = parentWindow
         self.setWindowTitle('loading file, please wait ....')
-        screen = QDesktopWidget().screenGeometry()
-        size = self.geometry()
-        self.move((screen.width() - size.width()) / 2, (screen.height() - size.height()) / 2)
-
         self.ui.left_PushButton.setFlat(True)
         self.ui.right_PushButton.setFlat(True)
         self.ui.left_PushButton.clicked.connect(self.previousImg)
@@ -83,7 +79,7 @@ class ImgViewerWindow(QWidget, Ui_ImgViewerWindow):
             for filename in filelist:
                 #使用获取的解码函数进行解码得到RGB的原始帧列表
                 frame_RGB_list = decoder(filename, W, H, startframe, totalframe)
-                #定义img列表用了保存每一帧的QPixmap
+                #定义img列表用来保存每一帧的QPixmap
                 img_RGB_list = []
                 #将原始帧转换到QPixmap并保存到img列表
                 for img in frame_RGB_list:
@@ -139,7 +135,6 @@ class ImgViewerWindow(QWidget, Ui_ImgViewerWindow):
         self.decode_thread_finsh = []
         #遍历文件列表
         for filename in filelist:
-            #使用获取的解码函数进行解码得到RGB的原始帧列表
             decodeThread = YUVDecodeThread(self,filename,YUVFormat, W, H, startframe, totalframe)
             decodeThread.finsh_signal.connect(self.reciveimgdata)
             self.decode_thread.append(decodeThread)
