@@ -10,7 +10,7 @@ from UI_YUVviewer import Ui_MainWindow
 from configFile import ConfigFile
 from ImgViewer import ImgViewerWindow
 
-VERSION = 'V0.3.1'
+VERSION = 'V0.3.2'
 
 class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
     def __init__(self):
@@ -128,7 +128,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                 QToolTip.showText(self.ui.endFrame_LineEdit.mapToGlobal(QPoint(0, 10)), 'endFrame must be num')
                 self.ui.endFrame_LineEdit.setStyleSheet("QLineEdit{border: 1px solid red;border-radius: 3px;}")
                 return
-            if currentVale < endFrameVale:
+            if currentVale <= endFrameVale:
                 self.ui.endFrame_LineEdit.setStyleSheet("QLineEdit{border:1px solid gray border-radius:1px}")
             else:
                 QToolTip.showText(self.ui.endFrame_LineEdit.mapToGlobal(QPoint(0, 10)), 'endFrame must be greater than or equal to startFrame')
@@ -149,7 +149,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
         try:
             startVale = int(self.ui.startFrame_LineEdit.text())
-            if currentVale <= startVale:
+            if currentVale < startVale:
                 QToolTip.showText(self.ui.endFrame_LineEdit.mapToGlobal(QPoint(0, 10)), 'endFrame must be greater than or equal to startFrame')
                 self.ui.endFrame_LineEdit.setStyleSheet("QLineEdit{border: 1px solid red;border-radius: 3px;}")
         except Exception as e:
