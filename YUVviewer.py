@@ -6,16 +6,16 @@ import os
 from PyQt5 import QtCore, QtWidgets
 from PyQt5.QtWidgets import QFileDialog, QMessageBox, QDesktopWidget, QToolTip
 from PyQt5.QtCore import QPoint
-from UI_YUVviewer import Ui_MainWindow
+from UI_YUVviewer import Ui_YUVviewer
 from configFile import ConfigFile
-from ImgViewer import ImgViewerWindow
+from ImgViewer import ImgViewer
 
-VERSION = 'V0.3.2'
+VERSION = 'V0.3.3'
 
-class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
+class YUVviewer(QtWidgets.QMainWindow, Ui_YUVviewer):
     def __init__(self):
-        super(MainWindow, self).__init__()
-        self.ui = Ui_MainWindow()
+        super(YUVviewer, self).__init__()
+        self.ui = Ui_YUVviewer()
         self.ui.setupUi(self)
         self.setWindowTitle('YUVviewer ' + VERSION + ' by liwq')
         screen = QDesktopWidget().screenGeometry()
@@ -187,7 +187,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
     def _imgView(self, openfile_list):
         if openfile_list:
-            self.imgViewer = ImgViewerWindow(self)
+            self.imgViewer = ImgViewer(self)
             frameSize_Width = int(self.YUVviewerConfigFile.config_dict['frameSize_Width'])
             frameSize_Height = int(self.YUVviewerConfigFile.config_dict['frameSize_Height'])
             #多线程的方法
@@ -268,6 +268,6 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
 if __name__ == '__main__':
     app = QtWidgets.QApplication(sys.argv)
-    show = MainWindow()
+    show = YUVviewer()
     show.show()
     sys.exit(app.exec_())

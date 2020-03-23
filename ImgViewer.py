@@ -49,9 +49,9 @@ class YUVDecodeThread(QThread):
 
 
 
-class ImgViewerWindow(QWidget, Ui_ImgViewerWindow):
+class ImgViewer(QWidget, Ui_ImgViewerWindow):
     def __init__(self,parentWindow):
-        super(ImgViewerWindow, self).__init__()
+        super(ImgViewer, self).__init__()
         self.ui = Ui_ImgViewerWindow()
         self.ui.setupUi(self)
 		
