@@ -5,6 +5,7 @@
 #include <QThread>
 #include <QString>
 #include <QImage>
+#include <QPainter>
 #include "YUVdecoder.h"
 
 namespace Ui {
@@ -47,9 +48,21 @@ public:
     explicit ImgViewer(QWidget *parent = nullptr,QWidget *parentWindow = nullptr);
     ~ImgViewer();
     bool setFileList(QStringList filelist,QString YUVFormat, int W, int H, int startframe, int totalframe);
+    bool setFileList_multithreading(QStringList filenamelist, QString YUVFormat, int W, int H, int startframe, int totalframe);
+
+private slots:
+    void reciveimgdata(QList<QImage *> img_RGB_list, QString filename);
+    void previousImg();
+    void nextImg();
 
 protected:
     void closeEvent(QCloseEvent *event);
+    void paintEvent(QPaintEvent *event);
+    void mouseMoveEvent(QMouseEvent *event);
+    void mousePressEvent(QMouseEvent *event);
+    void mouseReleaseEvent(QMouseEvent *event);
+    void mouseDoubleClickEvent(QMouseEvent *event);
+    void wheelEvent(QWheelEvent *event);
     void resizeEvent(QResizeEvent *event);
 
 private:
@@ -60,10 +73,17 @@ private:
     QList<QList<QImage*>> img_list;
     QStringList filelist;
 
+    QList<YUVDecodeThread*> decode_thread;
+    QList<YUVDecodeThread*> decode_thread_finsh;
+
     QList<QImage*> currentImg_RGB_list;
     QImage *currentImg;
     QImage scaled_img;
     QPoint point;
+    QPoint startPos;
+    QPoint endPos;
+
+    void draw_img(QPainter *painter);
 };
 
 #endif // IMGVIEWER_H

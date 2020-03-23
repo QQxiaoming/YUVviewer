@@ -3,6 +3,9 @@
 #include <QList>
 #include <QString>
 #include <QPoint>
+#include <QPainter>
+#include <QFileDialog>
+#include <QMessageBox>
 #include <QDebug>
 #include "ImgViewer.h"
 #include "YUVdecoder.h"
@@ -37,7 +40,6 @@ void YUVDecodeThread::run()
             QImage *qImg = new QImage((const unsigned char*)(img->data), img->cols, img->rows, img->step, QImage::Format_RGB888);
             qImg->rgbSwapped();
             img_RGB_list.insert(img_RGB_list.end(), qImg);
-            delete img;
         }
 
         emit finsh_signal(img_RGB_list,this->yuvfilename);
@@ -50,12 +52,13 @@ ImgViewer::ImgViewer(QWidget *parent,QWidget *parentWindow) :
     ui(new Ui::ImgViewerWindow)
 {
     ui->setupUi(this);
+    qRegisterMetaType<QList<QImage*>>("QList<QImage*>");
     this->parentWindow = parentWindow;
     setWindowTitle("loading file, please wait ....");
     ui->left_PushButton->setFlat(true);
     ui->right_PushButton->setFlat(true);
-    //QObject::connect(ui->left_PushButton, SIGNAL(clicked()), this, SLOT(previousImg()));
-    //QObject::connect(ui->right_PushButton, SIGNAL(clicked()), this, SLOT(nextImg()));
+    QObject::connect(ui->left_PushButton, SIGNAL(clicked()), this, SLOT(previousImg()));
+    QObject::connect(ui->right_PushButton, SIGNAL(clicked()), this, SLOT(nextImg()));
     left_click = false;
 }
 
@@ -77,18 +80,21 @@ bool ImgViewer::setFileList(QStringList filenamelist,QString YUVFormat, int W, i
         foreach( QString filename, filenamelist)
         {
             QList<cv::Mat*> frame_RGB_list = decoder(filename, W, H, startframe, totalframe);
+            if (frame_RGB_list.empty())
+            {
+                return false;
+            }
             QList<QImage*> img_RGB_list;
             foreach (cv::Mat* img, frame_RGB_list)
             {
                 QImage *qImg = new QImage((const unsigned char*)(img->data), img->cols, img->rows, img->step, QImage::Format_RGB888);
                 qImg->rgbSwapped();
                 img_RGB_list.insert(img_RGB_list.end(), qImg);
-                delete img;
             }
 
-            this->img_list.insert(img_list.end(),img_RGB_list);
+            this->img_list.insert(this->img_list.end(),img_RGB_list);
             QFileInfo fileInfo(filename);
-            this->filelist.insert(filelist.end(),fileInfo.fileName());
+            this->filelist.insert(this->filelist.end(),fileInfo.fileName());
         }
         this->currentImg_RGB_list = this->img_list.at(0);
         this->currentImg = this->currentImg_RGB_list.at(0);
@@ -99,11 +105,189 @@ bool ImgViewer::setFileList(QStringList filenamelist,QString YUVFormat, int W, i
     }
 }
 
+
+void ImgViewer::reciveimgdata(QList<QImage*> img_RGB_list,QString filename)
+{
+    if (!img_RGB_list.empty())
+    {
+        // img_RGB_list以及文件名存入列表
+        this->img_list.insert(this->img_list.end(),img_RGB_list);
+        QFileInfo fileInfo(filename);
+        this->filelist.insert(this->filelist.end(),fileInfo.fileName());
+        if(this->img_list.count() == 1)
+        {
+            // 设置显示第一个YUV文件的第一帧图像
+            ui->imgViewer->setText("");
+            this->currentImg_RGB_list = this->img_list.at(0);
+            this->currentImg = this->currentImg_RGB_list.at(0);
+            this->setWindowTitle(this->filelist.at(0)+"-0");
+            this->scaled_img = this->currentImg->scaled(this->size());
+            this->point = QPoint(0, 0);
+            this->repaint();
+        }
+    }
+
+    this->decode_thread.pop_front();
+    if (!this->decode_thread.empty())
+    {
+        this->decode_thread[0]->start();
+    }
+    else
+    {
+        if(this->img_list.empty())
+        {
+            QMessageBox::critical(this, "Error", "unknow error!!", QMessageBox::Ok);
+            this->close();
+        }
+    }
+}
+
+
+bool ImgViewer::setFileList_multithreading(QStringList filenamelist,QString YUVFormat, int W, int H, int startframe, int totalframe)
+{
+    yuvdecoder_t decoder = YUV2RGB::yuvdecoder_map.find(YUVFormat).value();
+    if(decoder == nullptr)
+    {
+        return false;
+    }
+    foreach( QString filename, filenamelist)
+    {
+        YUVDecodeThread *decodeThread = new YUVDecodeThread(this, filename, YUVFormat, W, H, startframe, totalframe);
+        QObject::connect(decodeThread, SIGNAL(finsh_signal(QList<QImage*>, QString)), this, SLOT(reciveimgdata(QList<QImage*>, QString)));
+        this->decode_thread.insert(this->decode_thread.end(),decodeThread);
+    }
+    this->decode_thread[0]->start();
+    return true;
+}
+
+
 void ImgViewer::closeEvent(QCloseEvent *event)
 {
     this->parentWindow->show();
     event->accept();
 }
+
+
+void ImgViewer::draw_img(QPainter *painter)
+{
+    painter->drawPixmap(this->point, QPixmap::fromImage(this->scaled_img));
+}
+
+
+void ImgViewer::paintEvent(QPaintEvent *event)
+{
+    if (!this->img_list.empty())
+    {
+        QPainter painter;
+        painter.begin(this);
+        draw_img(&painter);
+        painter.end();
+    }
+}
+
+
+void ImgViewer::mouseMoveEvent(QMouseEvent *event)
+{
+    if (!this->img_list.empty())
+    {
+        if( this->left_click)
+        {
+            this->endPos = event->pos() - this->startPos;
+            this->point = this->point + this->endPos;
+            this->startPos = event->pos();
+            this->repaint();
+        }
+    }
+}
+
+
+void ImgViewer::mousePressEvent(QMouseEvent *event)
+{
+    if (!this->img_list.empty())
+    {
+        if( event->button() == Qt::LeftButton)
+        {
+            this->left_click = true;
+            this->startPos = event->pos();
+        }
+    }
+}
+
+
+void ImgViewer::mouseReleaseEvent(QMouseEvent *event)
+{
+    if (!this->img_list.empty())
+    {
+        if( event->button() == Qt::LeftButton)
+        {
+            this->left_click = false;
+        }
+        else if(event->button() == Qt::RightButton)
+        {
+            this->point = QPoint(0, 0);
+            this->scaled_img = this->currentImg->scaled(this->size());
+            this->repaint();
+        }
+    }
+}
+
+
+void ImgViewer::mouseDoubleClickEvent(QMouseEvent *event)
+{
+    if (!this->img_list.empty())
+    {
+        if( event->button() == Qt::LeftButton)
+        {
+            int list_index = this->img_list.indexOf(this->currentImg_RGB_list);
+            QList<QImage*> img_RGB_list = this->img_list[list_index];
+            int img_index = img_RGB_list.indexOf(this->currentImg);
+            QString savefile_name = QFileDialog::getSaveFileName(this, "保存文件", this->filelist[list_index].replace(".yuv","-") + QString::number(img_index) + ".png", "Image files(*.png)");
+            if(savefile_name != nullptr)
+            {
+                this->currentImg->save(savefile_name);
+            }
+        }
+    }
+}
+
+
+void ImgViewer::wheelEvent(QWheelEvent *event)
+{
+    if (!this->img_list.empty())
+    {
+        if( event->angleDelta().y() > 0)
+        {
+            // 放大图片
+            if( this->scaled_img.width() != 0)
+            {
+                float setpsize_x = 25.0f;
+                float setpsize_y = setpsize_x * this->scaled_img.height() / this->scaled_img.width(); //缩放可能导致比例不精确
+
+                this->scaled_img = this->currentImg->scaled(this->scaled_img.width() + setpsize_x,this->scaled_img.height() + setpsize_y);
+                float new_w = event->x() - (this->scaled_img.width() * (event->x() - this->point.x())) / (this->scaled_img.width() - setpsize_x);
+                float new_h = event->y() - (this->scaled_img.height() * (event->y() - this->point.y())) / (this->scaled_img.height() - setpsize_y);
+                this->point = QPoint(new_w, new_h);
+                this->repaint();
+            }
+        }
+        else if( event->angleDelta().y() < 0)
+        {
+            // 缩小图片
+            if(this->scaled_img.width() > 25)
+            {
+                float setpsize_x = 25.0f;
+                float setpsize_y = setpsize_x * this->scaled_img.height() / this->scaled_img.width(); //缩放可能导致比例不精确
+
+                this->scaled_img = this->currentImg->scaled(this->scaled_img.width() - setpsize_x,this->scaled_img.height() - setpsize_y);
+                float new_w = event->x() - (this->scaled_img.width() * (event->x() - this->point.x())) / (this->scaled_img.width() + setpsize_x);
+                float new_h = event->y() - (this->scaled_img.height() * (event->y() - this->point.y())) / (this->scaled_img.height() + setpsize_y);
+                this->point = QPoint(new_w, new_h);
+                this->repaint();
+            }
+        }
+    }
+}
+
 
 void ImgViewer::resizeEvent(QResizeEvent *event)
 {
@@ -115,3 +299,89 @@ void ImgViewer::resizeEvent(QResizeEvent *event)
     }
 }
 
+
+void ImgViewer::previousImg()
+{
+    if (!this->img_list.empty())
+    {
+        //得到当前显示的文件序号
+        int list_index = this->img_list.indexOf(this->currentImg_RGB_list);
+        QList<QImage*> img_RGB_list = this->img_list[list_index];
+        //得到当前显示的图像是文件的帧序号
+        int img_index = img_RGB_list.indexOf(this->currentImg);
+
+        //判断当前是否是第一帧
+        if(img_index == 0)
+        {
+            //如果当前是第一帧,则判断当前是否是第一个文件
+            if(list_index == 0)
+            {
+                //如果是第一个文件则文件序号更新代到最后一个序号
+                list_index = this->img_list.count() - 1;
+            }
+            else
+            {
+                //否则文件序号更新到前一个文件序号
+                list_index -= 1;
+            }
+            //更新帧序号为文件的最后一帧序号
+            img_index = this->img_list[list_index].count() - 1;
+        }
+        else
+        {
+            //否则更新帧序号为前一帧序号,此时文件序号不用更新
+            img_index -= 1;
+        }
+
+        //序号更新完成,代入序号配置当前显示的页面
+        setWindowTitle(this->filelist[list_index] + "-" + QString::number(img_index));
+        this->currentImg_RGB_list = this->img_list[list_index];
+        this->currentImg = this->currentImg_RGB_list[img_index];
+        this->point = QPoint(0, 0);
+        this->scaled_img = this->currentImg->scaled(this->size());
+        this->repaint();
+    }
+}
+
+void ImgViewer::nextImg()
+{
+    if (!this->img_list.empty())
+    {
+        //得到当前显示的文件序号
+        int list_index = this->img_list.indexOf(this->currentImg_RGB_list);
+        QList<QImage*> img_RGB_list = this->img_list[list_index];
+        //得到当前显示的图像是文件的帧序号
+        int img_index = img_RGB_list.indexOf(this->currentImg);
+
+        //判断当前是否是最后一帧
+        if(img_index == img_RGB_list.count() - 1)
+        {
+            //如果当前是最后一帧,则判断当前是否是最后一个文件
+            if(list_index == this->img_list.count() - 1)
+            {
+                //如果是最后一个文件则文件序号更新代到第一个序号
+                list_index = 0;
+            }
+            else
+            {
+                //否则文件序号更新到后一个文件序号
+                list_index += 1;
+            }
+            //更新帧序号为文件的第一帧序号
+            img_index = 0;
+        }
+        else
+        {
+            //否则更新帧序号为后一帧序号,此时文件序号不用更新
+            img_index += 1;
+        }
+
+        //序号更新完成,代入序号配置当前显示的页面
+        setWindowTitle(this->filelist[list_index] + "-" + QString::number(img_index));
+        this->currentImg_RGB_list = this->img_list[list_index];
+        this->currentImg = this->currentImg_RGB_list[img_index];
+        this->point = QPoint(0, 0);
+        this->scaled_img = this->currentImg->scaled(this->size());
+        this->repaint();
+    }
+}

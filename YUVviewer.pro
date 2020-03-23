@@ -72,3 +72,5 @@ LIBS += -L /home/xiaoming/Desktop/opencv/lib/ -lopencv_features2d
 LIBS += -L /home/xiaoming/Desktop/opencv/lib/ -lopencv_dnn
 LIBS += -L /home/xiaoming/Desktop/opencv/lib/ -lopencv_core
 LIBS += -L /home/xiaoming/Desktop/opencv/lib/ -lopencv_calib3d
+
+QMAKE_RPATHDIR=$ORIGIN

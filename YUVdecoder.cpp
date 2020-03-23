@@ -30,34 +30,33 @@ YUV2RGB::YUV2RGB()
 
 QList<cv::Mat*> YUV2RGB::yv12(QString yuvfilename,int W, int H, int startframe, int totalframe)
 {
-    QList<cv::Mat*> yuvImglist;
+    QList<cv::Mat*> rgbImglist;
     Mat yuvImg;
     QFile file(yuvfilename);
     QFileInfo fileInfo(yuvfilename);
     file.open(QFile::ReadOnly);
-    file.seek(startframe*W*H*3/2);
     QDataStream out(&file);
+    out.skipRawData(startframe*W*H*3/2);
 
-    //while(out.atEnd() || totalframe == 0)
-    while(out.atEnd() || totalframe != 0)
+    while((!out.atEnd()) && totalframe != 0)
     {
         Mat *rgbImg = new Mat;
         yuvImg.create(H*3/2, W, CV_8UC1);
         out.readRawData((char *)yuvImg.data,W*H*3/2);
-        cvtColor(yuvImg, *rgbImg, COLOR_YUV2RGB_YV12);
+        cvtColor(yuvImg, *rgbImg, COLOR_YUV2BGR_YV12);
         totalframe--;
-        yuvImglist.insert(yuvImglist.end(), rgbImg);
+        rgbImglist.insert(rgbImglist.end(), rgbImg);
     }
 
     file.close();
 
-    return yuvImglist;
+    return rgbImglist;
 }
 
 
 QList<cv::Mat*> YUV2RGB::i420(QString yuvfilename,int W, int H, int startframe, int totalframe)
 {
-    QList<cv::Mat*> yuvImglist;
+    QList<cv::Mat*> rgbImglist;
     Mat yuvImg;
     QFile file(yuvfilename);
     QFileInfo fileInfo(yuvfilename);
@@ -65,17 +64,17 @@ QList<cv::Mat*> YUV2RGB::i420(QString yuvfilename,int W, int H, int startframe, 
     file.seek(startframe*W*H*3/2);
     QDataStream out(&file);
 
-    while((!out.atEnd()) || (totalframe != 0))
+    while((!out.atEnd()) && (totalframe != 0))
     {
         Mat *rgbImg = new Mat;
         yuvImg.create(H*3/2, W, CV_8UC1);
         out.readRawData((char *)yuvImg.data,W*H*3/2);
-        cvtColor(yuvImg, *rgbImg, COLOR_YUV2RGB_I420);
+        cvtColor(yuvImg, *rgbImg, COLOR_YUV2BGR_I420);
         totalframe--;
-        yuvImglist.insert(yuvImglist.end(), rgbImg);
+        rgbImglist.insert(rgbImglist.end(), rgbImg);
     }
 
     file.close();
 
-    return yuvImglist;
+    return rgbImglist;
 }

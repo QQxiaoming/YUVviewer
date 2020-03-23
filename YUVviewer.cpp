@@ -92,12 +92,16 @@ YUVviewer::YUVviewer(QWidget *parent) :
     QObject::connect(ui->openFolder_PushButton, SIGNAL(clicked()), this, SLOT(openFolder()));
     QObject::connect(ui->about_PushButton, SIGNAL(clicked()), this, SLOT(about()));
     QObject::connect(ui->help_PushButton, SIGNAL(clicked()), this, SLOT(help()));
+    imgViewer = nullptr;
 }
 
 
 YUVviewer::~YUVviewer()
 {
-    delete imgViewer;
+    if(imgViewer != nullptr)
+    {
+        delete imgViewer;
+    }
     delete ui;
 }
 
@@ -147,7 +151,7 @@ void YUVviewer::frameSizeHeightValidator(const QString &currentText)
     }
     else
     {
-        QToolTip::showText(ui->frameSize_Height_LineEdit->mapToGlobal(QPoint(0, 10)), "Width must be num");
+        QToolTip::showText(ui->frameSize_Height_LineEdit->mapToGlobal(QPoint(0, 10)), "Height must be num");
         ui->frameSize_Height_LineEdit->setStyleSheet("QLineEdit{border: 1px solid red;border-radius: 3px;}");
     }
 }
@@ -165,7 +169,7 @@ void YUVviewer::frameSizeWidthValidator(const QString &currentText)
         }
         else
         {
-            QToolTip::showText(ui->frameSize_Width_LineEdit->mapToGlobal(QPoint(0, 10)), "Height must be positive even");
+            QToolTip::showText(ui->frameSize_Width_LineEdit->mapToGlobal(QPoint(0, 10)), "Width must be positive even");
             ui->frameSize_Width_LineEdit->setStyleSheet("QLineEdit{border: 1px solid red;border-radius: 3px;}");
         }
     }
@@ -322,22 +326,22 @@ bool YUVviewer::updateConfig(void)
 
 bool YUVviewer::imgView(QStringList openfile_list)
 {
-    int i = 0;
-    foreach(QString s ,openfile_list)
-    {
-        qDebug() << s << i++;
-    }
-
     if (openfile_list.empty())
     {
         return false;
     }
-
+    if(imgViewer != nullptr)
+    {
+        delete imgViewer;
+        imgViewer = nullptr;
+    }
     imgViewer = new ImgViewer(nullptr,this);
     int startFrame = ui->startFrame_LineEdit->text().toInt();
     int endFrame = ui->endFrame_LineEdit->text().toInt();
     int frameSize_Width = ui->frameSize_Width_LineEdit->text().toInt();
     int frameSize_Height = ui->frameSize_Height_LineEdit->text().toInt();
+    #if 0
+    // 单线程
     bool isSuccess = imgViewer->setFileList(openfile_list,
                            YUVviewerConfigFile->config_dict.YUVFormat,
                            frameSize_Width,
@@ -345,19 +349,31 @@ bool YUVviewer::imgView(QStringList openfile_list)
                            startFrame,
                            endFrame-startFrame+1
                            );
+    #else
+    // 多线程
+    bool isSuccess = imgViewer->setFileList_multithreading(openfile_list,
+                           YUVviewerConfigFile->config_dict.YUVFormat,
+                           frameSize_Width,
+                           frameSize_Height,
+                           startFrame,
+                           endFrame-startFrame+1
+                           );
+    #endif
     if(!isSuccess)
     {
         QMessageBox::critical(this, "Error", "unsupport YUVFormat!!", QMessageBox::Ok);
         this->show();
         return false;
     }
+    float fframeSize_Width = (float)frameSize_Width;
+    float fframeSize_Height = (float)frameSize_Height;
     if(frameSize_Width > frameSize_Height)
     {
-        imgViewer->resize(800, frameSize_Height/frameSize_Width*800);
+        imgViewer->resize(800, fframeSize_Height/fframeSize_Width*800.0);
     }
     else
     {
-        imgViewer->resize(frameSize_Width/frameSize_Height*400, 400);
+        imgViewer->resize(fframeSize_Width/fframeSize_Height*400.0, 400);
     }
     QRect screen = QApplication::desktop()->screenGeometry();
     QRect size = imgViewer->geometry();
@@ -371,7 +387,6 @@ bool YUVviewer::imgView(QStringList openfile_list)
 
 void YUVviewer::openFile()
 {
-
     if(updateConfig())
     {
         QStringList openfile_list = QFileDialog::getOpenFileNames(this, "选择文件", "", "YUV files(*.yuv)");
@@ -392,7 +407,12 @@ void YUVviewer::openFolder()
         {
             QDir dir(openfolder_name);
             QStringList nameFilters = {"*.yuv"};
-            QStringList openfile_list = dir.entryList(nameFilters, QDir::Files|QDir::Readable, QDir::Name);
+            QStringList openfilename_list = dir.entryList(nameFilters, QDir::Files|QDir::Readable, QDir::Name);
+            QStringList openfile_list;
+            foreach (QString file_name, openfilename_list)
+            {
+                openfile_list.append(QDir::toNativeSeparators(openfolder_name + '/' +file_name));
+            }
             if(openfile_list.size() != 0)
             {
                 imgView(openfile_list);
