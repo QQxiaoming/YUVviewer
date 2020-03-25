@@ -82,7 +82,6 @@ ConfigFile::ConfigFile(QString path)
     }
 }
 
-
 ConfigFile::~ConfigFile()
 {
     QFile file(configFilePath);

@@ -20,6 +20,7 @@ public:
     ConfigFile(QString path);
     ~ConfigFile();
     config_dict_t config_dict;
+
 private:
     QString configFilePath;
 };

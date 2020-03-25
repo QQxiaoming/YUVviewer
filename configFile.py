@@ -53,7 +53,6 @@ class ConfigFile(object):
         configFile.write(etree.tostring(xml_file, encoding='utf-8').decode())
         configFile.close()
 
-
     def _xml_indent(self, elem, num=4, level=0):
         """xml文件输出增加换行
 

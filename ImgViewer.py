@@ -10,7 +10,6 @@ from PyQt5.QtGui import QPixmap, QImage, QPainter
 from UI_ImgViewer import Ui_ImgViewerWindow
 from YUVdecoder import YUV2RGB
 
-
 class YUVDecodeThread(QThread):
     finsh_signal = pyqtSignal(list, str)
 
@@ -27,11 +26,11 @@ class YUVDecodeThread(QThread):
 
     def run(self):
         if self.decoder is None:
-            #未能成功获取则返回无法解码
+            # 未能成功获取则返回无法解码
             self.finsh_signal.emit([],'')
         else:
             try:
-                #成功获取则返回计算结果
+                # 成功获取则返回计算结果
                 frame_RGB_list = self.decoder(self.filename, self.W, self.H, self.startframe, self.totalframe)
             except Exception as e:
                 self.finsh_signal.emit([], '')
@@ -46,8 +45,6 @@ class YUVDecodeThread(QThread):
                 qImg = QImage(img.data, width, height, bytesPerline, QImage.Format_RGB888).rgbSwapped()
                 img_RGB_list.append(QPixmap.fromImage(qImg))
             self.finsh_signal.emit(img_RGB_list,self.filename)
-
-
 
 class ImgViewer(QWidget, Ui_ImgViewerWindow):
     def __init__(self,parentWindow):
@@ -64,24 +61,24 @@ class ImgViewer(QWidget, Ui_ImgViewerWindow):
         self.left_click = False
         
     def setFileList(self,filelist,YUVFormat, W, H, startframe, totalframe):
-        #获取该格式的解码函数
+        # 获取该格式的解码函数
         decoder = YUV2RGB.YUVdecoder_dict.get(YUVFormat)
         if decoder is None:
-            #未能成功获取则返回无法解码
+            # 未能成功获取则返回无法解码
             return False
         else:
-            #成功获取解码则准备解码
-            #定义空列表
+            # 成功获取解码器则准备解码
+            # 定义空列表
             self.img_list = []
             self.ui.imgViewer.setText('')
             self.filelist = []
-            #遍历文件列表
+            # 遍历文件列表
             for filename in filelist:
-                #使用获取的解码函数进行解码得到RGB的原始帧列表
+                # 使用获取的解码函数进行解码得到RGB的原始帧列表
                 frame_RGB_list = decoder(filename, W, H, startframe, totalframe)
-                #定义img列表用来保存每一帧的QPixmap
+                # 定义img列表用来保存每一帧的QPixmap
                 img_RGB_list = []
-                #将原始帧转换到QPixmap并保存到img列表
+                # 将原始帧转换到QPixmap并保存到img列表
                 for img in frame_RGB_list:
                     # 提取图像的通道和尺寸，用于将OpenCV下的image转换成Qimage
                     height, width, channel = img.shape
@@ -128,12 +125,12 @@ class ImgViewer(QWidget, Ui_ImgViewerWindow):
         if decoder is None:
             # 未能成功获取则返回无法解码
             return False
-        #定义空列表
+        # 定义空列表
         self.img_list = []
         self.filelist = []
         self.decode_thread = []
         self.decode_thread_finsh = []
-        #遍历文件列表
+        # 遍历文件列表
         for filename in filelist:
             decodeThread = YUVDecodeThread(self,filename,YUVFormat, W, H, startframe, totalframe)
             decodeThread.finsh_signal.connect(self.reciveimgdata)
@@ -155,7 +152,7 @@ class ImgViewer(QWidget, Ui_ImgViewerWindow):
             self.draw_img(painter)
             painter.end()
 
-    def mouseMoveEvent(self, e):  # 重写移动事件
+    def mouseMoveEvent(self, e):
         if not len(self.img_list) == 0:
             if self.left_click:
                 self._endPos = e.pos() - self._startPos

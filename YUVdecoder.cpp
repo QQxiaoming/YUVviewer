@@ -11,22 +11,20 @@
 
 using namespace cv;
 
-
 QMap<QString, yuvdecoder_t> YUV2RGB::yuvdecoder_map =
 {
     {"YV12", YUV2RGB::yv12},
     {"I420", YUV2RGB::i420},
-    {"YUY2", nullptr},
-    {"UYUV", nullptr},
-    {"4:2:2", nullptr},
-    {"4:4:4", nullptr},
+    {"YUY2", nullptr},  // 暂未支持该格式
+    {"UYUV", nullptr},  // 暂未支持该格式
+    {"4:2:2", nullptr}, // 暂未支持该格式
+    {"4:4:4", nullptr}, // 暂未支持该格式
 };
 
 YUV2RGB::YUV2RGB()
 {
 
 }
-
 
 QList<cv::Mat*> YUV2RGB::yv12(QString yuvfilename,int W, int H, int startframe, int totalframe)
 {
@@ -52,7 +50,6 @@ QList<cv::Mat*> YUV2RGB::yv12(QString yuvfilename,int W, int H, int startframe, 
 
     return rgbImglist;
 }
-
 
 QList<cv::Mat*> YUV2RGB::i420(QString yuvfilename,int W, int H, int startframe, int totalframe)
 {

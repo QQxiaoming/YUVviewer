@@ -6,10 +6,10 @@ class YUV2RGB(object):
     YUVdecoder_dict = {
         'YV12' : lambda yuvfilename, W, H, startframe, totalframe: YUV2RGB.yv12(yuvfilename, W, H, startframe, totalframe),
         'I420' : lambda yuvfilename, W, H, startframe, totalframe: YUV2RGB.i420(yuvfilename, W, H, startframe, totalframe),
-        'YUY2' : None, #暂未支持该格式
-        'UYUV' : None, #暂未支持该格式
-        '4:2:2': None, #暂未支持该格式
-        '4:4:4': None, #暂未支持该格式
+        'YUY2' : None, # 暂未支持该格式
+        'UYUV' : None, # 暂未支持该格式
+        '4:2:2': None, # 暂未支持该格式
+        '4:4:4': None, # 暂未支持该格式
     }
 
     @classmethod

@@ -34,12 +34,12 @@ private slots:
     void help();
 
 private:
-    Ui::YUVviewer *ui;
-    ConfigFile *YUVviewerConfigFile;
-    ImgViewer *imgViewer;
     void showParaErrMessageBox(void);
     bool updateConfig(void);
     bool imgView(QStringList openfile_list);
+    Ui::YUVviewer *ui;
+    ConfigFile *YUVviewerConfigFile;
+    ImgViewer *imgViewer;
 };
 
 #endif // YUVVIEWER_H
