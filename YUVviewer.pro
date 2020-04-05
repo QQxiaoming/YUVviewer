@@ -27,15 +27,15 @@ CONFIG += c++11
 SOURCES += \
         YUVviewer.cpp \
         ImgViewer.cpp \
-    YUVdecoder.cpp \
-    configFile.cpp
+        YUVdecoder.cpp \
+        configFile.cpp
 
 
 HEADERS += \
         YUVviewer.h \
         ImgViewer.h \
-    YUVdecoder.h \
-    configFile.h
+        YUVdecoder.h \
+        configFile.h
 
 
 FORMS += \
@@ -50,27 +50,42 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 RESOURCES += \
     img.qrc
 
-#--add OPENCV include
-INCLUDEPATH += -I /home/xiaoming/Desktop/opencv/include/opencv4
-DEPENDPATH +=/home/xiaoming/Desktop/opencv/include/opencv4
+win32:{
+    INCLUDEPATH += D:\Qt\opencv4.2.0\include\opencv2 \
+                    D:\Qt\opencv4.2.0\include
 
-INCLUDEPATH += -I /home/xiaoming/Desktop/opencv/include
-DEPENDPATH +=/home/xiaoming/Desktop/opencv/include
+    LIBS += D:\Qt\opencv4.2.0\x64\mingw\lib\libopencv_*.a
 
-LIBS += -L /home/xiaoming/Desktop/opencv/lib/ -lopencv_videoio
-LIBS += -L /home/xiaoming/Desktop/opencv/lib/ -lopencv_video
-LIBS += -L /home/xiaoming/Desktop/opencv/lib/ -lopencv_stitching
-LIBS += -L /home/xiaoming/Desktop/opencv/lib/ -lopencv_photo
-LIBS += -L /home/xiaoming/Desktop/opencv/lib/ -lopencv_objdetect
-LIBS += -L /home/xiaoming/Desktop/opencv/lib/ -lopencv_ml
-LIBS += -L /home/xiaoming/Desktop/opencv/lib/ -lopencv_imgproc
-LIBS += -L /home/xiaoming/Desktop/opencv/lib/ -lopencv_imgcodecs
-LIBS += -L /home/xiaoming/Desktop/opencv/lib/ -lopencv_highgui
-LIBS += -L /home/xiaoming/Desktop/opencv/lib/ -lopencv_gapi
-LIBS += -L /home/xiaoming/Desktop/opencv/lib/ -lopencv_flann
-LIBS += -L /home/xiaoming/Desktop/opencv/lib/ -lopencv_features2d
-LIBS += -L /home/xiaoming/Desktop/opencv/lib/ -lopencv_dnn
-LIBS += -L /home/xiaoming/Desktop/opencv/lib/ -lopencv_core
-LIBS += -L /home/xiaoming/Desktop/opencv/lib/ -lopencv_calib3d
+    VERSION = 0.3.3.000
+    RC_ICONS = "img\ico.ico"
+    QMAKE_TARGET_PRODUCT = "YUVviewer"
+    QMAKE_TARGET_DESCRIPTION = "YUVviewer based on Qt 5.9.2 (MinGW 5.3.2, 32 bit)"
+    QMAKE_TARGET_COPYRIGHT = "GNU General Public License v3.0"
+}
 
-QMAKE_RPATHDIR=$ORIGIN
+unix:{
+    QMAKE_RPATHDIR=$ORIGIN
+    QMAKE_LFLAGS += -no-pie
+
+    INCLUDEPATH += -I /home/xiaoming/Desktop/opencv/include/opencv4
+    DEPENDPATH +=/home/xiaoming/Desktop/opencv/include/opencv4
+
+    INCLUDEPATH += -I /home/xiaoming/Desktop/opencv/include
+    DEPENDPATH +=/home/xiaoming/Desktop/opencv/include
+
+    LIBS += -L /home/xiaoming/Desktop/opencv/lib/ -lopencv_videoio
+    LIBS += -L /home/xiaoming/Desktop/opencv/lib/ -lopencv_video
+    LIBS += -L /home/xiaoming/Desktop/opencv/lib/ -lopencv_stitching
+    LIBS += -L /home/xiaoming/Desktop/opencv/lib/ -lopencv_photo
+    LIBS += -L /home/xiaoming/Desktop/opencv/lib/ -lopencv_objdetect
+    LIBS += -L /home/xiaoming/Desktop/opencv/lib/ -lopencv_ml
+    LIBS += -L /home/xiaoming/Desktop/opencv/lib/ -lopencv_imgproc
+    LIBS += -L /home/xiaoming/Desktop/opencv/lib/ -lopencv_imgcodecs
+    LIBS += -L /home/xiaoming/Desktop/opencv/lib/ -lopencv_highgui
+    LIBS += -L /home/xiaoming/Desktop/opencv/lib/ -lopencv_gapi
+    LIBS += -L /home/xiaoming/Desktop/opencv/lib/ -lopencv_flann
+    LIBS += -L /home/xiaoming/Desktop/opencv/lib/ -lopencv_features2d
+    LIBS += -L /home/xiaoming/Desktop/opencv/lib/ -lopencv_dnn
+    LIBS += -L /home/xiaoming/Desktop/opencv/lib/ -lopencv_core
+    LIBS += -L /home/xiaoming/Desktop/opencv/lib/ -lopencv_calib3d
+}

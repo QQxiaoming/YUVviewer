@@ -265,7 +265,6 @@ class YUVviewer(QtWidgets.QMainWindow, Ui_YUVviewer):
     def exit(self):
         self.close()
 
-
 if __name__ == '__main__':
     app = QtWidgets.QApplication(sys.argv)
     show = YUVviewer()

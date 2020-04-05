@@ -11,7 +11,6 @@
 #include "YUVdecoder.h"
 #include "ui_UI_ImgViewer.h"
 
-
 YUVDecodeThread::YUVDecodeThread(QWidget *parent,QString yuvfilename,QString YUVFormat,
                                  int W, int H, int startframe, int totalframe) :
     QThread(parent)
@@ -22,30 +21,34 @@ YUVDecodeThread::YUVDecodeThread(QWidget *parent,QString yuvfilename,QString YUV
     this->H = H;
     this->startframe = startframe;
     this->totalframe = totalframe;
+    // 获取该格式的解码函数
     this->decoder = YUV2RGB::yuvdecoder_map.find(YUVFormat).value();
 }
 
 void YUVDecodeThread::run()
 {
+    /// 定义img列表用了保存每一帧的QImage*
     QList<QImage*> img_RGB_list;
     if(this->decoder == nullptr)
     {
+        // 未能成功获取则返回无法解码
         emit finsh_signal(img_RGB_list,nullptr);
     }
     else
     {
+        // 成功获取则返回计算结果
         QList<cv::Mat*> frame_RGB_list = this->decoder(this->yuvfilename, this->W, this->H, this->startframe, this->totalframe);
+        // 将原始帧转换到QImage*并保存到img列表
         foreach( cv::Mat* img,frame_RGB_list)
         {
+            // 提取图像的通道和尺寸，用于将OpenCV下的image转换成Qimage
             QImage *qImg = new QImage((const unsigned char*)(img->data), img->cols, img->rows, img->step, QImage::Format_RGB888);
             qImg->rgbSwapped();
             img_RGB_list.insert(img_RGB_list.end(), qImg);
         }
-
         emit finsh_signal(img_RGB_list,this->yuvfilename);
     }
 }
-
 
 ImgViewer::ImgViewer(QWidget *parent,QWidget *parentWindow) :
     QWidget(parent),
@@ -69,33 +72,42 @@ ImgViewer::~ImgViewer()
 
 bool ImgViewer::setFileList(QStringList filenamelist,QString YUVFormat, int W, int H, int startframe, int totalframe)
 {
+    // 获取该格式的解码函数
     yuvdecoder_t decoder = YUV2RGB::yuvdecoder_map.find(YUVFormat).value();
     if(decoder == nullptr)
     {
+        // 未能成功获取则返回无法解码
         return false;
     }
     else
     {
+        // 成功获取解码器则准备解码
         ui->imgViewer->setText("");
+        // 遍历文件列表
         foreach( QString filename, filenamelist)
         {
+            // 使用获取的解码函数进行解码得到RGB的原始帧列表
             QList<cv::Mat*> frame_RGB_list = decoder(filename, W, H, startframe, totalframe);
             if (frame_RGB_list.empty())
             {
                 return false;
             }
+            // 定义img列表用来保存每一帧的Qimage*
             QList<QImage*> img_RGB_list;
+            // 将原始帧转换到Qimage*并保存到img列表
             foreach (cv::Mat* img, frame_RGB_list)
             {
+                // 提取图像的通道和尺寸，用于将OpenCV下的image转换成Qimage
                 QImage *qImg = new QImage((const unsigned char*)(img->data), img->cols, img->rows, img->step, QImage::Format_RGB888);
                 qImg->rgbSwapped();
                 img_RGB_list.insert(img_RGB_list.end(), qImg);
             }
-
+            // img_RGB_list以及文件名存入列表
             this->img_list.insert(this->img_list.end(),img_RGB_list);
             QFileInfo fileInfo(filename);
             this->filelist.insert(this->filelist.end(),fileInfo.fileName());
         }
+        // 设置显示第一个YUV文件的第一帧图像
         this->currentImg_RGB_list = this->img_list.at(0);
         this->currentImg = this->currentImg_RGB_list.at(0);
         this->setWindowTitle(this->filelist.at(0)+"-0");
@@ -104,7 +116,6 @@ bool ImgViewer::setFileList(QStringList filenamelist,QString YUVFormat, int W, i
         return true;
     }
 }
-
 
 void ImgViewer::reciveimgdata(QList<QImage*> img_RGB_list,QString filename)
 {
@@ -142,14 +153,16 @@ void ImgViewer::reciveimgdata(QList<QImage*> img_RGB_list,QString filename)
     }
 }
 
-
 bool ImgViewer::setFileList_multithreading(QStringList filenamelist,QString YUVFormat, int W, int H, int startframe, int totalframe)
 {
+    // 获取该格式的解码函数
     yuvdecoder_t decoder = YUV2RGB::yuvdecoder_map.find(YUVFormat).value();
     if(decoder == nullptr)
     {
+        // 未能成功获取则返回无法解码
         return false;
     }
+    // 遍历文件列表
     foreach( QString filename, filenamelist)
     {
         YUVDecodeThread *decodeThread = new YUVDecodeThread(this, filename, YUVFormat, W, H, startframe, totalframe);
@@ -160,19 +173,16 @@ bool ImgViewer::setFileList_multithreading(QStringList filenamelist,QString YUVF
     return true;
 }
 
-
 void ImgViewer::closeEvent(QCloseEvent *event)
 {
     this->parentWindow->show();
     event->accept();
 }
 
-
 void ImgViewer::draw_img(QPainter *painter)
 {
     painter->drawPixmap(this->point, QPixmap::fromImage(this->scaled_img));
 }
-
 
 void ImgViewer::paintEvent(QPaintEvent *event)
 {
@@ -184,7 +194,6 @@ void ImgViewer::paintEvent(QPaintEvent *event)
         painter.end();
     }
 }
-
 
 void ImgViewer::mouseMoveEvent(QMouseEvent *event)
 {
@@ -200,7 +209,6 @@ void ImgViewer::mouseMoveEvent(QMouseEvent *event)
     }
 }
 
-
 void ImgViewer::mousePressEvent(QMouseEvent *event)
 {
     if (!this->img_list.empty())
@@ -212,7 +220,6 @@ void ImgViewer::mousePressEvent(QMouseEvent *event)
         }
     }
 }
-
 
 void ImgViewer::mouseReleaseEvent(QMouseEvent *event)
 {
@@ -231,7 +238,6 @@ void ImgViewer::mouseReleaseEvent(QMouseEvent *event)
     }
 }
 
-
 void ImgViewer::mouseDoubleClickEvent(QMouseEvent *event)
 {
     if (!this->img_list.empty())
@@ -249,7 +255,6 @@ void ImgViewer::mouseDoubleClickEvent(QMouseEvent *event)
         }
     }
 }
-
 
 void ImgViewer::wheelEvent(QWheelEvent *event)
 {
@@ -288,7 +293,6 @@ void ImgViewer::wheelEvent(QWheelEvent *event)
     }
 }
 
-
 void ImgViewer::resizeEvent(QResizeEvent *event)
 {
     if (!this->img_list.empty())
@@ -298,7 +302,6 @@ void ImgViewer::resizeEvent(QResizeEvent *event)
         this->update();
     }
 }
-
 
 void ImgViewer::previousImg()
 {

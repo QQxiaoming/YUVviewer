@@ -95,7 +95,6 @@ YUVviewer::YUVviewer(QWidget *parent) :
     imgViewer = nullptr;
 }
 
-
 YUVviewer::~YUVviewer()
 {
     if(imgViewer != nullptr)
@@ -105,7 +104,6 @@ YUVviewer::~YUVviewer()
     delete ui;
 }
 
-
 void YUVviewer::configCIF()
 {
     ui->frameSize_Width_LineEdit->setText("352");
@@ -113,7 +111,6 @@ void YUVviewer::configCIF()
     ui->frameSize_Height_LineEdit->setText("288");
     ui->frameSize_Height_LineEdit->setFocusPolicy(Qt::NoFocus);
 }
-
 
 void YUVviewer::configQCIF()
 {
@@ -123,7 +120,6 @@ void YUVviewer::configQCIF()
     ui->frameSize_Height_LineEdit->setFocusPolicy(Qt::NoFocus);
 }
 
-
 void YUVviewer::configOther()
 {
     ui->frameSize_Width_LineEdit->setText(YUVviewerConfigFile->config_dict.frameSize_Width);
@@ -131,7 +127,6 @@ void YUVviewer::configOther()
     ui->frameSize_Width_LineEdit->setFocusPolicy(Qt::StrongFocus);
     ui->frameSize_Height_LineEdit->setFocusPolicy(Qt::StrongFocus);
 }
-
 
 void YUVviewer::frameSizeHeightValidator(const QString &currentText)
 {
@@ -156,7 +151,6 @@ void YUVviewer::frameSizeHeightValidator(const QString &currentText)
     }
 }
 
-
 void YUVviewer::frameSizeWidthValidator(const QString &currentText)
 {
     bool isInt;
@@ -179,7 +173,6 @@ void YUVviewer::frameSizeWidthValidator(const QString &currentText)
         ui->frameSize_Width_LineEdit->setStyleSheet("QLineEdit{border: 1px solid red;border-radius: 3px;}");
     }
 }
-
 
 void YUVviewer::startFrameValidator(const QString & currentText)
 {
@@ -218,7 +211,6 @@ void YUVviewer::startFrameValidator(const QString & currentText)
     }
 }
 
-
 void YUVviewer::endFrameValidator(const QString & currentText)
 {
     bool isInt;
@@ -248,12 +240,10 @@ void YUVviewer::endFrameValidator(const QString & currentText)
     }
 }
 
-
 void YUVviewer::showParaErrMessageBox(void)
 {
     QMessageBox::critical(this, "Error", "parameter invalid!!", QMessageBox::Ok);
 }
-
 
 bool YUVviewer::updateConfig(void)
 {
@@ -323,7 +313,6 @@ bool YUVviewer::updateConfig(void)
     }
 }
 
-
 bool YUVviewer::imgView(QStringList openfile_list)
 {
     if (openfile_list.empty())
@@ -340,9 +329,9 @@ bool YUVviewer::imgView(QStringList openfile_list)
     int endFrame = ui->endFrame_LineEdit->text().toInt();
     int frameSize_Width = ui->frameSize_Width_LineEdit->text().toInt();
     int frameSize_Height = ui->frameSize_Height_LineEdit->text().toInt();
-    #if 0
-    // 单线程
-    bool isSuccess = imgViewer->setFileList(openfile_list,
+    #if 1
+    // 多线程
+    bool isSuccess = imgViewer->setFileList_multithreading(openfile_list,
                            YUVviewerConfigFile->config_dict.YUVFormat,
                            frameSize_Width,
                            frameSize_Height,
@@ -350,8 +339,8 @@ bool YUVviewer::imgView(QStringList openfile_list)
                            endFrame-startFrame+1
                            );
     #else
-    // 多线程
-    bool isSuccess = imgViewer->setFileList_multithreading(openfile_list,
+    // 单线程
+    bool isSuccess = imgViewer->setFileList(openfile_list,
                            YUVviewerConfigFile->config_dict.YUVFormat,
                            frameSize_Width,
                            frameSize_Height,
@@ -384,7 +373,6 @@ bool YUVviewer::imgView(QStringList openfile_list)
     return true;
 }
 
-
 void YUVviewer::openFile()
 {
     if(updateConfig())
@@ -396,7 +384,6 @@ void YUVviewer::openFile()
         }
     }
 }
-
 
 void YUVviewer::openFolder()
 {
@@ -421,25 +408,21 @@ void YUVviewer::openFolder()
     }
 }
 
-
 void YUVviewer::about()
 {
     QMessageBox::about(this, "About", "版本 " + VERSION + " 作者:liwq");
 }
-
 
 void YUVviewer::help()
 {
     QMessageBox::question(this, "Help", "目前暂无帮助说明", QMessageBox::Ok);
 }
 
-
 void YUVviewer::closeEvent(QCloseEvent *event)
 {
     delete YUVviewerConfigFile;
     event->accept();
 }
-
 
 int main(int argc, char *argv[])
 {

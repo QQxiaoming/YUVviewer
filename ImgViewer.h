@@ -66,6 +66,7 @@ protected:
     void resizeEvent(QResizeEvent *event);
 
 private:
+    void draw_img(QPainter *painter);
     Ui::ImgViewerWindow *ui;
     QWidget *parentWindow;
     bool left_click;
@@ -83,7 +84,6 @@ private:
     QPoint startPos;
     QPoint endPos;
 
-    void draw_img(QPainter *painter);
 };
 
 #endif // IMGVIEWER_H
