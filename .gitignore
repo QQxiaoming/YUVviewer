@@ -1,5 +1,5 @@
 
-# PyQt
+# Python
 /.idea
 /__pycache__
 /dist
@@ -50,3 +50,6 @@ CMakeLists.txt.user*
 
 # vscode
 /.vscode
+
+# dpkg
+*.deb
