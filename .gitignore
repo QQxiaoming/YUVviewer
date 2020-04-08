@@ -50,6 +50,3 @@ CMakeLists.txt.user*
 
 # vscode
 /.vscode
-
-# dpkg
-*.deb
