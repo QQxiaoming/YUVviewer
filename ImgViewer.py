@@ -74,8 +74,11 @@ class ImgViewer(QWidget, Ui_ImgViewerWindow):
             self.filelist = []
             # 遍历文件列表
             for filename in filelist:
-                # 使用获取的解码函数进行解码得到RGB的原始帧列表
-                frame_RGB_list = decoder(filename, W, H, startframe, totalframe)
+                try:
+                    # 使用获取的解码函数进行解码得到RGB的原始帧列表
+                    frame_RGB_list = decoder(filename, W, H, startframe, totalframe)
+                except Exception as e:
+                    continue
                 # 定义img列表用来保存每一帧的QPixmap
                 img_RGB_list = []
                 # 将原始帧转换到QPixmap并保存到img列表

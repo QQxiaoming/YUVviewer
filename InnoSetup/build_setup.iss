@@ -1,6 +1,6 @@
 
 #define MyAppName "YUVviewer"
-#define MyAppVersion "0.3.3"
+#define MyAppVersion "0.3.4"
 #define MyAppPublisher "zhiliao007 <wenqing.li@aliyun.com> QQxiaoming <2014500726@smail.xtu.edu.cn>"
 #define MyAppURL "https://github.com/zhiliao007/YUVviewer"
 #define MyAppExeName "YUVviewer.exe"
@@ -29,7 +29,7 @@ InfoBeforeFile=..\InnoSetup\Info.txt
 OutPutdir=..\InnoSetup
 SetupIconFile=..\img\ico.ico
 PrivilegesRequired=admin
-VersionInfoVersion=0.3.3.000
+VersionInfoVersion=0.3.4.000
 AllowNoIcons=no
 DisableProgramGroupPage=yes
 WizardStyle=modern

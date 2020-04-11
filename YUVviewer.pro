@@ -56,7 +56,7 @@ win32:{
 
     LIBS += D:\Qt\opencv4.2.0\x64\mingw\lib\libopencv_*.a
 
-    VERSION = 0.3.3.000
+    VERSION = 0.3.4.000
     RC_ICONS = "img\ico.ico"
     QMAKE_TARGET_PRODUCT = "YUVviewer"
     QMAKE_TARGET_DESCRIPTION = "YUVviewer based on Qt 5.9.2 (MinGW 5.3.2, 32 bit)"

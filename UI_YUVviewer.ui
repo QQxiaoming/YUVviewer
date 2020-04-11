@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>513</width>
-    <height>151</height>
+    <height>155</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -73,22 +73,32 @@
             </item>
             <item>
              <property name="text">
-              <string>I420</string>
+              <string>YU12/I420</string>
              </property>
             </item>
             <item>
              <property name="text">
-              <string>YUY2</string>
+              <string>NV21</string>
              </property>
             </item>
             <item>
              <property name="text">
-              <string>UYUV</string>
+              <string>NV12</string>
              </property>
             </item>
             <item>
              <property name="text">
-              <string>4:2:2</string>
+              <string>YUY2/YUYV</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>YVYU</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>UYVY</string>
              </property>
             </item>
             <item>

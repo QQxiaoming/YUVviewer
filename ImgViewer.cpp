@@ -36,14 +36,21 @@ void YUVDecodeThread::run()
     }
     else
     {
-        // 成功获取则返回计算结果
-        QList<cv::Mat*> frame_RGB_list = this->decoder(this->yuvfilename, this->W, this->H, this->startframe, this->totalframe);
+        QList<cv::Mat*> frame_RGB_list;
+        try{
+            // 成功获取则返回计算结果
+            frame_RGB_list = this->decoder(this->yuvfilename, this->W, this->H, this->startframe, this->totalframe);
+        }catch(cv::Exception& e)
+        {
+            emit finsh_signal(img_RGB_list,nullptr);
+            return;
+        }
         // 将原始帧转换到QImage*并保存到img列表
         foreach( cv::Mat* img,frame_RGB_list)
         {
             // 提取图像的通道和尺寸，用于将OpenCV下的image转换成Qimage
             QImage *qImg = new QImage((const unsigned char*)(img->data), img->cols, img->rows, img->step, QImage::Format_RGB888);
-            qImg->rgbSwapped();
+            *qImg = qImg->rgbSwapped();
             img_RGB_list.insert(img_RGB_list.end(), qImg);
         }
         emit finsh_signal(img_RGB_list,this->yuvfilename);
@@ -86,8 +93,14 @@ bool ImgViewer::setFileList(QStringList filenamelist,QString YUVFormat, int W, i
         // 遍历文件列表
         foreach( QString filename, filenamelist)
         {
-            // 使用获取的解码函数进行解码得到RGB的原始帧列表
-            QList<cv::Mat*> frame_RGB_list = decoder(filename, W, H, startframe, totalframe);
+            QList<cv::Mat*> frame_RGB_list;
+            try{
+                // 使用获取的解码函数进行解码得到RGB的原始帧列表
+                frame_RGB_list = decoder(filename, W, H, startframe, totalframe);
+            }catch(cv::Exception& e)
+            {
+                continue;
+            }
             if (frame_RGB_list.empty())
             {
                 return false;
@@ -99,7 +112,7 @@ bool ImgViewer::setFileList(QStringList filenamelist,QString YUVFormat, int W, i
             {
                 // 提取图像的通道和尺寸，用于将OpenCV下的image转换成Qimage
                 QImage *qImg = new QImage((const unsigned char*)(img->data), img->cols, img->rows, img->step, QImage::Format_RGB888);
-                qImg->rgbSwapped();
+                *qImg = qImg->rgbSwapped();
                 img_RGB_list.insert(img_RGB_list.end(), qImg);
             }
             // img_RGB_list以及文件名存入列表

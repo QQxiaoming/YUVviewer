@@ -1,5 +1,5 @@
 Package: yuvviewer
-Version: 0.33
+Version: 0.34
 Architecture: amd64
 Section: utils
 Depends: 

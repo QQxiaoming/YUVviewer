@@ -10,7 +10,7 @@
 #include "YUVviewer.h"
 #include "ui_UI_YUVviewer.h"
 
-const QString VERSION = "V0.3.3";
+const QString VERSION = "V0.3.4";
 
 YUVviewer::YUVviewer(QWidget *parent) :
     QMainWindow(parent),
@@ -54,7 +54,7 @@ YUVviewer::YUVviewer(QWidget *parent) :
         YUVviewerConfigFile->config_dict.frameSize_Height = "144";
     }
 
-    QStringList YUVFormat_list = {"YV12", "I420", "YUY2", "UYUV", "4:2:2", "4:4:4"};
+    QStringList YUVFormat_list = {"YV12", "YU12/I420", "NV21", "NV12", "YUY2/YUYV", "YVYU", "UYVY", "4:4:4"};
     currentIndex = 0;
     foreach(QString s ,YUVFormat_list)
     {

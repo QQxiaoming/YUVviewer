@@ -10,7 +10,7 @@ from UI_YUVviewer import Ui_YUVviewer
 from configFile import ConfigFile
 from ImgViewer import ImgViewer
 
-VERSION = 'V0.3.3'
+VERSION = 'V0.3.4'
 
 class YUVviewer(QtWidgets.QMainWindow, Ui_YUVviewer):
     def __init__(self):
@@ -45,7 +45,7 @@ class YUVviewer(QtWidgets.QMainWindow, Ui_YUVviewer):
             self.ui.frameSize_Height_LineEdit.setFocusPolicy(QtCore.Qt.NoFocus)
             self.YUVviewerConfigFile.config_dict['frameSize_Height'] = '144'
 
-        YUVFormat_list = ['YV12', 'I420', 'YUY2', 'UYUV', '4:2:2', '4:4:4']
+        YUVFormat_list = ['YV12', 'YU12/I420', 'NV21', 'NV12', 'YUY2/YUYV', 'YVYU', 'UYVY', '4:4:4']
         currentIndex = YUVFormat_list.index(self.YUVviewerConfigFile.config_dict['YUVFormat'] )
         self.ui.YUVFormat_ComboBox.setCurrentIndex(currentIndex)
 
