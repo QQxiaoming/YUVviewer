@@ -91,11 +91,12 @@ class YUV2RGB(object):
             seekPixels = startframe * H * W * 2
             fp.seek(8 * seekPixels)  # 跳过前startframe帧
             for i in range(totalframe):
-                oneframe_I420 = np.zeros((H * 2, W), np.uint8)
-                for j in range(H * 2):
+                oneframe_I420 = np.zeros((H, W, 2), np.uint8)
+                for j in range(H):
                     for k in range(W):
-                        oneframe_I420[j, k] = int.from_bytes(fp.read(1), byteorder='little', signed=False)
-                oneframe_RGB = cv2.cvtColor(oneframe_I420.reshape([H, W, 2]), cv2.COLOR_YUV2RGB_YUY2)
+                        for l in range(2):
+                            oneframe_I420[j, k, l] = int.from_bytes(fp.read(1), byteorder='little', signed=False)
+                oneframe_RGB = cv2.cvtColor(oneframe_I420, cv2.COLOR_YUV2RGB_YUY2)
                 arr[i] = oneframe_RGB
         return arr
     
@@ -108,11 +109,12 @@ class YUV2RGB(object):
             seekPixels = startframe * H * W * 2
             fp.seek(8 * seekPixels)  # 跳过前startframe帧
             for i in range(totalframe):
-                oneframe_I420 = np.zeros((H * 2, W), np.uint8)
-                for j in range(H * 2):
+                oneframe_I420 = np.zeros((H, W, 2), np.uint8)
+                for j in range(H):
                     for k in range(W):
-                        oneframe_I420[j, k] = int.from_bytes(fp.read(1), byteorder='little', signed=False)
-                oneframe_RGB = cv2.cvtColor(oneframe_I420.reshape([H, W, 2]), cv2.COLOR_YUV2RGB_YVYU)
+                        for l in range(2):
+                            oneframe_I420[j, k, l] = int.from_bytes(fp.read(1), byteorder='little', signed=False)
+                oneframe_RGB = cv2.cvtColor(oneframe_I420, cv2.COLOR_YUV2RGB_YVYU)
                 arr[i] = oneframe_RGB
         return arr
     
@@ -125,11 +127,12 @@ class YUV2RGB(object):
             seekPixels = startframe * H * W * 2
             fp.seek(8 * seekPixels)  # 跳过前startframe帧
             for i in range(totalframe):
-                oneframe_I420 = np.zeros((H * 2, W), np.uint8)
-                for j in range(H * 2):
+                oneframe_I420 = np.zeros((H, W, 2), np.uint8)
+                for j in range(H):
                     for k in range(W):
-                        oneframe_I420[j, k] = int.from_bytes(fp.read(1), byteorder='little', signed=False)
-                oneframe_RGB = cv2.cvtColor(oneframe_I420.reshape([H, W, 2]), cv2.COLOR_YUV2RGB_UYVY)
+                        for l in range(2):
+                            oneframe_I420[j, k, l] = int.from_bytes(fp.read(1), byteorder='little', signed=False)
+                oneframe_RGB = cv2.cvtColor(oneframe_I420, cv2.COLOR_YUV2RGB_UYVY)
                 arr[i] = oneframe_RGB
         return arr
 
@@ -142,10 +145,11 @@ class YUV2RGB(object):
             seekPixels = startframe * H * W * 3
             fp.seek(8 * seekPixels)  # 跳过前startframe帧
             for i in range(totalframe):
-                oneframe_I420 = np.zeros((H * 3, W), np.uint8)
-                for j in range(H * 3):
+                oneframe_I420 = np.zeros((H, W, 3), np.uint8)
+                for j in range(H):
                     for k in range(W):
-                        oneframe_I420[j, k] = int.from_bytes(fp.read(1), byteorder='little', signed=False)
-                oneframe_RGB = cv2.cvtColor(oneframe_I420.reshape([H, W, 3]), cv2.COLOR_YUV2RGB)
+                        for l in range(3):
+                            oneframe_I420[j, k, l] = int.from_bytes(fp.read(1), byteorder='little', signed=False)
+                oneframe_RGB = cv2.cvtColor(oneframe_I420, cv2.COLOR_YUV2RGB)
                 arr[i] = oneframe_RGB
         return arr
