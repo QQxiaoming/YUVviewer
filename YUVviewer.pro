@@ -89,3 +89,16 @@ unix:{
     LIBS += -L /home/xiaoming/Desktop/opencv/lib/ -lopencv_core
     LIBS += -L /home/xiaoming/Desktop/opencv/lib/ -lopencv_calib3d
 }
+
+build_type =
+CONFIG(debug, debug|release) {
+    build_type = build_debug
+} else {
+    build_type = build_release
+}
+
+DESTDIR     = $$build_type/out
+OBJECTS_DIR = $$build_type/obj
+MOC_DIR     = $$build_type/moc
+RCC_DIR     = $$build_type/rcc
+UI_DIR      = $$build_type/ui

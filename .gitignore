@@ -40,6 +40,8 @@ Makefile*
 # QtCreator
 
 *.autosave
+/build_debug
+/build_release
 
 # QtCtreator Qml
 *.qmlproject.user
