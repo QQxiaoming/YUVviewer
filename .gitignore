@@ -36,6 +36,7 @@ ui_*.h
 Makefile*
 *build-*
 .qmake.stash
+*_resource.rc
 
 # QtCreator
 

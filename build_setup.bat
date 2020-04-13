@@ -17,7 +17,14 @@ set "YVYVIEWER_VERSION=0.3.4"
 :: 设置环境变量
 set "PATH=%QT_DIR%;%QT_TOOLS_DIR%;%INNO_SETUP_DIR%;%PATH%"
 :: 编译
-qmake YUVviewer.pro
+del .qmake.stash Makefile
+if exist ".\build_debug" (
+    rmdir /Q /S .\build_debug
+)
+if exist ".\build_release" (
+    rmdir /Q /S .\build_release
+)
+qmake YUVviewer.pro -spec win32-g++
 mingw32-make -j8
 :: clean打包目录
 if exist ".\InnoSetup\build" (
@@ -32,12 +39,11 @@ del /f /q /a .\sed*
 xcopy /y .\build_release\out\YUVviewer.exe .\InnoSetup\build\
 :: 使用windeployqt拷贝依赖dll库到打包目录
 windeployqt --dir .\InnoSetup\build .\InnoSetup\build\YUVviewer.exe
-xcopy /y %OPENCV_DIR%\libopencv_imgproc420.dll .\InnoSetup\build\
-xcopy /y %OPENCV_DIR%\libopencv_core420.dll .\InnoSetup\build\
+xcopy /y "%OPENCV_DIR%\libopencv_imgproc420.dll" ".\InnoSetup\build\"
+xcopy /y "%OPENCV_DIR%\libopencv_core420.dll" ".\InnoSetup\build\"
 :: 打包
 echo "wait inno build setup..."
-compil32 /cc ".\InnoSetup\build_setup.iss"
+compil32 /cc ".\InnoSetup\build_temp_setup.iss"
 del .\InnoSetup\build_temp_setup.iss
 echo "build success!"
-pause
 :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::

@@ -10,7 +10,7 @@
 #include "YUVviewer.h"
 #include "ui_UI_YUVviewer.h"
 
-const QString VERSION = "V0.3.4";
+const QString VERSION = APP_VERSION;//"V0.3.4";
 
 YUVviewer::YUVviewer(QWidget *parent) :
     QMainWindow(parent),
