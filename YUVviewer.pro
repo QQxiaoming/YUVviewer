@@ -32,23 +32,23 @@ CONFIG += c++11
 
 # 源文件配置
 SOURCES += \
-        YUVviewer.cpp \
-        ImgViewer.cpp \
-        YUVdecoder.cpp \
-        configFile.cpp
+        src/YUVviewer.cpp \
+        src/ImgViewer.cpp \
+        src/YUVdecoder.cpp \
+        src/configFile.cpp
 
 HEADERS += \
-        YUVviewer.h \
-        ImgViewer.h \
-        YUVdecoder.h \
-        configFile.h
+        src/YUVviewer.h \
+        src/ImgViewer.h \
+        src/YUVdecoder.h \
+        src/configFile.h
 
 FORMS += \
-        UI_YUVviewer.ui \
-        UI_ImgViewer.ui
+        src/UI_YUVviewer.ui \
+        src/UI_ImgViewer.ui
 
 RESOURCES += \
-    img.qrc
+        src/img.qrc
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
@@ -79,7 +79,7 @@ win32:{
     VERSION = $${YVYVIEWER_VERSION}.000
     RC_ICONS = "img\ico.ico"
     QMAKE_TARGET_PRODUCT = "YUVviewer"
-    QMAKE_TARGET_DESCRIPTION = "YUVviewer based on Qt 5.9.2 (MinGW 5.3.2, 32 bit)"
+    QMAKE_TARGET_DESCRIPTION = "YUVviewer based on Qt $$[QT_VERSION]"
     QMAKE_TARGET_COPYRIGHT = "GNU General Public License v3.0"
 }
 
