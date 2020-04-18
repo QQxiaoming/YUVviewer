@@ -1,3 +1,9 @@
+/**
+ * @file ImgViewer.cpp
+ * @brief 图像显示界面
+ * @version 1.0
+ * @date 2020-04-14
+ */
 #include <QImage>
 #include <QFileInfo>
 #include <QList>
@@ -27,7 +33,7 @@ YUVDecodeThread::YUVDecodeThread(QWidget *parent,QString yuvfilename,QString YUV
 
 void YUVDecodeThread::run()
 {
-    /// 定义img列表用了保存每一帧的QImage*
+    // 定义img列表用了保存每一帧的QImage*
     QList<QImage*> img_RGB_list;
     if(this->decoder == nullptr)
     {

@@ -1,3 +1,9 @@
+/**
+ * @file configFile.cpp
+ * @brief 管理配置文件
+ * @version 1.0
+ * @date 2020-04-14
+ */
 #include <QDir>
 #include <QFile>
 #include <QXmlStreamReader>

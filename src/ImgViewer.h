@@ -1,3 +1,9 @@
+/**
+ * @file ImgViewer.h
+ * @brief 图像显示界面
+ * @version 1.0
+ * @date 2020-04-14
+ */
 #ifndef IMGVIEWER_H
 #define IMGVIEWER_H
 

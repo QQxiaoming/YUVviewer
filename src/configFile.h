@@ -1,3 +1,9 @@
+/**
+ * @file configFile.h
+ * @brief 管理配置文件
+ * @version 1.0
+ * @date 2020-04-14
+ */
 #ifndef CONFIGFILE_H
 #define CONFIGFILE_H
 

@@ -1,3 +1,9 @@
+/**
+ * @file YUVdecoder.h
+ * @brief 解码YUV数据
+ * @version 1.0
+ * @date 2020-04-14
+ */
 #ifndef YUVDECODER_H
 #define YUVDECODER_H
 
@@ -11,7 +17,6 @@ typedef QList<cv::Mat*> (* yuvdecoder_t)(QString yuvfilename,int W, int H, int s
 class YUV2RGB
 {
 public:
-    YUV2RGB();
     static QList<cv::Mat*> yv12(QString yuvfilename,int W, int H, int startframe, int totalframe);
     static QList<cv::Mat*> i420(QString yuvfilename,int W, int H, int startframe, int totalframe);
     static QList<cv::Mat*> nv21(QString yuvfilename,int W, int H, int startframe, int totalframe);

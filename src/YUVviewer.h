@@ -1,3 +1,9 @@
+/**
+ * @file YUVviewer.h
+ * @brief 主界面
+ * @version 1.0
+ * @date 2020-04-14
+ */
 #ifndef YUVVIEWER_H
 #define YUVVIEWER_H
 
