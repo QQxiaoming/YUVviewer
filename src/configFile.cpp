@@ -12,6 +12,7 @@
 
 ConfigFile::ConfigFile(QString path)
 {
+    config_dict.lastPath = "";
     config_dict.frameSizeType = "Other";
     config_dict.YUVFormat = "YV12";
     config_dict.frameSize_Width = "2528";
@@ -32,6 +33,7 @@ ConfigFile::ConfigFile(QString path)
         writer.setAutoFormatting(true); // 自动格式化
         writer.writeStartDocument("1.0");  // 开始文档（XML 声明）
         writer.writeStartElement("config");
+        writer.writeTextElement("lastPath", config_dict.lastPath);
         writer.writeTextElement("frameSizeType", config_dict.frameSizeType);
         writer.writeTextElement("YUVFormat", config_dict.YUVFormat);
         writer.writeTextElement("frameSize_Width", config_dict.frameSize_Width);
@@ -53,7 +55,11 @@ ConfigFile::ConfigFile(QString path)
         {
             if(reader.isStartElement())
             {
-                if(reader.name() == "frameSizeType")
+                if(reader.name() == "lastPath")
+                {
+                    config_dict.lastPath = reader.readElementText();
+                }
+                else if(reader.name() == "frameSizeType")
                 {
                     config_dict.frameSizeType = reader.readElementText();
                 }
@@ -98,6 +104,7 @@ ConfigFile::~ConfigFile()
     writer.setAutoFormatting(true); // 自动格式化
     writer.writeStartDocument("1.0");  // 开始文档（XML 声明）
     writer.writeStartElement("config");
+    writer.writeTextElement("lastPath", config_dict.lastPath);
     writer.writeTextElement("frameSizeType", config_dict.frameSizeType);
     writer.writeTextElement("YUVFormat", config_dict.YUVFormat);
     writer.writeTextElement("frameSize_Width", config_dict.frameSize_Width);

@@ -10,7 +10,7 @@ from UI_YUVviewer import Ui_YUVviewer
 from configFile import ConfigFile
 from ImgViewer import ImgViewer
 
-VERSION = 'V0.3.4'
+VERSION = 'V0.3.5'
 
 class YUVviewer(QtWidgets.QMainWindow, Ui_YUVviewer):
     def __init__(self):
@@ -235,14 +235,27 @@ class YUVviewer(QtWidgets.QMainWindow, Ui_YUVviewer):
 
     def openFile(self):
         if self._updateConfig():
-            openfile_name = QFileDialog.getOpenFileNames(self, '选择文件', '', 'YUV files(*.yuv)')
+            openDir = ''
+            if self.YUVviewerConfigFile.config_dict['lastPath']:
+                if os.path.isdir(self.YUVviewerConfigFile.config_dict['lastPath']):
+                    openDir = self.YUVviewerConfigFile.config_dict['lastPath']
+            openfile_name = QFileDialog.getOpenFileNames(self, '选择文件', openDir, 'YUV files(*.yuv)')
             openfile_list = openfile_name[0]
+            if openfile_list:
+                if os.path.exists(openfile_name[0][0]):
+                    filepath, filename = os.path.split(openfile_name[0][0])
+                    self.YUVviewerConfigFile.config_dict['lastPath'] = filepath
             self._imgView(openfile_list)
 
     def openFolder(self):
         if self._updateConfig():
-            openfolder_name = QFileDialog.getExistingDirectory(self, '选择文件夹')
+            openDir = ''
+            if self.YUVviewerConfigFile.config_dict['lastPath']:
+                if os.path.isdir(self.YUVviewerConfigFile.config_dict['lastPath']):
+                    openDir = self.YUVviewerConfigFile.config_dict['lastPath']
+            openfolder_name = QFileDialog.getExistingDirectory(self, '选择文件夹', openDir)
             if openfolder_name:
+                self.YUVviewerConfigFile.config_dict['lastPath'] = openfolder_name
                 openfile_list = []
                 for filename in os.listdir(openfolder_name):
                     filepath = os.path.join(openfolder_name, filename)

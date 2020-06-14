@@ -383,9 +383,17 @@ void YUVviewer::openFile()
 {
     if(updateConfig())
     {
-        QStringList openfile_list = QFileDialog::getOpenFileNames(this, "选择文件", "", "YUV files(*.yuv)");
+        QString openDir = "";
+        QFileInfo lastPath(YUVviewerConfigFile->config_dict.lastPath);
+        if(lastPath.isDir())
+        {
+            openDir = YUVviewerConfigFile->config_dict.lastPath;
+        }
+        QStringList openfile_list = QFileDialog::getOpenFileNames(this, "选择文件", openDir, "YUV files(*.yuv)");
         if(openfile_list.size() != 0)
         {
+            QFileInfo file(openfile_list[0]);
+            YUVviewerConfigFile->config_dict.lastPath = file.absolutePath();
             imgView(openfile_list);
         }
     }
@@ -395,9 +403,16 @@ void YUVviewer::openFolder()
 {
     if(updateConfig())
     {
-        QString openfolder_name = QFileDialog::getExistingDirectory(this, "选择文件夹");
+        QString openDir = "";
+        QFileInfo lastPath(YUVviewerConfigFile->config_dict.lastPath);
+        if(lastPath.isDir())
+        {
+            openDir = YUVviewerConfigFile->config_dict.lastPath;
+        }
+        QString openfolder_name = QFileDialog::getExistingDirectory(this, "选择文件夹", openDir);
         if (!openfolder_name.isEmpty())
         {
+            YUVviewerConfigFile->config_dict.lastPath = openfolder_name;
             QDir dir(openfolder_name);
             QStringList nameFilters = {"*.yuv"};
             QStringList openfilename_list = dir.entryList(nameFilters, QDir::Files|QDir::Readable, QDir::Name);

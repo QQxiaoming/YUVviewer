@@ -11,6 +11,7 @@
 
 typedef struct
 {
+    QString lastPath;
     QString frameSizeType;
     QString YUVFormat;
     QString frameSize_Width;

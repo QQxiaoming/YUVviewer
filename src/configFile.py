@@ -10,6 +10,7 @@ yuvviewer_xml_head = '''<?xml version="1.0" encoding="UTF-8"?>'''
 class ConfigFile(object):
     def __init__(self, path):
         self.config_dict = {
+            'lastPath': '',
             'frameSizeType': 'Other',
             'YUVFormat': 'YV12',
             'frameSize_Width': '2528',
