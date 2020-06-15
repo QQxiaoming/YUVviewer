@@ -89,7 +89,7 @@ private:
     QPoint point;
     QPoint startPos;
     QPoint endPos;
-
+    bool flipRGB = false;
 };
 
 #endif // IMGVIEWER_H

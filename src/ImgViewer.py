@@ -43,7 +43,7 @@ class YUVDecodeThread(QThread):
                 height, width, channel = img.shape
                 bytesPerline = 3 * width
                 qImg = QImage(img.data, width, height, bytesPerline, QImage.Format_RGB888).rgbSwapped()
-                img_RGB_list.append(QPixmap.fromImage(qImg))
+                img_RGB_list.append(qImg)
             self.finsh_signal.emit(img_RGB_list,self.filename)
 
 class ImgViewer(QWidget, Ui_ImgViewerWindow):
@@ -59,6 +59,7 @@ class ImgViewer(QWidget, Ui_ImgViewerWindow):
         self.ui.left_PushButton.clicked.connect(self.previousImg)
         self.ui.right_PushButton.clicked.connect(self.nextImg)
         self.left_click = False
+        self.flipRGB = False
         
     def setFileList(self,filelist,YUVFormat, W, H, startframe, totalframe):
         # 获取该格式的解码函数
@@ -87,7 +88,7 @@ class ImgViewer(QWidget, Ui_ImgViewerWindow):
                     height, width, channel = img.shape
                     bytesPerline = 3 * width
                     qImg = QImage(img.data, width, height, bytesPerline, QImage.Format_RGB888).rgbSwapped()
-                    img_RGB_list.append(QPixmap.fromImage(qImg))
+                    img_RGB_list.append(qImg)
                 # img_RGB_list以及文件名存入列表
                 self.img_list.append(img_RGB_list)
                 self.filelist.append(os.path.split(filename)[1])
@@ -96,6 +97,8 @@ class ImgViewer(QWidget, Ui_ImgViewerWindow):
             self.currentImg = self.currentImg_RGB_list[0]
             self.setWindowTitle(self.filelist[0]+'-'+str(0))
             self.scaled_img = self.currentImg.scaled(self.size())
+            if self.flipRGB:
+                    self.scaled_img = self.scaled_img.rgbSwapped()
             self.point = QPoint(0, 0)
             return True
 
@@ -111,6 +114,8 @@ class ImgViewer(QWidget, Ui_ImgViewerWindow):
                 self.currentImg = self.currentImg_RGB_list[0]
                 self.setWindowTitle(self.filelist[0] + '-' + str(0))
                 self.scaled_img = self.currentImg.scaled(self.size())
+                if self.flipRGB:
+                    self.scaled_img = self.scaled_img.rgbSwapped()
                 self.point = QPoint(0, 0)
                 self.repaint()
 
@@ -146,7 +151,7 @@ class ImgViewer(QWidget, Ui_ImgViewerWindow):
         event.accept()
 
     def draw_img(self, painter):
-        painter.drawPixmap(self.point, self.scaled_img)
+        painter.drawPixmap(self.point, QPixmap.fromImage(self.scaled_img))
 
     def paintEvent(self, e):
         if not len(self.img_list) == 0:
@@ -176,6 +181,8 @@ class ImgViewer(QWidget, Ui_ImgViewerWindow):
             elif e.button() == Qt.RightButton:
                 self.point = QPoint(0, 0)
                 self.scaled_img = self.currentImg.scaled(self.size())
+                if self.flipRGB:
+                    self.scaled_img = self.scaled_img.rgbSwapped()
                 self.repaint()
 
     def mouseDoubleClickEvent(self, event):
@@ -187,6 +194,13 @@ class ImgViewer(QWidget, Ui_ImgViewerWindow):
                 savefile_name = QFileDialog.getSaveFileName(self, '保存文件', self.filelist[list_index].replace('.yuv','-') + str(img_index) + '.png', 'Image files(*.png)')
                 if savefile_name[0]:
                     self.currentImg.save(savefile_name[0])
+            elif event.buttons() == Qt.RightButton:
+                self.flipRGB = False if self.flipRGB else True
+                self.point = QPoint(0, 0)
+                self.scaled_img = self.currentImg.scaled(self.size())
+                if self.flipRGB:
+                    self.scaled_img = self.scaled_img.rgbSwapped()
+                self.repaint()
 
     def wheelEvent(self, e):
         if not len(self.img_list) == 0:
@@ -197,6 +211,8 @@ class ImgViewer(QWidget, Ui_ImgViewerWindow):
                     setpsize_y = setpsize_x * self.scaled_img.height() / self.scaled_img.width() #缩放可能导致比例不精确
 
                     self.scaled_img = self.currentImg.scaled(self.scaled_img.width() + setpsize_x,self.scaled_img.height() + setpsize_y)
+                    if self.flipRGB:
+                        self.scaled_img = self.scaled_img.rgbSwapped()
                     new_w = e.x() - (self.scaled_img.width() * (e.x() - self.point.x())) / (self.scaled_img.width() - setpsize_x)
                     new_h = e.y() - (self.scaled_img.height() * (e.y() - self.point.y())) / (self.scaled_img.height() - setpsize_y)
                     self.point = QPoint(new_w, new_h)
@@ -209,6 +225,8 @@ class ImgViewer(QWidget, Ui_ImgViewerWindow):
                     setpsize_y = setpsize_x * self.scaled_img.height() / self.scaled_img.width() #缩放可能导致比例不精确
 
                     self.scaled_img = self.currentImg.scaled(self.scaled_img.width() - setpsize_x,self.scaled_img.height() - setpsize_y)
+                    if self.flipRGB:
+                        self.scaled_img = self.scaled_img.rgbSwapped()
                     new_w = e.x() - (self.scaled_img.width() * (e.x() - self.point.x())) / (self.scaled_img.width() + setpsize_x)
                     new_h = e.y() - (self.scaled_img.height() * (e.y() - self.point.y())) / (self.scaled_img.height() + setpsize_y)
                     self.point = QPoint(new_w, new_h)
@@ -218,6 +236,8 @@ class ImgViewer(QWidget, Ui_ImgViewerWindow):
         if not len(self.img_list) == 0:
             if self.parent is not None:
                 self.scaled_img = self.currentImg.scaled(self.size())
+                if self.flipRGB:
+                    self.scaled_img = self.scaled_img.rgbSwapped()
                 self.point = QPoint(0, 0)
                 self.update()
 
@@ -250,6 +270,8 @@ class ImgViewer(QWidget, Ui_ImgViewerWindow):
             self.currentImg = self.currentImg_RGB_list[img_index]
             self.point = QPoint(0, 0)
             self.scaled_img = self.currentImg.scaled(self.size())
+            if self.flipRGB:
+                    self.scaled_img = self.scaled_img.rgbSwapped()
             self.repaint()
 
     def nextImg(self):
@@ -281,4 +303,6 @@ class ImgViewer(QWidget, Ui_ImgViewerWindow):
             self.currentImg = self.currentImg_RGB_list[img_index]
             self.point = QPoint(0, 0)
             self.scaled_img = self.currentImg.scaled(self.size())
+            if self.flipRGB:
+                    self.scaled_img = self.scaled_img.rgbSwapped()
             self.repaint()

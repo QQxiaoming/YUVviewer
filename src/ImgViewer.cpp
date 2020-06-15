@@ -131,6 +131,10 @@ bool ImgViewer::setFileList(QStringList filenamelist,QString YUVFormat, int W, i
         this->currentImg = this->currentImg_RGB_list.at(0);
         this->setWindowTitle(this->filelist.at(0)+"-0");
         this->scaled_img = this->currentImg->scaled(this->size());
+        if(this->flipRGB)
+        {
+            this->scaled_img = this->scaled_img.rgbSwapped();
+        }
         this->point = QPoint(0, 0);
         return true;
     }
@@ -152,6 +156,10 @@ void ImgViewer::reciveimgdata(QList<QImage*> img_RGB_list,QString filename)
             this->currentImg = this->currentImg_RGB_list.at(0);
             this->setWindowTitle(this->filelist.at(0)+"-0");
             this->scaled_img = this->currentImg->scaled(this->size());
+            if(this->flipRGB)
+            {
+                this->scaled_img = this->scaled_img.rgbSwapped();
+            }
             this->point = QPoint(0, 0);
             this->repaint();
         }
@@ -252,6 +260,10 @@ void ImgViewer::mouseReleaseEvent(QMouseEvent *event)
         {
             this->point = QPoint(0, 0);
             this->scaled_img = this->currentImg->scaled(this->size());
+            if(this->flipRGB)
+            {
+                this->scaled_img = this->scaled_img.rgbSwapped();
+            }
             this->repaint();
         }
     }
@@ -271,6 +283,17 @@ void ImgViewer::mouseDoubleClickEvent(QMouseEvent *event)
             {
                 this->currentImg->save(savefile_name);
             }
+        }   
+        else if(event->button() == Qt::RightButton)
+        {
+            this->flipRGB = this->flipRGB ? false : true;
+            this->point = QPoint(0, 0);
+            this->scaled_img = this->currentImg->scaled(this->size());
+            if(this->flipRGB)
+            {
+                this->scaled_img = this->scaled_img.rgbSwapped();
+            }
+            this->repaint();
         }
     }
 }
@@ -288,6 +311,10 @@ void ImgViewer::wheelEvent(QWheelEvent *event)
                 float setpsize_y = setpsize_x * this->scaled_img.height() / this->scaled_img.width(); //缩放可能导致比例不精确
 
                 this->scaled_img = this->currentImg->scaled(this->scaled_img.width() + setpsize_x,this->scaled_img.height() + setpsize_y);
+                if(this->flipRGB)
+                {
+                    this->scaled_img = this->scaled_img.rgbSwapped();
+                }
                 float new_w = event->x() - (this->scaled_img.width() * (event->x() - this->point.x())) / (this->scaled_img.width() - setpsize_x);
                 float new_h = event->y() - (this->scaled_img.height() * (event->y() - this->point.y())) / (this->scaled_img.height() - setpsize_y);
                 this->point = QPoint(new_w, new_h);
@@ -303,6 +330,10 @@ void ImgViewer::wheelEvent(QWheelEvent *event)
                 float setpsize_y = setpsize_x * this->scaled_img.height() / this->scaled_img.width(); //缩放可能导致比例不精确
 
                 this->scaled_img = this->currentImg->scaled(this->scaled_img.width() - setpsize_x,this->scaled_img.height() - setpsize_y);
+                if(this->flipRGB)
+                {
+                    this->scaled_img = this->scaled_img.rgbSwapped();
+                }
                 float new_w = event->x() - (this->scaled_img.width() * (event->x() - this->point.x())) / (this->scaled_img.width() + setpsize_x);
                 float new_h = event->y() - (this->scaled_img.height() * (event->y() - this->point.y())) / (this->scaled_img.height() + setpsize_y);
                 this->point = QPoint(new_w, new_h);
@@ -317,6 +348,10 @@ void ImgViewer::resizeEvent(QResizeEvent *event)
     if (!this->img_list.empty())
     {
         this->scaled_img = this->currentImg->scaled(this->size());
+        if(this->flipRGB)
+        {
+            this->scaled_img = this->scaled_img.rgbSwapped();
+        }
         this->point = QPoint(0, 0);
         this->update();
     }
@@ -361,6 +396,10 @@ void ImgViewer::previousImg()
         this->currentImg = this->currentImg_RGB_list[img_index];
         this->point = QPoint(0, 0);
         this->scaled_img = this->currentImg->scaled(this->size());
+        if(this->flipRGB)
+        {
+            this->scaled_img = this->scaled_img.rgbSwapped();
+        }
         this->repaint();
     }
 }
@@ -404,6 +443,10 @@ void ImgViewer::nextImg()
         this->currentImg = this->currentImg_RGB_list[img_index];
         this->point = QPoint(0, 0);
         this->scaled_img = this->currentImg->scaled(this->size());
+        if(this->flipRGB)
+        {
+            this->scaled_img = this->scaled_img.rgbSwapped();
+        }
         this->repaint();
     }
 }
