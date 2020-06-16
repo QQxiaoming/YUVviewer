@@ -55,6 +55,10 @@ class YUVviewer(QtWidgets.QMainWindow, Ui_YUVviewer):
         size = self.geometry()
         self.move((screen.width() - size.width()) / 2, (screen.height() - size.height()) / 2)
 
+        self.ui.frameSizeType_ComboBox.setStyleSheet("combobox-popup: 0;")
+        self.ui.YUVFormat_ComboBox.setStyleSheet("combobox-popup: 0;")
+        self.ui.frameRate_ComboBox.setStyleSheet("combobox-popup: 0;")
+
         for key,value in self.frameSizeTypeDict.items():
             self.ui.frameSizeType_ComboBox.insertItem(self.ui.frameSizeType_ComboBox.count(), key)
 

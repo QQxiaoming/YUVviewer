@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'UI_YUVviewer.ui'
+# Form implementation generated from reading ui file './src/UI_YUVviewer.ui'
 #
-# Created by: PyQt5 UI code generator 5.9.2
+# Created by: PyQt5 UI code generator 5.6
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -11,13 +11,13 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_YUVviewer(object):
     def setupUi(self, YUVviewer):
         YUVviewer.setObjectName("YUVviewer")
-        YUVviewer.resize(470, 155)
+        YUVviewer.resize(550, 155)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(YUVviewer.sizePolicy().hasHeightForWidth())
         YUVviewer.setSizePolicy(sizePolicy)
-        YUVviewer.setMinimumSize(QtCore.QSize(470, 155))
+        YUVviewer.setMinimumSize(QtCore.QSize(550, 155))
         YUVviewer.setMaximumSize(QtCore.QSize(16777215, 155))
         self.centralwidget = QtWidgets.QWidget(YUVviewer)
         self.centralwidget.setObjectName("centralwidget")
@@ -217,3 +217,4 @@ class Ui_YUVviewer(object):
         self.openFolder_PushButton.setText(_translate("YUVviewer", "Open folder"))
         self.about_PushButton.setText(_translate("YUVviewer", "About"))
         self.help_PushButton.setText(_translate("YUVviewer", "Help"))
+

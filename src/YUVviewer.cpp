@@ -71,6 +71,9 @@ YUVviewer::YUVviewer(QWidget *parent) :
         ui->frameSizeType_ComboBox->insertItem(ui->frameSizeType_ComboBox->count(),config_it->first);
         config_it++;
     }
+    ui->frameSizeType_ComboBox->setStyleSheet("combobox-popup: 0;");
+    ui->YUVFormat_ComboBox->setStyleSheet("combobox-popup: 0;");
+    ui->frameRate_ComboBox->setStyleSheet("combobox-popup: 0;");
 
     YUVviewerConfigFile = new ConfigFile(QCoreApplication::applicationDirPath()+"/YUVViewer.ini");
     if(YUVviewerConfigFile->config_dict.frameSizeType == "Other")
