@@ -18,6 +18,41 @@
 
 const QString VERSION = APP_VERSION;
 
+const QList<QPair<QString, QStringList>> YUVviewer::frameSizeTypeDict = {
+    {"QQCIF",   {"88","72"}},
+    {"QQVGA",   {"160","120"}},
+    {"QCIF",    {"176","144"}},
+    {"HQVGA",   {"240","160"}},
+    {"QVGA",    {"320","240"}},
+    {"CIF",     {"352","288"}},
+    {"WQVGA",   {"400","240"}},
+    {"HVGA",    {"480","320"}},
+    {"nHD",     {"640","340"}},
+    {"VGA",     {"640","480"}},
+    {"WVGA",    {"800","480"}},
+    {"SVGA",    {"800","600"}},
+    {"qHD",     {"960","540"}},
+    {"DVGA",    {"960","640"}},
+    {"XGA",     {"1024","768"}},
+    {"HD",      {"1280","720"}},
+    {"UVGA",    {"1280","960"}},
+    {"SXGA",    {"1280","1024"}},
+    {"HD+",     {"1600","900"}},
+    {"UXGA",    {"1600","1200"}},
+    {"FHD",     {"1920","1080"}},
+    {"WUXGA",   {"1920","1200"}},
+    {"FHD+",    {"2160","1440"}},
+    {"QXGA",    {"2048","1536"}},
+    {"QHD",     {"2560","1440"}},
+    {"WQXGA",   {"2560","1600"}},
+    {"QSXGA",   {"2560","2048"}},
+    {"QHD+",    {"3200","1800"}},
+    {"QUXGA",   {"3200","2400"}},
+    {"4K UHD",  {"3840","2160"}},
+    {"8K UHD",  {"7680","4320"}},
+};
+
+
 YUVviewer::YUVviewer(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::YUVviewer)
@@ -26,38 +61,45 @@ YUVviewer::YUVviewer(QWidget *parent) :
 
     ui->setupUi(this);
 
-    this->setWindowTitle("YUVviewer " + VERSION + " by liwq");
+    this->setWindowTitle("YUVviewer " + VERSION);
     QRect screen = QApplication::desktop()->screenGeometry();
     QRect size = this->geometry();
     this->move((screen.width() - size.width()) / 2, (screen.height() - size.height()) / 2);
 
-    YUVviewerConfigFile = new ConfigFile(QCoreApplication::applicationDirPath()+"/YUVViewer.ini");
+    QList<QPair<QString, QStringList>>::const_iterator config_it = frameSizeTypeDict.begin();
+    while (config_it != frameSizeTypeDict.end()) {
+        ui->frameSizeType_ComboBox->insertItem(ui->frameSizeType_ComboBox->count(),config_it->first);
+        config_it++;
+    }
 
+    YUVviewerConfigFile = new ConfigFile(QCoreApplication::applicationDirPath()+"/YUVViewer.ini");
     if(YUVviewerConfigFile->config_dict.frameSizeType == "Other")
     {
         ui->frameSizeType_Other_RadioButton->setChecked(true);
+        ui->frameSizeType_ComboBox->setEnabled(false);
         ui->frameSize_Width_LineEdit->setText(YUVviewerConfigFile->config_dict.frameSize_Width);
         ui->frameSize_Height_LineEdit->setText(YUVviewerConfigFile->config_dict.frameSize_Height);
     }
-    else if (YUVviewerConfigFile->config_dict.frameSizeType == "CIF")
-    {
-        ui->frameSizeType_CIF_RadioButton->setChecked(true);
-        ui->frameSize_Width_LineEdit->setText("352");
-        ui->frameSize_Width_LineEdit->setFocusPolicy(Qt::NoFocus);
-        YUVviewerConfigFile->config_dict.frameSize_Width = "352";
-        ui->frameSize_Height_LineEdit->setText("288");
-        ui->frameSize_Height_LineEdit->setFocusPolicy(Qt::NoFocus);
-        YUVviewerConfigFile->config_dict.frameSize_Height = "288";
-    }
     else
     {
-        ui->frameSizeType_CIF_RadioButton->setChecked(true);
-        ui->frameSize_Width_LineEdit->setText("176");
-        ui->frameSize_Width_LineEdit->setFocusPolicy(Qt::NoFocus);
-        YUVviewerConfigFile->config_dict.frameSize_Width = "176";
-        ui->frameSize_Height_LineEdit->setText("144");
-        ui->frameSize_Height_LineEdit->setFocusPolicy(Qt::NoFocus);
-        YUVviewerConfigFile->config_dict.frameSize_Height = "144";
+        ui->frameSizeType_Combo_RadioButton->setChecked(true);
+        ui->frameSizeType_ComboBox->setEnabled(true);
+        QList<QPair<QString, QStringList>>::const_iterator config_it = frameSizeTypeDict.begin();
+        while (config_it != frameSizeTypeDict.end()) {
+            if(config_it->first == YUVviewerConfigFile->config_dict.frameSizeType)
+            {
+                QStringList value = config_it->second;
+                ui->frameSizeType_ComboBox->setCurrentText(YUVviewerConfigFile->config_dict.frameSizeType);
+                ui->frameSize_Width_LineEdit->setText(value[0]);
+                ui->frameSize_Width_LineEdit->setFocusPolicy(Qt::NoFocus);
+                YUVviewerConfigFile->config_dict.frameSize_Width = value[0];
+                ui->frameSize_Height_LineEdit->setText(value[1]);
+                ui->frameSize_Height_LineEdit->setFocusPolicy(Qt::NoFocus);
+                YUVviewerConfigFile->config_dict.frameSize_Height = value[1];
+                break;
+            }
+            config_it++;
+        }
     }
 
     QStringList YUVFormat_list = {"YV12", "YU12/I420", "NV21", "NV12", "YUY2/YUYV", "YVYU", "UYVY", "4:4:4"};
@@ -85,15 +127,17 @@ YUVviewer::YUVviewer(QWidget *parent) :
     ui->startFrame_LineEdit->setText(YUVviewerConfigFile->config_dict.startFrame);
     ui->endFrame_LineEdit->setText(YUVviewerConfigFile->config_dict.endFrame);
 
-    QObject::connect(ui->frameSizeType_CIF_RadioButton, SIGNAL(clicked()), this, SLOT(configCIF()));
-    QObject::connect(ui->frameSizeType_QCIF_RadioButton, SIGNAL(clicked()), this, SLOT(configQCIF()));
+
+    QObject::connect(ui->frameSizeType_Combo_RadioButton, SIGNAL(clicked()), this, SLOT(configComboBox()));
     QObject::connect(ui->frameSizeType_Other_RadioButton, SIGNAL(clicked()), this, SLOT(configOther()));
+    QObject::connect(ui->frameSizeType_ComboBox, SIGNAL(currentTextChanged(const QString &)), this,SLOT(changeFrameSizeType(const QString &)));
 
     QObject::connect(ui->frameSize_Height_LineEdit, SIGNAL(textEdited(const QString &)), this, SLOT(frameSizeHeightValidator(const QString &)));
     QObject::connect(ui->frameSize_Width_LineEdit, SIGNAL(textEdited(const QString &)), this, SLOT(frameSizeWidthValidator(const QString &)));
     QObject::connect(ui->startFrame_LineEdit, SIGNAL(textEdited(const QString &)), this, SLOT(startFrameValidator(const QString &)));
     QObject::connect(ui->endFrame_LineEdit, SIGNAL(textEdited(const QString &)), this, SLOT(endFrameValidator(const QString &)));
 
+    QObject::connect(ui->exchange_PushButton, SIGNAL(clicked()), this, SLOT(exchaneSize()));
     QObject::connect(ui->openFile_PushButton, SIGNAL(clicked()), this, SLOT(openFile()));
     QObject::connect(ui->openFolder_PushButton, SIGNAL(clicked()), this, SLOT(openFolder()));
     QObject::connect(ui->about_PushButton, SIGNAL(clicked()), this, SLOT(about()));
@@ -110,24 +154,44 @@ YUVviewer::~YUVviewer()
     delete ui;
 }
 
-void YUVviewer::configCIF()
+void YUVviewer::configComboBox()
 {
-    ui->frameSize_Width_LineEdit->setText("352");
-    ui->frameSize_Width_LineEdit->setFocusPolicy(Qt::NoFocus);
-    ui->frameSize_Height_LineEdit->setText("288");
-    ui->frameSize_Height_LineEdit->setFocusPolicy(Qt::NoFocus);
+    ui->frameSizeType_ComboBox->setEnabled(true);
+    QList<QPair<QString, QStringList>>::const_iterator config_it = frameSizeTypeDict.begin();
+    while (config_it != frameSizeTypeDict.end()) {
+        if(config_it->first == ui->frameSizeType_ComboBox->currentText())
+        {
+            QStringList value = config_it->second;
+            ui->frameSize_Width_LineEdit->setText(value[0]);
+            ui->frameSize_Width_LineEdit->setFocusPolicy(Qt::NoFocus);
+            ui->frameSize_Height_LineEdit->setText(value[1]);
+            ui->frameSize_Height_LineEdit->setFocusPolicy(Qt::NoFocus);
+            break;
+        }
+        config_it++;
+    }
 }
 
-void YUVviewer::configQCIF()
+void YUVviewer::changeFrameSizeType(const QString &text)
 {
-    ui->frameSize_Width_LineEdit->setText("176");
-    ui->frameSize_Width_LineEdit->setFocusPolicy(Qt::NoFocus);
-    ui->frameSize_Height_LineEdit->setText("144");
-    ui->frameSize_Height_LineEdit->setFocusPolicy(Qt::NoFocus);
+    QList<QPair<QString, QStringList>>::const_iterator config_it = frameSizeTypeDict.begin();
+    while (config_it != frameSizeTypeDict.end()) {
+        if(config_it->first == text)
+        {
+            QStringList value = config_it->second;
+            ui->frameSize_Width_LineEdit->setText(value[0]);
+            ui->frameSize_Width_LineEdit->setFocusPolicy(Qt::NoFocus);
+            ui->frameSize_Height_LineEdit->setText(value[1]);
+            ui->frameSize_Height_LineEdit->setFocusPolicy(Qt::NoFocus);
+            break;
+        }
+        config_it++;
+    }
 }
 
 void YUVviewer::configOther()
 {
+    ui->frameSizeType_ComboBox->setEnabled(false);
     ui->frameSize_Width_LineEdit->setText(YUVviewerConfigFile->config_dict.frameSize_Width);
     ui->frameSize_Height_LineEdit->setText(YUVviewerConfigFile->config_dict.frameSize_Height);
     ui->frameSize_Width_LineEdit->setFocusPolicy(Qt::StrongFocus);
@@ -246,6 +310,17 @@ void YUVviewer::endFrameValidator(const QString & currentText)
     }
 }
 
+void YUVviewer::exchaneSize() 
+{ 
+    ui->frameSizeType_Other_RadioButton->setChecked(true);
+    ui->frameSizeType_ComboBox->setEnabled(false);
+    QString width = ui->frameSize_Width_LineEdit->text();
+    ui->frameSize_Width_LineEdit->setText(ui->frameSize_Height_LineEdit->text());
+    ui->frameSize_Height_LineEdit->setText(width);
+    frameSizeWidthValidator(ui->frameSize_Width_LineEdit->text());
+    frameSizeHeightValidator(ui->frameSize_Height_LineEdit->text());
+}
+
 void YUVviewer::showParaErrMessageBox(void)
 {
     QMessageBox::critical(this, "Error", "parameter invalid!!", QMessageBox::Ok);
@@ -283,15 +358,9 @@ bool YUVviewer::updateConfig(void)
     {
         if(((temp_Width % 2) == 0) && ((temp_Height % 2) == 0) && (temp_Width > 0) && (temp_Height > 0))
         {
-            if(ui->frameSizeType_CIF_RadioButton->isChecked())
+            if(ui->frameSizeType_Combo_RadioButton->isChecked())
             {
-                YUVviewerConfigFile->config_dict.frameSizeType = ui->frameSizeType_CIF_RadioButton->text();
-
-            }
-            else if(ui->frameSizeType_QCIF_RadioButton->isChecked())
-            {
-                YUVviewerConfigFile->config_dict.frameSizeType = ui->frameSizeType_QCIF_RadioButton->text();
-
+                YUVviewerConfigFile->config_dict.frameSizeType = ui->frameSizeType_ComboBox->currentText();
             }
             else if (ui->frameSizeType_Other_RadioButton->isChecked())
             {
@@ -431,7 +500,7 @@ void YUVviewer::openFolder()
 
 void YUVviewer::about()
 {
-    QMessageBox::about(this, "About", "版本 " + VERSION + " 作者:liwq");
+    QMessageBox::about(this, "About", "版本 " + VERSION + " wenqing.li@aliyun.com");
 }
 
 void YUVviewer::help()

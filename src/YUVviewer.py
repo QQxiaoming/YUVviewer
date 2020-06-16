@@ -13,37 +13,70 @@ from ImgViewer import ImgViewer
 VERSION = 'V0.3.5'
 
 class YUVviewer(QtWidgets.QMainWindow, Ui_YUVviewer):
+    frameSizeTypeDict = {
+        'QQCIF':   ['88', '72'],
+        'QQVGA':   ['160','120'],
+        'QCIF':    ['176','144'],
+        'HQVGA':   ['240','160'],
+        'QVGA':    ['320','240'],
+        'CIF':     ['352','288'],
+        'WQVGA':   ['400','240'],
+        'HVGA':    ['480','320'],
+        'nHD':     ['640','340'],
+        'VGA':     ['640','480'],
+        'WVGA':    ['800','480'],
+        'SVGA':    ['800','600'],
+        'qHD':     ['960','540'],
+        'DVGA':    ['960','640'],
+        'XGA':     ['1024','768'],
+        'HD':      ['1280','720'],
+        'UVGA':    ['1280','960'],
+        'SXGA':    ['1280','1024'],
+        'HD+':     ['1600','900'],
+        'UXGA':    ['1600','1200'],
+        'FHD':     ['1920','1080'],
+        'WUXGA':   ['1920','1200'],
+        'FHD+':    ['2160','1440'],
+        'QXGA':    ['2048','1536'],
+        'QHD':     ['2560','1440'],
+        'WQXGA':   ['2560','1600'],
+        'QSXGA':   ['2560','2048'],
+        'QHD+':    ['3200','1800'],
+        'QUXGA':   ['3200','2400'],
+        '4K UHD':  ['3840','2160'],
+        '8K UHD':  ['7680','4320'],
+    }
     def __init__(self):
         super(YUVviewer, self).__init__()
         self.ui = Ui_YUVviewer()
         self.ui.setupUi(self)
-        self.setWindowTitle('YUVviewer ' + VERSION + ' by liwq')
+        self.setWindowTitle('YUVviewer ' + VERSION)
         screen = QDesktopWidget().screenGeometry()
         size = self.geometry()
         self.move((screen.width() - size.width()) / 2, (screen.height() - size.height()) / 2)
 
-        self.YUVviewerConfigFile = ConfigFile(os.path.join(os.getcwd(),'YUVViewer.ini'));
+        for key,value in self.frameSizeTypeDict.items():
+            self.ui.frameSizeType_ComboBox.insertItem(self.ui.frameSizeType_ComboBox.count(), key)
 
+        self.YUVviewerConfigFile = ConfigFile(os.path.join(os.getcwd(),'YUVViewer.ini'));
         if self.YUVviewerConfigFile.config_dict['frameSizeType'] == 'Other':
             self.ui.frameSizeType_Other_RadioButton.setChecked(True)
+            self.ui.frameSizeType_ComboBox.setEnabled(False)
             self.ui.frameSize_Width_LineEdit.setText(self.YUVviewerConfigFile.config_dict['frameSize_Width'])
             self.ui.frameSize_Height_LineEdit.setText(self.YUVviewerConfigFile.config_dict['frameSize_Height'])
-        elif self.YUVviewerConfigFile.config_dict['frameSizeType'] == 'CIF':
-            self.ui.frameSizeType_CIF_RadioButton.setChecked(True)
-            self.ui.frameSize_Width_LineEdit.setText('352')
-            self.ui.frameSize_Width_LineEdit.setFocusPolicy(QtCore.Qt.NoFocus)
-            self.YUVviewerConfigFile.config_dict['frameSize_Width'] = '352'
-            self.ui.frameSize_Height_LineEdit.setText('288')
-            self.ui.frameSize_Height_LineEdit.setFocusPolicy(QtCore.Qt.NoFocus)
-            self.YUVviewerConfigFile.config_dict['frameSize_Height'] = '288'
-        elif self.YUVviewerConfigFile.config_dict['frameSizeType'] == 'QCIF':
-            self.ui.frameSizeType_QCIF_RadioButton.setChecked(True)
-            self.ui.frameSize_Width_LineEdit.setText('176')
-            self.ui.frameSize_Width_LineEdit.setFocusPolicy(QtCore.Qt.NoFocus)
-            self.YUVviewerConfigFile.config_dict['frameSize_Width'] = '176'
-            self.ui.frameSize_Height_LineEdit.setText('144')
-            self.ui.frameSize_Height_LineEdit.setFocusPolicy(QtCore.Qt.NoFocus)
-            self.YUVviewerConfigFile.config_dict['frameSize_Height'] = '144'
+        else:
+            self.ui.frameSizeType_Combo_RadioButton.setChecked(True)
+            self.ui.frameSizeType_ComboBox.setEnabled(True)
+            for key,value in self.frameSizeTypeDict.items():
+                if key == self.YUVviewerConfigFile.config_dict['frameSizeType']:
+                    self.ui.frameSizeType_ComboBox.setCurrentText(self.YUVviewerConfigFile.config_dict['frameSizeType'])
+                    self.ui.frameSize_Width_LineEdit.setText(value[0])
+                    self.ui.frameSize_Width_LineEdit.setFocusPolicy(QtCore.Qt.NoFocus)
+                    self.YUVviewerConfigFile.config_dict['frameSize_Width'] = value[0]
+                    self.ui.frameSize_Height_LineEdit.setText(value[1])
+                    self.ui.frameSize_Height_LineEdit.setFocusPolicy(QtCore.Qt.NoFocus)
+                    self.YUVviewerConfigFile.config_dict['frameSize_Height'] = value[1]
+                    break
 
         YUVFormat_list = ['YV12', 'YU12/I420', 'NV21', 'NV12', 'YUY2/YUYV', 'YVYU', 'UYVY', '4:4:4']
         currentIndex = YUVFormat_list.index(self.YUVviewerConfigFile.config_dict['YUVFormat'] )
@@ -56,33 +89,42 @@ class YUVviewer(QtWidgets.QMainWindow, Ui_YUVviewer):
         self.ui.startFrame_LineEdit.setText(self.YUVviewerConfigFile.config_dict['startFrame'])
         self.ui.endFrame_LineEdit.setText(self.YUVviewerConfigFile.config_dict['endFrame'])
 
-        self.ui.frameSizeType_CIF_RadioButton.clicked.connect(self.configCIF)
-        self.ui.frameSizeType_QCIF_RadioButton.clicked.connect(self.configQCIF)
+        self.ui.frameSizeType_Combo_RadioButton.clicked.connect(self.configComboBox)
         self.ui.frameSizeType_Other_RadioButton.clicked.connect(self.configOther)
+        self.ui.frameSizeType_ComboBox.currentTextChanged.connect(self.changeFrameSizeType)
 
         self.ui.frameSize_Height_LineEdit.textEdited.connect(self.frameSizeHeightValidator)
         self.ui.frameSize_Width_LineEdit.textEdited.connect(self.frameSizeWidthValidator)
         self.ui.startFrame_LineEdit.textEdited.connect(self.startFrameValidator)
         self.ui.endFrame_LineEdit.textEdited.connect(self.endFrameValidator)
 
+        self.ui.exchange_PushButton.clicked.connect(self.exchaneSize)
         self.ui.openFile_PushButton.clicked.connect(self.openFile)
         self.ui.openFolder_PushButton.clicked.connect(self.openFolder)
         self.ui.about_PushButton.clicked.connect(self.about)
         self.ui.help_PushButton.clicked.connect(self.help)
 
-    def configCIF(self):
-        self.ui.frameSize_Width_LineEdit.setText('352')
-        self.ui.frameSize_Width_LineEdit.setFocusPolicy(QtCore.Qt.NoFocus)
-        self.ui.frameSize_Height_LineEdit.setText('288')
-        self.ui.frameSize_Height_LineEdit.setFocusPolicy(QtCore.Qt.NoFocus)
+    def configComboBox(self):
+        self.ui.frameSizeType_ComboBox.setEnabled(True)
+        for key,value in self.frameSizeTypeDict.items():
+            if key == self.ui.frameSizeType_ComboBox.currentText():
+                self.ui.frameSize_Width_LineEdit.setText(value[0])
+                self.ui.frameSize_Width_LineEdit.setFocusPolicy(QtCore.Qt.NoFocus)
+                self.ui.frameSize_Height_LineEdit.setText(value[1])
+                self.ui.frameSize_Height_LineEdit.setFocusPolicy(QtCore.Qt.NoFocus)
+                break
 
-    def configQCIF(self):
-        self.ui.frameSize_Width_LineEdit.setText('176')
-        self.ui.frameSize_Width_LineEdit.setFocusPolicy(QtCore.Qt.NoFocus)
-        self.ui.frameSize_Height_LineEdit.setText('144')
-        self.ui.frameSize_Height_LineEdit.setFocusPolicy(QtCore.Qt.NoFocus)
+    def changeFrameSizeType(self, text):
+        for key,value in self.frameSizeTypeDict.items():
+            if key == text:
+                self.ui.frameSize_Width_LineEdit.setText(value[0])
+                self.ui.frameSize_Width_LineEdit.setFocusPolicy(QtCore.Qt.NoFocus)
+                self.ui.frameSize_Height_LineEdit.setText(value[1])
+                self.ui.frameSize_Height_LineEdit.setFocusPolicy(QtCore.Qt.NoFocus)
+                break
 
     def configOther(self):
+        self.ui.frameSizeType_ComboBox.setEnabled(False)
         self.ui.frameSize_Width_LineEdit.setText(self.YUVviewerConfigFile.config_dict['frameSize_Width'])
         self.ui.frameSize_Height_LineEdit.setText(self.YUVviewerConfigFile.config_dict['frameSize_Height'])
         self.ui.frameSize_Width_LineEdit.setFocusPolicy(QtCore.Qt.StrongFocus)
@@ -156,6 +198,14 @@ class YUVviewer(QtWidgets.QMainWindow, Ui_YUVviewer):
             QToolTip.showText(self.ui.startFrame_LineEdit.mapToGlobal(QPoint(0, 10)), 'startFrame must be num')
             self.ui.startFrame_LineEdit.setStyleSheet("QLineEdit{border: 1px solid red;border-radius: 3px;}")
 
+    def exchaneSize(self):
+        self.ui.frameSizeType_Other_RadioButton.setChecked(True)
+        self.ui.frameSizeType_ComboBox.setEnabled(False)
+        width = self.ui.frameSize_Width_LineEdit.text()
+        self.ui.frameSize_Width_LineEdit.setText(self.ui.frameSize_Height_LineEdit.text())
+        self.ui.frameSize_Height_LineEdit.setText(width)
+        self.frameSizeWidthValidator(self.ui.frameSize_Width_LineEdit.text())
+        self.frameSizeHeightValidator(self.ui.frameSize_Height_LineEdit.text())
 
     def _updateConfig(self):
         try:
@@ -163,10 +213,8 @@ class YUVviewer(QtWidgets.QMainWindow, Ui_YUVviewer):
                 temp_Width = int(self.ui.frameSize_Width_LineEdit.text())
                 temp_Height = int(self.ui.frameSize_Height_LineEdit.text())
                 if (temp_Width % 2) == 0 and (temp_Height % 2) == 0 and temp_Width > 0 and temp_Height > 0:
-                    if self.ui.frameSizeType_CIF_RadioButton.isChecked():
-                        self.YUVviewerConfigFile.config_dict['frameSizeType'] = self.ui.frameSizeType_CIF_RadioButton.text()
-                    elif self.ui.frameSizeType_QCIF_RadioButton.isChecked():
-                        self.YUVviewerConfigFile.config_dict['frameSizeType'] = self.ui.frameSizeType_QCIF_RadioButton.text()
+                    if self.ui.frameSizeType_Combo_RadioButton.isChecked():
+                        self.YUVviewerConfigFile.config_dict['frameSizeType'] = self.ui.frameSizeType_ComboBox.currentText()
                     elif self.ui.frameSizeType_Other_RadioButton.isChecked():
                         self.YUVviewerConfigFile.config_dict['frameSizeType'] = self.ui.frameSizeType_Other_RadioButton.text()
                     self.YUVviewerConfigFile.config_dict['YUVFormat'] = self.ui.YUVFormat_ComboBox.currentText()
@@ -266,7 +314,7 @@ class YUVviewer(QtWidgets.QMainWindow, Ui_YUVviewer):
                 self._imgView(openfile_list)
 
     def about(self):
-        QMessageBox.about(self, 'About', '版本 ' + VERSION + ' 作者:liwq')
+        QMessageBox.about(self, 'About', '版本 ' + VERSION + ' wenqing.li@aliyun.com')
 
     def help(self):
         QMessageBox.question(self, 'Help', '目前暂无帮助说明', QMessageBox.Ok)

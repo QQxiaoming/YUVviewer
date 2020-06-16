@@ -27,13 +27,14 @@ protected:
     void closeEvent(QCloseEvent *event);
 
 private slots:
-    void configCIF();
-    void configQCIF();
+    void configComboBox();
     void configOther();
+    void changeFrameSizeType(const QString &text);
     void frameSizeHeightValidator(const QString &currentText);
     void frameSizeWidthValidator(const QString &currentText);
     void startFrameValidator(const QString &currentText);
     void endFrameValidator(const QString &currentText);
+    void exchaneSize();
     void openFile();
     void openFolder();
     void about();
@@ -46,6 +47,7 @@ private:
     Ui::YUVviewer *ui;
     ConfigFile *YUVviewerConfigFile;
     ImgViewer *imgViewer;
+    static const QList<QPair<QString, QStringList>> frameSizeTypeDict;
 };
 
 #endif // YUVVIEWER_H
