@@ -66,14 +66,15 @@ YUVviewer::YUVviewer(QWidget *parent) :
     QRect size = this->geometry();
     this->move((screen.width() - size.width()) / 2, (screen.height() - size.height()) / 2);
 
+    ui->frameSizeType_ComboBox->setStyleSheet("combobox-popup: 0;");
+    ui->YUVFormat_ComboBox->setStyleSheet("combobox-popup: 0;");
+    ui->frameRate_ComboBox->setStyleSheet("combobox-popup: 0;");
+
     QList<QPair<QString, QStringList>>::const_iterator config_it = frameSizeTypeDict.begin();
     while (config_it != frameSizeTypeDict.end()) {
         ui->frameSizeType_ComboBox->insertItem(ui->frameSizeType_ComboBox->count(),config_it->first);
         config_it++;
     }
-    ui->frameSizeType_ComboBox->setStyleSheet("combobox-popup: 0;");
-    ui->YUVFormat_ComboBox->setStyleSheet("combobox-popup: 0;");
-    ui->frameRate_ComboBox->setStyleSheet("combobox-popup: 0;");
 
     YUVviewerConfigFile = new ConfigFile(QCoreApplication::applicationDirPath()+"/YUVViewer.ini");
     if(YUVviewerConfigFile->config_dict.frameSizeType == "Other")
@@ -519,9 +520,14 @@ void YUVviewer::closeEvent(QCloseEvent *event)
 
 int main(int argc, char *argv[])
 {
-    QApplication a(argc, argv);
-    YUVviewer w;
-    w.show();
+    QApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
+    QApplication application(argc, argv);
+    QFont font = application.font();
+    font.setFamily(font.defaultFamily());
+    font.setPixelSize(13);
+    application.setFont(font);
+    YUVviewer window;
+    window.show();
 
-    return a.exec();
+    return application.exec();
 }

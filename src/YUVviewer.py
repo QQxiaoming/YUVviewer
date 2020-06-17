@@ -331,7 +331,12 @@ class YUVviewer(QtWidgets.QMainWindow, Ui_YUVviewer):
         self.close()
 
 if __name__ == '__main__':
-    app = QtWidgets.QApplication(sys.argv)
-    show = YUVviewer()
-    show.show()
-    sys.exit(app.exec_())
+    QtWidgets.QApplication.setAttribute(QtCore.Qt.AA_EnableHighDpiScaling);
+    application = QtWidgets.QApplication(sys.argv)
+    font = application.font()
+    font.setFamily(font.defaultFamily())
+    font.setPixelSize(13)
+    application.setFont(font)
+    window = YUVviewer()
+    window.show()
+    sys.exit(application.exec_())
