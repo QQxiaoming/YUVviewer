@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file './src/UI_YUVviewer.ui'
 #
-# Created by: PyQt5 UI code generator 5.6
+# Created by: PyQt5 UI code generator 5.9.2
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -64,6 +64,10 @@ class Ui_YUVviewer(object):
         self.verticalLayout.addWidget(self.label)
         self.YUVFormat_ComboBox = QtWidgets.QComboBox(self.centralwidget)
         self.YUVFormat_ComboBox.setObjectName("YUVFormat_ComboBox")
+        self.YUVFormat_ComboBox.addItem("")
+        self.YUVFormat_ComboBox.addItem("")
+        self.YUVFormat_ComboBox.addItem("")
+        self.YUVFormat_ComboBox.addItem("")
         self.YUVFormat_ComboBox.addItem("")
         self.YUVFormat_ComboBox.addItem("")
         self.YUVFormat_ComboBox.addItem("")
@@ -203,8 +207,12 @@ class Ui_YUVviewer(object):
         self.YUVFormat_ComboBox.setItemText(5, _translate("YUVviewer", "YVYU"))
         self.YUVFormat_ComboBox.setItemText(6, _translate("YUVviewer", "UYVY"))
         self.YUVFormat_ComboBox.setItemText(7, _translate("YUVviewer", "4:4:4"))
-        self.label_3.setText(_translate("YUVviewer", "<html><head/><body><p align=\"center\">Height</p></body></html>"))
-        self.label_2.setText(_translate("YUVviewer", "<html><head/><body><p align=\"center\">Witdth</p></body></html>"))
+        self.YUVFormat_ComboBox.setItemText(8, _translate("YUVviewer", "RGB565_L"))
+        self.YUVFormat_ComboBox.setItemText(9, _translate("YUVviewer", "RGB565_B"))
+        self.YUVFormat_ComboBox.setItemText(10, _translate("YUVviewer", "BGR565_L"))
+        self.YUVFormat_ComboBox.setItemText(11, _translate("YUVviewer", "BGR565_B"))
+        self.label_3.setText(_translate("YUVviewer", "<html><head/><body><p align=\"center\">Witdth</p></body></html>"))
+        self.label_2.setText(_translate("YUVviewer", "<html><head/><body><p align=\"center\">Height</p></body></html>"))
         self.exchange_PushButton.setText(_translate("YUVviewer", "↔"))
         self.groupBox_2.setTitle(_translate("YUVviewer", "Play Parameters"))
         self.label_4.setText(_translate("YUVviewer", "Frame Rate"))
@@ -217,4 +225,3 @@ class Ui_YUVviewer(object):
         self.openFolder_PushButton.setText(_translate("YUVviewer", "Open folder"))
         self.about_PushButton.setText(_translate("YUVviewer", "About"))
         self.help_PushButton.setText(_translate("YUVviewer", "Help"))
-
