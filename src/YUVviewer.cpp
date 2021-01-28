@@ -11,6 +11,7 @@
 #include <QToolTip>
 #include <QCloseEvent>
 #include <QPoint>
+#include <QScreen>
 #include <QDebug>
 #include <QString>
 #include "YUVviewer.h"
@@ -62,7 +63,7 @@ YUVviewer::YUVviewer(QWidget *parent) :
     ui->setupUi(this);
 
     this->setWindowTitle("YUVviewer " + VERSION);
-    QRect screen = QApplication::desktop()->screenGeometry();
+    QRect screen = QGuiApplication::primaryScreen()->geometry();
     QRect size = this->geometry();
     this->move((screen.width() - size.width()) / 2, (screen.height() - size.height()) / 2);
 
@@ -106,7 +107,7 @@ YUVviewer::YUVviewer(QWidget *parent) :
         }
     }
 
-    QStringList YUVFormat_list = {"YV12", "YU12/I420", "NV21", "NV12", "YUY2/YUYV", "YVYU", "UYVY", "4:4:4","RGB565_L","RGB565_B","BGR565_L","BGR565_B"};
+    QStringList YUVFormat_list = {"YV12", "YU12/I420", "NV21", "NV12", "YUY2/YUYV", "YVYU", "UYVY", "4:4:4","RGB565_L","RGB565_B","BGR565_L","BGR565_B","RGB888"};
     currentIndex = 0;
     foreach(QString s ,YUVFormat_list)
     {
@@ -443,7 +444,7 @@ bool YUVviewer::imgView(QStringList openfile_list)
     {
         imgViewer->resize(fframeSize_Width/fframeSize_Height*400.0, 400);
     }
-    QRect screen = QApplication::desktop()->screenGeometry();
+    QRect screen = QGuiApplication::primaryScreen()->geometry();
     QRect size = imgViewer->geometry();
     imgViewer->move((screen.width() - size.width()) / 2, (screen.height() - size.height()) / 2);
     this->hide();
@@ -504,12 +505,12 @@ void YUVviewer::openFolder()
 
 void YUVviewer::about()
 {
-    QMessageBox::about(this, "About", "版本 " + VERSION + " wenqing.li@aliyun.com");
+    QMessageBox::about(this, "About", "版本 \n " + VERSION + "\n作者\n wenqing.li@aliyun.com \n qiaoqm@aliyun.com");
 }
 
 void YUVviewer::help()
 {
-    QMessageBox::question(this, "Help", "目前暂无帮助说明", QMessageBox::Ok);
+    QMessageBox::question(this, "Help", "1.主界面选择数据参数。\n2.点击打开文件或文件夹将进行图像数据解析并显示图像。\n3.图像显示界面中使用滚轮放大缩小图像，使用左键可拖动图像，双击左键保存图像为png格式，单击右键复位图像大小和位置，双击右键交换图像R和B通道显示。", QMessageBox::Ok);
 }
 
 void YUVviewer::closeEvent(QCloseEvent *event)

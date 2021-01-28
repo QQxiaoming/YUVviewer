@@ -16,16 +16,16 @@ class YUV2RGB(object):
         'RGB565_B'  : lambda yuvfilename, W, H, startframe, totalframe: YUV2RGB.rgb565_big_endian(yuvfilename, W, H, startframe, totalframe),
         'BGR565_L'  : lambda yuvfilename, W, H, startframe, totalframe: YUV2RGB.bgr565_little_endian(yuvfilename, W, H, startframe, totalframe),
         'BGR565_B'  : lambda yuvfilename, W, H, startframe, totalframe: YUV2RGB.bgr565_big_endian(yuvfilename, W, H, startframe, totalframe),
+        'RGB888'    : lambda yuvfilename, W, H, startframe, totalframe: YUV2RGB.rgb888(yuvfilename, W, H, startframe, totalframe),
     }
 
     @classmethod
     def yv12(cls,yuvfilename, W, H, startframe, totalframe):
-        # 从第startframe（含）开始读（0-based），共读totalframe帧
         arr = np.zeros((totalframe, H, W, 3), np.uint8)
 
         with open(yuvfilename, 'rb') as fp:
             seekPixels = startframe * H * W * 3 // 2
-            fp.seek(seekPixels)  # 跳过前startframe帧
+            fp.seek(seekPixels)
             for i in range(totalframe):
                 oneframe_YV12 = np.zeros((H * 3 // 2, W), np.uint8)
                 for j in range(H * 3 // 2):
@@ -37,12 +37,11 @@ class YUV2RGB(object):
 
     @classmethod
     def i420(cls,yuvfilename, W, H, startframe, totalframe):
-        # 从第startframe（含）开始读（0-based），共读totalframe帧
         arr = np.zeros((totalframe, H, W, 3), np.uint8)
 
         with open(yuvfilename, 'rb') as fp:
             seekPixels = startframe * H * W * 3 // 2
-            fp.seek(seekPixels)  # 跳过前startframe帧
+            fp.seek(seekPixels)
             for i in range(totalframe):
                 oneframe_I420 = np.zeros((H * 3 // 2, W), np.uint8)
                 for j in range(H * 3 // 2):
@@ -54,12 +53,11 @@ class YUV2RGB(object):
 
     @classmethod
     def nv21(cls,yuvfilename, W, H, startframe, totalframe):
-        # 从第startframe（含）开始读（0-based），共读totalframe帧
         arr = np.zeros((totalframe, H, W, 3), np.uint8)
 
         with open(yuvfilename, 'rb') as fp:
             seekPixels = startframe * H * W * 3 // 2
-            fp.seek(seekPixels)  # 跳过前startframe帧
+            fp.seek(seekPixels)
             for i in range(totalframe):
                 oneframe_NV21 = np.zeros((H * 3 // 2, W), np.uint8)
                 for j in range(H * 3 // 2):
@@ -71,12 +69,11 @@ class YUV2RGB(object):
 
     @classmethod
     def nv12(cls,yuvfilename, W, H, startframe, totalframe):
-        # 从第startframe（含）开始读（0-based），共读totalframe帧
         arr = np.zeros((totalframe, H, W, 3), np.uint8)
 
         with open(yuvfilename, 'rb') as fp:
             seekPixels = startframe * H * W * 3 // 2
-            fp.seek(seekPixels)  # 跳过前startframe帧
+            fp.seek(seekPixels)
             for i in range(totalframe):
                 oneframe_NV12 = np.zeros((H * 3 // 2, W), np.uint8)
                 for j in range(H * 3 // 2):
@@ -88,12 +85,11 @@ class YUV2RGB(object):
     
     @classmethod
     def yuy2(cls,yuvfilename, W, H, startframe, totalframe):
-        # 从第startframe（含）开始读（0-based），共读totalframe帧
         arr = np.zeros((totalframe, H, W, 3), np.uint8)
 
         with open(yuvfilename, 'rb') as fp:
             seekPixels = startframe * H * W * 2
-            fp.seek(seekPixels)  # 跳过前startframe帧
+            fp.seek(seekPixels)
             for i in range(totalframe):
                 oneframe_YUV2 = np.zeros((H, W, 2), np.uint8)
                 for j in range(H):
@@ -106,12 +102,11 @@ class YUV2RGB(object):
     
     @classmethod
     def yvyu(cls,yuvfilename, W, H, startframe, totalframe):
-        # 从第startframe（含）开始读（0-based），共读totalframe帧
         arr = np.zeros((totalframe, H, W, 3), np.uint8)
 
         with open(yuvfilename, 'rb') as fp:
             seekPixels = startframe * H * W * 2
-            fp.seek(seekPixels)  # 跳过前startframe帧
+            fp.seek(seekPixels)
             for i in range(totalframe):
                 oneframe_YVYU = np.zeros((H, W, 2), np.uint8)
                 for j in range(H):
@@ -124,12 +119,11 @@ class YUV2RGB(object):
     
     @classmethod
     def uyvy(cls,yuvfilename, W, H, startframe, totalframe):
-        # 从第startframe（含）开始读（0-based），共读totalframe帧
         arr = np.zeros((totalframe, H, W, 3), np.uint8)
 
         with open(yuvfilename, 'rb') as fp:
             seekPixels = startframe * H * W * 2
-            fp.seek(seekPixels)  # 跳过前startframe帧
+            fp.seek(seekPixels)
             for i in range(totalframe):
                 oneframe_UYVY = np.zeros((H, W, 2), np.uint8)
                 for j in range(H):
@@ -142,12 +136,11 @@ class YUV2RGB(object):
 
     @classmethod
     def yuv444(cls,yuvfilename, W, H, startframe, totalframe):
-        # 从第startframe（含）开始读（0-based），共读totalframe帧
         arr = np.zeros((totalframe, H, W, 3), np.uint8)
 
         with open(yuvfilename, 'rb') as fp:
             seekPixels = startframe * H * W * 3
-            fp.seek(seekPixels)  # 跳过前startframe帧
+            fp.seek(seekPixels)
             for i in range(totalframe):
                 oneframe_YUV444 = np.zeros((H, W, 3), np.uint8)
                 for j in range(H):
@@ -160,12 +153,11 @@ class YUV2RGB(object):
 
     @classmethod
     def rgb565_little_endian(cls,yuvfilename, W, H, startframe, totalframe):
-        # 从第startframe（含）开始读（0-based），共读totalframe帧
         arr = np.zeros((totalframe, H, W, 3), np.uint8)
 
         with open(yuvfilename, 'rb') as fp:
             seekPixels = startframe * H * W * 2
-            fp.seek(seekPixels)  # 跳过前startframe帧
+            fp.seek(seekPixels)
             for i in range(totalframe):
                 oneframe_RGB565 = np.zeros((H, W, 2), np.uint8)
                 for j in range(H):
@@ -179,12 +171,11 @@ class YUV2RGB(object):
 
     @classmethod
     def rgb565_big_endian(cls,yuvfilename, W, H, startframe, totalframe):
-        # 从第startframe（含）开始读（0-based），共读totalframe帧
         arr = np.zeros((totalframe, H, W, 3), np.uint8)
 
         with open(yuvfilename, 'rb') as fp:
             seekPixels = startframe * H * W * 2
-            fp.seek(seekPixels)  # 跳过前startframe帧
+            fp.seek(seekPixels)
             for i in range(totalframe):
                 oneframe_RGB565 = np.zeros((H, W, 2), np.uint8)
                 for j in range(H):
@@ -198,12 +189,11 @@ class YUV2RGB(object):
 
     @classmethod
     def bgr565_little_endian(cls,yuvfilename, W, H, startframe, totalframe):
-        # 从第startframe（含）开始读（0-based），共读totalframe帧
         arr = np.zeros((totalframe, H, W, 3), np.uint8)
 
         with open(yuvfilename, 'rb') as fp:
             seekPixels = startframe * H * W * 2
-            fp.seek(seekPixels)  # 跳过前startframe帧
+            fp.seek(seekPixels)
             for i in range(totalframe):
                 oneframe_BGR565 = np.zeros((H, W, 2), np.uint8)
                 for j in range(H):
@@ -216,12 +206,11 @@ class YUV2RGB(object):
 
     @classmethod
     def bgr565_big_endian(cls,yuvfilename, W, H, startframe, totalframe):
-        # 从第startframe（含）开始读（0-based），共读totalframe帧
         arr = np.zeros((totalframe, H, W, 3), np.uint8)
 
         with open(yuvfilename, 'rb') as fp:
             seekPixels = startframe * H * W * 2
-            fp.seek(seekPixels)  # 跳过前startframe帧
+            fp.seek(seekPixels)
             for i in range(totalframe):
                 oneframe_BGR565 = np.zeros((H, W, 2), np.uint8)
                 for j in range(H):
@@ -229,5 +218,22 @@ class YUV2RGB(object):
                         oneframe_BGR565[j, k, 1] = int.from_bytes(fp.read(1), byteorder='little', signed=False)
                         oneframe_BGR565[j, k, 0] = int.from_bytes(fp.read(1), byteorder='little', signed=False)
                 oneframe_RGB = cv2.cvtColor(oneframe_BGR565, cv2.COLOR_BGR5652RGB)
+                arr[i] = oneframe_RGB
+        return arr
+
+    @classmethod
+    def rgb888(cls,yuvfilename, W, H, startframe, totalframe):
+        arr = np.zeros((totalframe, H, W, 3), np.uint8)
+
+        with open(yuvfilename, 'rb') as fp:
+            seekPixels = startframe * H * W * 3
+            fp.seek(seekPixels)
+            for i in range(totalframe):
+                oneframe_RGB888 = np.zeros((H, W, 3), np.uint8)
+                for j in range(H):
+                    for k in range(W):
+                        for l in range(3):
+                            oneframe_RGB888[j, k, l] = int.from_bytes(fp.read(1), byteorder='little', signed=False)
+                oneframe_RGB = cv2.cvtColor(oneframe_RGB888, cv2.COLOR_BGR2RGB)
                 arr[i] = oneframe_RGB
         return arr

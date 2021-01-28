@@ -220,6 +220,7 @@ void ImgViewer::paintEvent(QPaintEvent *event)
         draw_img(&painter);
         painter.end();
     }
+    (void)event;
 }
 
 void ImgViewer::mouseMoveEvent(QMouseEvent *event)
@@ -234,6 +235,7 @@ void ImgViewer::mouseMoveEvent(QMouseEvent *event)
             this->repaint();
         }
     }
+    (void)event;
 }
 
 void ImgViewer::mousePressEvent(QMouseEvent *event)
@@ -355,6 +357,7 @@ void ImgViewer::resizeEvent(QResizeEvent *event)
         this->point = QPoint(0, 0);
         this->update();
     }
+    (void)event;
 }
 
 void ImgViewer::previousImg()

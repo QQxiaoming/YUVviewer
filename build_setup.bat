@@ -37,6 +37,7 @@ copy /y .\InnoSetup\build_setup.iss .\InnoSetup\build_temp_setup.iss
 del /f /q /a .\sed*
 :: 构建打包目录
 xcopy /y .\build_release\out\YUVviewer.exe .\InnoSetup\build\
+xcopy /y .\test\* .\InnoSetup\build\test\
 :: 使用windeployqt拷贝依赖dll库到打包目录
 windeployqt --dir .\InnoSetup\build .\InnoSetup\build\YUVviewer.exe
 xcopy /y "%OPENCV_DIR%\libopencv_imgproc420.dll" ".\InnoSetup\build\"

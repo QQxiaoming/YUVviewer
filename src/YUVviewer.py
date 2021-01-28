@@ -4,13 +4,14 @@
 import sys
 import os
 from PyQt5 import QtCore, QtWidgets
-from PyQt5.QtWidgets import QFileDialog, QMessageBox, QDesktopWidget, QToolTip
+from PyQt5.QtWidgets import QFileDialog, QMessageBox, QToolTip
 from PyQt5.QtCore import QPoint
+from PyQt5.QtGui import QGuiApplication
 from UI_YUVviewer import Ui_YUVviewer
 from configFile import ConfigFile
 from ImgViewer import ImgViewer
 
-VERSION = 'V0.3.5'
+VERSION = 'V0.3.6'
 
 class YUVviewer(QtWidgets.QMainWindow, Ui_YUVviewer):
     frameSizeTypeDict = {
@@ -51,7 +52,7 @@ class YUVviewer(QtWidgets.QMainWindow, Ui_YUVviewer):
         self.ui = Ui_YUVviewer()
         self.ui.setupUi(self)
         self.setWindowTitle('YUVviewer ' + VERSION)
-        screen = QDesktopWidget().screenGeometry()
+        screen = QGuiApplication.primaryScreen().geometry()
         size = self.geometry()
         self.move((screen.width() - size.width()) / 2, (screen.height() - size.height()) / 2)
 
@@ -82,7 +83,7 @@ class YUVviewer(QtWidgets.QMainWindow, Ui_YUVviewer):
                     self.YUVviewerConfigFile.config_dict['frameSize_Height'] = value[1]
                     break
 
-        YUVFormat_list = ['YV12', 'YU12/I420', 'NV21', 'NV12', 'YUY2/YUYV', 'YVYU', 'UYVY', '4:4:4','RGB565_L','RGB565_B','BGR565_L','BGR565_B']
+        YUVFormat_list = ['YV12', 'YU12/I420', 'NV21', 'NV12', 'YUY2/YUYV', 'YVYU', 'UYVY', '4:4:4','RGB565_L','RGB565_B','BGR565_L','BGR565_B','RGB888']
         currentIndex = YUVFormat_list.index(self.YUVviewerConfigFile.config_dict['YUVFormat'] )
         self.ui.YUVFormat_ComboBox.setCurrentIndex(currentIndex)
 
@@ -278,7 +279,7 @@ class YUVviewer(QtWidgets.QMainWindow, Ui_YUVviewer):
                 self.imgViewer.resize(800, frameSize_Height/frameSize_Width*800)
             else:
                 self.imgViewer.resize(frameSize_Width/frameSize_Height*400, 400)
-            screen = QDesktopWidget().screenGeometry()
+            screen = QGuiApplication.primaryScreen().geometry()
             size = self.imgViewer.geometry()
             self.imgViewer.move((screen.width() - size.width()) / 2, (screen.height() - size.height()) / 2)
             self.hide()
@@ -320,10 +321,10 @@ class YUVviewer(QtWidgets.QMainWindow, Ui_YUVviewer):
                 self._imgView(openfile_list)
 
     def about(self):
-        QMessageBox.about(self, 'About', '版本 ' + VERSION + ' wenqing.li@aliyun.com')
+        QMessageBox.about(self, 'About', '版本 \n ' + VERSION + '\n作者\n wenqing.li@aliyun.com \n qiaoqm@aliyun.com')
 
     def help(self):
-        QMessageBox.question(self, 'Help', '目前暂无帮助说明', QMessageBox.Ok)
+        QMessageBox.question(self, 'Help', '1.主界面选择数据参数。\n2.点击打开文件或文件夹将进行图像数据解析并显示图像。\n3.图像显示界面中使用滚轮放大缩小图像，使用左键可拖动图像，双击左键保存图像为png格式，单击右键复位图像大小和位置，双击右键交换图像R和B通道显示。', QMessageBox.Ok)
 
     def closeEvent(self, event):
         del self.YUVviewerConfigFile

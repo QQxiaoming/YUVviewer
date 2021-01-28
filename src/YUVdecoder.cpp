@@ -30,6 +30,7 @@ QMap<QString, yuvdecoder_t> YUV2RGB::yuvdecoder_map =
     {"RGB565_B",  YUV2RGB::rgb565_big_endian},
     {"BGR565_L",  YUV2RGB::bgr565_little_endian},
     {"BGR565_B",  YUV2RGB::bgr565_big_endian},
+    {"RGB888",    YUV2RGB::rgb888},
 };
 
 QList<cv::Mat*> YUV2RGB::yv12(QString yuvfilename,int W, int H, int startframe, int totalframe)
@@ -337,6 +338,31 @@ QList<cv::Mat*> YUV2RGB::bgr565_big_endian(QString yuvfilename,int W, int H, int
             raw_buff[i] = qFromBigEndian(raw_buff[i]);
         }
         cvtColor(yuvImg, *rgbImg, cv::COLOR_BGR5652RGB);
+        totalframe--;
+        rgbImglist.insert(rgbImglist.end(), rgbImg);
+    }
+
+    file.close();
+
+    return rgbImglist;
+}
+
+QList<cv::Mat*> YUV2RGB::rgb888(QString yuvfilename,int W, int H, int startframe, int totalframe)
+{
+    QList<cv::Mat*> rgbImglist;
+    cv::Mat yuvImg;
+    QFile file(yuvfilename);
+    QFileInfo fileInfo(yuvfilename);
+    file.open(QFile::ReadOnly);
+    file.seek(startframe*W*H*3);
+    QDataStream out(&file);
+
+    while((!out.atEnd()) && (totalframe != 0))
+    {
+        cv::Mat *rgbImg = new cv::Mat;
+        yuvImg.create(H, W, CV_8UC3);
+        out.readRawData((char *)yuvImg.data,W*H*3);
+        cvtColor(yuvImg, *rgbImg, cv::COLOR_BGR2RGB);
         totalframe--;
         rgbImglist.insert(rgbImglist.end(), rgbImg);
     }

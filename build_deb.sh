@@ -31,6 +31,7 @@ rm -f ./dpkg/YUVviewer_Linux_"$YVYVIEWER_VERSION"_x86_64.deb
 # 构建打包目录
 cp -r ./dpkg/YUVviewer ./dpkg/YUVviewer_Linux_"$YVYVIEWER_VERSION"_x86_64
 mkdir -p ./dpkg/YUVviewer_Linux_"$YVYVIEWER_VERSION"_x86_64/opt/YUVviewer
+cp -r ./test ./dpkg/YUVviewer_Linux_"$YVYVIEWER_VERSION"_x86_64/opt/YUVviewer/test
 cp ./build_release/out/YUVviewer ./dpkg/YUVviewer_Linux_"$YVYVIEWER_VERSION"_x86_64/opt/YUVviewer/YUVviewer
 # 使用linuxdeployqt拷贝依赖so库到打包目录
 ./tools/linuxdeployqt ./dpkg/YUVviewer_Linux_"$YVYVIEWER_VERSION"_x86_64/opt/YUVviewer/YUVviewer -appimage

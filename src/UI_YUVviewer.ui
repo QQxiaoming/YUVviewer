@@ -153,6 +153,11 @@
               <string>BGR565_B</string>
              </property>
             </item>
+            <item>
+             <property name="text">
+              <string>RGB888</string>
+             </property>
+            </item>
            </widget>
           </item>
           <item>
