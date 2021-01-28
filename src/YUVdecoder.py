@@ -12,6 +12,10 @@ class YUV2RGB(object):
         'YVYU'      : lambda yuvfilename, W, H, startframe, totalframe: YUV2RGB.yvyu(yuvfilename, W, H, startframe, totalframe),
         'UYVY'      : lambda yuvfilename, W, H, startframe, totalframe: YUV2RGB.uyvy(yuvfilename, W, H, startframe, totalframe),
         '4:4:4'     : lambda yuvfilename, W, H, startframe, totalframe: YUV2RGB.yuv444(yuvfilename, W, H, startframe, totalframe),
+        'RGB565_L'  : lambda yuvfilename, W, H, startframe, totalframe: YUV2RGB.rgb565_little_endian(yuvfilename, W, H, startframe, totalframe),
+        'RGB565_B'  : lambda yuvfilename, W, H, startframe, totalframe: YUV2RGB.rgb565_big_endian(yuvfilename, W, H, startframe, totalframe),
+        'BGR565_L'  : lambda yuvfilename, W, H, startframe, totalframe: YUV2RGB.bgr565_little_endian(yuvfilename, W, H, startframe, totalframe),
+        'BGR565_B'  : lambda yuvfilename, W, H, startframe, totalframe: YUV2RGB.bgr565_big_endian(yuvfilename, W, H, startframe, totalframe),
     }
 
     @classmethod
@@ -151,5 +155,79 @@ class YUV2RGB(object):
                         for l in range(3):
                             oneframe_I420[j, k, l] = int.from_bytes(fp.read(1), byteorder='little', signed=False)
                 oneframe_RGB = cv2.cvtColor(oneframe_I420, cv2.COLOR_YUV2RGB)
+                arr[i] = oneframe_RGB
+        return arr
+
+    @classmethod
+    def rgb565_little_endian(cls,yuvfilename, W, H, startframe, totalframe):
+        # 从第startframe（含）开始读（0-based），共读totalframe帧
+        arr = np.zeros((totalframe, H, W, 3), np.uint8)
+
+        with open(yuvfilename, 'rb') as fp:
+            seekPixels = startframe * H * W * 2
+            fp.seek(8 * seekPixels)  # 跳过前startframe帧
+            for i in range(totalframe):
+                oneframe_I420 = np.zeros((H, W, 2), np.uint8)
+                for j in range(H):
+                    for k in range(W):
+                        for l in range(2):
+                            oneframe_I420[j, k, l] = int.from_bytes(fp.read(1), byteorder='little', signed=False)
+                oneframe_BGR = cv2.cvtColor(oneframe_I420, cv2.COLOR_BGR5652RGB)
+                oneframe_RGB = cv2.cvtColor(oneframe_BGR, cv2.COLOR_BGR2RGB)
+                arr[i] = oneframe_RGB
+        return arr
+
+    @classmethod
+    def rgb565_big_endian(cls,yuvfilename, W, H, startframe, totalframe):
+        # 从第startframe（含）开始读（0-based），共读totalframe帧
+        arr = np.zeros((totalframe, H, W, 3), np.uint8)
+
+        with open(yuvfilename, 'rb') as fp:
+            seekPixels = startframe * H * W * 2
+            fp.seek(8 * seekPixels)  # 跳过前startframe帧
+            for i in range(totalframe):
+                oneframe_I420 = np.zeros((H, W, 2), np.uint8)
+                for j in range(H):
+                    for k in range(W):
+                        oneframe_I420[j, k, 1] = int.from_bytes(fp.read(1), byteorder='little', signed=False)
+                        oneframe_I420[j, k, 0] = int.from_bytes(fp.read(1), byteorder='little', signed=False)
+                oneframe_BGR = cv2.cvtColor(oneframe_I420, cv2.COLOR_BGR5652RGB)
+                oneframe_RGB = cv2.cvtColor(oneframe_BGR, cv2.COLOR_BGR2RGB)
+                arr[i] = oneframe_RGB
+        return arr
+
+    @classmethod
+    def bgr565_little_endian(cls,yuvfilename, W, H, startframe, totalframe):
+        # 从第startframe（含）开始读（0-based），共读totalframe帧
+        arr = np.zeros((totalframe, H, W, 3), np.uint8)
+
+        with open(yuvfilename, 'rb') as fp:
+            seekPixels = startframe * H * W * 2
+            fp.seek(8 * seekPixels)  # 跳过前startframe帧
+            for i in range(totalframe):
+                oneframe_I420 = np.zeros((H, W, 2), np.uint8)
+                for j in range(H):
+                    for k in range(W):
+                        for l in range(2):
+                            oneframe_I420[j, k, l] = int.from_bytes(fp.read(1), byteorder='little', signed=False)
+                oneframe_RGB = cv2.cvtColor(oneframe_I420, cv2.COLOR_BGR5652RGB)
+                arr[i] = oneframe_RGB
+        return arr
+
+    @classmethod
+    def bgr565_big_endian(cls,yuvfilename, W, H, startframe, totalframe):
+        # 从第startframe（含）开始读（0-based），共读totalframe帧
+        arr = np.zeros((totalframe, H, W, 3), np.uint8)
+
+        with open(yuvfilename, 'rb') as fp:
+            seekPixels = startframe * H * W * 2
+            fp.seek(8 * seekPixels)  # 跳过前startframe帧
+            for i in range(totalframe):
+                oneframe_I420 = np.zeros((H, W, 2), np.uint8)
+                for j in range(H):
+                    for k in range(W):
+                        oneframe_I420[j, k, 1] = int.from_bytes(fp.read(1), byteorder='little', signed=False)
+                        oneframe_I420[j, k, 0] = int.from_bytes(fp.read(1), byteorder='little', signed=False)
+                oneframe_RGB = cv2.cvtColor(oneframe_I420, cv2.COLOR_BGR5652RGB)
                 arr[i] = oneframe_RGB
         return arr

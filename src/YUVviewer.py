@@ -82,7 +82,7 @@ class YUVviewer(QtWidgets.QMainWindow, Ui_YUVviewer):
                     self.YUVviewerConfigFile.config_dict['frameSize_Height'] = value[1]
                     break
 
-        YUVFormat_list = ['YV12', 'YU12/I420', 'NV21', 'NV12', 'YUY2/YUYV', 'YVYU', 'UYVY', '4:4:4']
+        YUVFormat_list = ['YV12', 'YU12/I420', 'NV21', 'NV12', 'YUY2/YUYV', 'YVYU', 'UYVY', '4:4:4','RGB565_L','RGB565_B','BGR565_L','BGR565_B']
         currentIndex = YUVFormat_list.index(self.YUVviewerConfigFile.config_dict['YUVFormat'] )
         self.ui.YUVFormat_ComboBox.setCurrentIndex(currentIndex)
 
@@ -291,7 +291,7 @@ class YUVviewer(QtWidgets.QMainWindow, Ui_YUVviewer):
             if self.YUVviewerConfigFile.config_dict['lastPath']:
                 if os.path.isdir(self.YUVviewerConfigFile.config_dict['lastPath']):
                     openDir = self.YUVviewerConfigFile.config_dict['lastPath']
-            openfile_name = QFileDialog.getOpenFileNames(self, '选择文件', openDir, 'YUV files(*.yuv)')
+            openfile_name = QFileDialog.getOpenFileNames(self, '选择文件', openDir, 'YUV files(*.yuv *.data)')
             openfile_list = openfile_name[0]
             if openfile_list:
                 if os.path.exists(openfile_name[0][0]):
@@ -314,6 +314,8 @@ class YUVviewer(QtWidgets.QMainWindow, Ui_YUVviewer):
                     if os.path.isfile(filepath):
                         file_ext = filepath.rsplit('.', maxsplit=1)
                         if file_ext[1] == 'yuv':
+                            openfile_list.append(filepath)
+                        elif file_ext[1] == 'data':
                             openfile_list.append(filepath)
                 self._imgView(openfile_list)
 

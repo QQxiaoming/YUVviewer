@@ -25,6 +25,10 @@ public:
     static QList<cv::Mat*> yvyu(QString yuvfilename,int W, int H, int startframe, int totalframe);
     static QList<cv::Mat*> uyvy(QString yuvfilename,int W, int H, int startframe, int totalframe);
     static QList<cv::Mat*> yuv444(QString yuvfilename,int W, int H, int startframe, int totalframe);
+    static QList<cv::Mat*> rgb565_little_endian(QString yuvfilename,int W, int H, int startframe, int totalframe);
+    static QList<cv::Mat*> rgb565_big_endian(QString yuvfilename,int W, int H, int startframe, int totalframe);
+    static QList<cv::Mat*> bgr565_little_endian(QString yuvfilename,int W, int H, int startframe, int totalframe);
+    static QList<cv::Mat*> bgr565_big_endian(QString yuvfilename,int W, int H, int startframe, int totalframe);
     static QMap<QString, yuvdecoder_t> yuvdecoder_map;
 };
 

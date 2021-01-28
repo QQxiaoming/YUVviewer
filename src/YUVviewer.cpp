@@ -106,7 +106,7 @@ YUVviewer::YUVviewer(QWidget *parent) :
         }
     }
 
-    QStringList YUVFormat_list = {"YV12", "YU12/I420", "NV21", "NV12", "YUY2/YUYV", "YVYU", "UYVY", "4:4:4"};
+    QStringList YUVFormat_list = {"YV12", "YU12/I420", "NV21", "NV12", "YUY2/YUYV", "YVYU", "UYVY", "4:4:4","RGB565_L","RGB565_B","BGR565_L","BGR565_B"};
     currentIndex = 0;
     foreach(QString s ,YUVFormat_list)
     {
@@ -462,7 +462,7 @@ void YUVviewer::openFile()
         {
             openDir = YUVviewerConfigFile->config_dict.lastPath;
         }
-        QStringList openfile_list = QFileDialog::getOpenFileNames(this, "选择文件", openDir, "YUV files(*.yuv)");
+        QStringList openfile_list = QFileDialog::getOpenFileNames(this, "选择文件", openDir, "YUV files(*.yuv *.data)");
         if(openfile_list.size() != 0)
         {
             QFileInfo file(openfile_list[0]);
@@ -487,7 +487,7 @@ void YUVviewer::openFolder()
         {
             YUVviewerConfigFile->config_dict.lastPath = openfolder_name;
             QDir dir(openfolder_name);
-            QStringList nameFilters = {"*.yuv"};
+            QStringList nameFilters = {"*.yuv","*.data"};
             QStringList openfilename_list = dir.entryList(nameFilters, QDir::Files|QDir::Readable, QDir::Name);
             QStringList openfile_list;
             foreach (QString file_name, openfilename_list)

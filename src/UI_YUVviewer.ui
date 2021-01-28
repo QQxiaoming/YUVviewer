@@ -133,6 +133,26 @@
               <string>4:4:4</string>
              </property>
             </item>
+            <item>
+             <property name="text">
+              <string>RGB565_L</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>RGB565_B</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>BGR565_L</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>BGR565_B</string>
+             </property>
+            </item>
            </widget>
           </item>
           <item>
