@@ -44,6 +44,7 @@ private:
     int startframe;
     int totalframe;
     yuvdecoder_t decoder;
+    static void image_cleanup(cv::Mat* ptr);
 };
 
 class ImgViewer : public QWidget
@@ -90,6 +91,7 @@ private:
     QPoint startPos;
     QPoint endPos;
     bool flipRGB = false;
+    static void image_cleanup(cv::Mat* ptr);
 };
 
 #endif // IMGVIEWER_H

@@ -55,12 +55,17 @@ void YUVDecodeThread::run()
         foreach( cv::Mat* img,frame_RGB_list)
         {
             // 提取图像的通道和尺寸，用于将OpenCV下的image转换成Qimage
-            QImage *qImg = new QImage((const unsigned char*)(img->data), img->cols, img->rows, img->step, QImage::Format_RGB888);
+            QImage *qImg = new QImage((const unsigned char*)(img->data), img->cols, img->rows, img->step, QImage::Format_RGB888,(QImageCleanupFunction)this->image_cleanup,img);
             *qImg = qImg->rgbSwapped();
             img_RGB_list.insert(img_RGB_list.end(), qImg);
         }
         emit finsh_signal(img_RGB_list,this->yuvfilename);
     }
+}
+
+void YUVDecodeThread::image_cleanup(cv::Mat* ptr)
+{
+    delete ptr;
 }
 
 ImgViewer::ImgViewer(QWidget *parent,QWidget *parentWindow) :
@@ -117,7 +122,7 @@ bool ImgViewer::setFileList(QStringList filenamelist,QString YUVFormat, int W, i
             foreach (cv::Mat* img, frame_RGB_list)
             {
                 // 提取图像的通道和尺寸，用于将OpenCV下的image转换成Qimage
-                QImage *qImg = new QImage((const unsigned char*)(img->data), img->cols, img->rows, img->step, QImage::Format_RGB888);
+                QImage *qImg = new QImage((const unsigned char*)(img->data), img->cols, img->rows, img->step, QImage::Format_RGB888, (QImageCleanupFunction)this->image_cleanup,img);
                 *qImg = qImg->rgbSwapped();
                 img_RGB_list.insert(img_RGB_list.end(), qImg);
             }
@@ -138,6 +143,11 @@ bool ImgViewer::setFileList(QStringList filenamelist,QString YUVFormat, int W, i
         this->point = QPoint(0, 0);
         return true;
     }
+}
+
+void ImgViewer::image_cleanup(cv::Mat* ptr)
+{
+    delete ptr;
 }
 
 void ImgViewer::reciveimgdata(QList<QImage*> img_RGB_list,QString filename)
@@ -204,6 +214,19 @@ void ImgViewer::closeEvent(QCloseEvent *event)
 {
     this->parentWindow->show();
     event->accept();
+    if(!this->img_list.empty())
+    {
+        foreach(QList<QImage*> list,this->img_list)
+        {
+            if(!list.empty())
+            {
+                foreach(QImage* img,list)
+                {
+                    delete img;
+                }
+            }
+        }
+    }
 }
 
 void ImgViewer::draw_img(QPainter *painter)

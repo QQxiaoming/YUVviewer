@@ -156,6 +156,7 @@ YUVviewer::~YUVviewer()
     {
         delete imgViewer;
     }
+    delete YUVviewerConfigFile;
     delete ui;
 }
 
