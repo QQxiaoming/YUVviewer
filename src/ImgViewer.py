@@ -206,9 +206,9 @@ class ImgViewer(QWidget, Ui_ImgViewerWindow):
         if not len(self.img_list) == 0:
             if e.angleDelta().y() > 0:
                 # 放大图片
-                if not self.scaled_img.width() == 0:
-                    setpsize_x = 25
-                    setpsize_y = setpsize_x * self.scaled_img.height() / self.scaled_img.width() #缩放可能导致比例不精确
+                if not self.scaled_img.width() == 0 and not self.scaled_img.height() == 0:
+                    setpsize_x = self.scaled_img.width() / 16
+                    setpsize_y = self.scaled_img.height() / 16 #缩放可能导致比例不精确
 
                     self.scaled_img = self.currentImg.scaled(self.scaled_img.width() + setpsize_x,self.scaled_img.height() + setpsize_y)
                     if self.flipRGB:
@@ -220,9 +220,9 @@ class ImgViewer(QWidget, Ui_ImgViewerWindow):
 
             elif e.angleDelta().y() < 0:
                 # 缩小图片
-                if self.scaled_img.width() > 25:
-                    setpsize_x = 25
-                    setpsize_y = setpsize_x * self.scaled_img.height() / self.scaled_img.width() #缩放可能导致比例不精确
+                if self.scaled_img.width() > 25 and self.scaled_img.width() > 25 :
+                    setpsize_x = self.scaled_img.width() / 16
+                    setpsize_y = self.scaled_img.height() / 16 #缩放可能导致比例不精确
 
                     self.scaled_img = self.currentImg.scaled(self.scaled_img.width() - setpsize_x,self.scaled_img.height() - setpsize_y)
                     if self.flipRGB:

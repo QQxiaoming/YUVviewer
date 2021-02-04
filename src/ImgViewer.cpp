@@ -330,10 +330,10 @@ void ImgViewer::wheelEvent(QWheelEvent *event)
         if( event->angleDelta().y() > 0)
         {
             // 放大图片
-            if( this->scaled_img.width() != 0)
+            if( this->scaled_img.width() != 0 && this->scaled_img.height() != 0)
             {
-                float setpsize_x = 25.0f;
-                float setpsize_y = setpsize_x * this->scaled_img.height() / this->scaled_img.width(); //缩放可能导致比例不精确
+                float setpsize_x = ((float)this->scaled_img.width())/16.0f;
+                float setpsize_y = ((float)this->scaled_img.height())/16.0f; //缩放可能导致比例不精确
 
                 this->scaled_img = this->currentImg->scaled(this->scaled_img.width() + setpsize_x,this->scaled_img.height() + setpsize_y);
                 if(this->flipRGB)
@@ -349,10 +349,10 @@ void ImgViewer::wheelEvent(QWheelEvent *event)
         else if( event->angleDelta().y() < 0)
         {
             // 缩小图片
-            if(this->scaled_img.width() > 25)
+            if(this->scaled_img.width() > 25 && this->scaled_img.height() > 25)
             {
-                float setpsize_x = 25.0f;
-                float setpsize_y = setpsize_x * this->scaled_img.height() / this->scaled_img.width(); //缩放可能导致比例不精确
+                float setpsize_x = ((float)this->scaled_img.width())/16.0f;
+                float setpsize_y = ((float)this->scaled_img.height())/16.0f; //缩放可能导致比例不精确
 
                 this->scaled_img = this->currentImg->scaled(this->scaled_img.width() - setpsize_x,this->scaled_img.height() - setpsize_y);
                 if(this->flipRGB)
