@@ -16,7 +16,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  ubuntu-16.04:
+  build_ubuntu1604:
     runs-on: ubuntu-16.04
     steps:
       - uses: actions/checkout@v2
