@@ -37,6 +37,7 @@ jobs:
         run: |
           sed -i 's/QT_DIR=\/opt/QT_DIR=$(cd "$(dirname "$0")";pwd)/g' build_deb.sh
           sed -i 's/\/home\/xiaoming\/Desktop\/opencv/\/usr\/local/g' build_deb.sh
+          sed -i 's/\/home\/xiaoming\/Desktop\/opencv/\/usr\/local/g' partform_unix.pri
           ./build_deb.sh
 
       - name: Upload build asserts
