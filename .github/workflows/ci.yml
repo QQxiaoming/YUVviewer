@@ -59,7 +59,8 @@ jobs:
           
       - name: Install prerequisites
         run: |
-          Choco-Install -PackageName innosetup
+          Choco-Install -PackageName innosetup --force
+          Choco-Install -PackageName opencv --force
 
       - name: Build all
         run: |
