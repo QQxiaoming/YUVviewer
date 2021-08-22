@@ -1,3 +1,5 @@
+[![CI](https://github.com/zhiliao007/YUVviewer/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/zhiliao007/YUVviewer/actions/workflows/ci.yml)
+
 # YUVviewer
 
 本项目初期为基于PyQt、opencv-python的YUV文件查看浏览工具，即V0.3.2以及更低版本。

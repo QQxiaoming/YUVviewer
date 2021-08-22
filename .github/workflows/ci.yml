@@ -1,0 +1,41 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+    paths-ignore:
+      - 'doc/**'
+      - 'README.md'
+      - '.readthedocs.yaml'
+  pull_request:
+    branches: [ main ]
+    paths-ignore:
+      - 'doc/**'
+      - 'README.md'
+      - '.readthedocs.yaml'
+  workflow_dispatch:
+
+jobs:
+  ubuntu-16.04:
+    runs-on: ubuntu-16.04
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install Qt
+        uses: jurplel/install-qt-action@v2.14.0
+      - name: Install prerequisites
+        run: |
+          sudo apt update
+          sudo apt install -y make gcc libopencv-dev
+      - name: Build all
+        run: |
+          SHELL_FOLDER=$(cd "$(dirname "$0")";pwd)
+          sed -i 's/\/opt/$(SHELL_FOLDER)/g' build_deb.sh
+          sed -i 's/\/home\/xiaoming\/Desktop\/opencv/\usr/g' build_deb.sh
+          ./build_deb.sh
+      - name: Upload build asserts
+        uses: actions/upload-artifact@v2.2.4
+        with:
+          name: YUVviewer_Linux.deb
+          path: |
+            ./dpkg/*.deb
+      
