@@ -54,7 +54,9 @@ jobs:
 
       - name: Install Qt
         uses: jurplel/install-qt-action@v2.14.0
-
+        with:
+          arch: win64_mingw81
+          
       - name: Install prerequisites
         run: |
           Choco-Install -PackageName innosetup
