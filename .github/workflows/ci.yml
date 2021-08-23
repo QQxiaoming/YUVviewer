@@ -43,7 +43,38 @@ jobs:
       - name: Upload build asserts
         uses: actions/upload-artifact@v2.2.4
         with:
-          name: YUVviewer_Linux.deb
+          name: YUVviewer_Ubuntu2004
+          path: |
+            ./dpkg/*.deb
+
+  ubuntu-1804:
+    runs-on: ubuntu-18.04
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Install Qt
+        uses: jurplel/install-qt-action@v2.14.0
+
+      - name: Setup OpenCV
+        uses: Dovyski/setup-opencv-action@v1
+
+      - name: Install prerequisites
+        run: |
+          sudo apt update
+          sudo apt install -y make gcc
+
+      - name: Build all
+        run: |
+          sed -i 's/QT_DIR=\/opt/QT_DIR=$(cd "$(dirname "$0")";pwd)/g' build_deb.sh
+          sed -i 's/\/home\/xiaoming\/Desktop\/opencv/\/usr\/local/g' build_deb.sh
+          sed -i 's/\/home\/xiaoming\/Desktop\/opencv/\/usr\/local/g' partform_unix.pri
+          ./build_deb.sh
+
+      - name: Upload build asserts
+        uses: actions/upload-artifact@v2.2.4
+        with:
+          name: YUVviewer_Ubuntu1804
           path: |
             ./dpkg/*.deb
 
@@ -63,7 +94,8 @@ jobs:
           Choco-Install -PackageName innosetup --force
           Choco-Install -PackageName cmake --force
           git clone https://github.com/opencv/opencv.git --branch 4.0.0 --depth 1
-          cmake -G "MinGW Makefiles" -S opencv -B opencv/build -D CMAKE_INSTALL_PREFIX=C:/opencv4.0.0 -D WITH_TBB=ON -D WITH_IPP=ON -D BUILD_NEW_PYTHON_SUPPORT=OFF -D WITH_V4L=OFF -D ENABLE_PRECOMPILED_HEADERS=ON -D INSTALL_C_EXAMPLES=OFF -D INSTALL_PYTHON_EXAMPLES=OFF -D BUILD_EXAMPLES=OFF -D WITH_QT=OFF -D WITH_OPENGL=OFF
+          cmake -G "MinGW Makefiles" -S opencv -B opencv/build -D CMAKE_INSTALL_PREFIX=C:/opencv4.0.0
+          cd ./opencv/build
           mingw32-make
           mingw32-make install
 
