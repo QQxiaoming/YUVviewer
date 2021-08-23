@@ -63,7 +63,7 @@ jobs:
           Choco-Install -PackageName innosetup --force
           Choco-Install -PackageName cmake --force
           git clone https://github.com/opencv/opencv.git --branch 4.0.0 --depth 1
-          cmake -S opencv -B opencv/build  -D CMAKE_CXX_COMPILER=g++ -D CMAKE_INSTALL_PREFIX=C:/opencv4.0.0/x64/mingw/bin -D WITH_TBB=ON -D WITH_IPP=ON -D BUILD_NEW_PYTHON_SUPPORT=OFF -D WITH_V4L=OFF -D ENABLE_PRECOMPILED_HEADERS=ON -D INSTALL_C_EXAMPLES=OFF -D INSTALL_PYTHON_EXAMPLES=OFF -D BUILD_EXAMPLES=OFF -D WITH_QT=OFF -D WITH_OPENGL=OFF
+          cmake -S opencv -B opencv/build  -D CMAKE_CXX_COMPILER=C:/ProgramData/Chocolatey/lib/mingw/tools/install/mingw64/x86_64-w64-mingw32/bin/x86_64-w64-mingw32-g++ -D CMAKE_INSTALL_PREFIX=C:/opencv4.0.0 -D WITH_TBB=ON -D WITH_IPP=ON -D BUILD_NEW_PYTHON_SUPPORT=OFF -D WITH_V4L=OFF -D ENABLE_PRECOMPILED_HEADERS=ON -D INSTALL_C_EXAMPLES=OFF -D INSTALL_PYTHON_EXAMPLES=OFF -D BUILD_EXAMPLES=OFF -D WITH_QT=OFF -D WITH_OPENGL=OFF
           mingw32-make
           mingw32-make install
 
