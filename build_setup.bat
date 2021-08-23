@@ -1,6 +1,5 @@
 @echo off
 
-echo "hello, this is win10_powershell!" 
 :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 :: 定义QT目录
 set "QT_DIR=C:/Qt/Qt5.12.8/5.12.8/mingw73_32/bin"
