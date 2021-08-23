@@ -42,6 +42,7 @@ xcopy /y .\test\* .\InnoSetup\build\test\
 windeployqt --dir .\InnoSetup\build .\InnoSetup\build\YUVviewer.exe
 xcopy /y "%OPENCV_DIR%\libopencv_imgproc420.dll" ".\InnoSetup\build\"
 xcopy /y "%OPENCV_DIR%\libopencv_core420.dll" ".\InnoSetup\build\"
+xcopy /y "%QT_TOOLS_DIR%\..\lib\*.dll" ".\InnoSetup\build\"
 :: 打包
 echo "wait inno build setup..."
 iscc /q ".\InnoSetup\build_temp_setup.iss"
