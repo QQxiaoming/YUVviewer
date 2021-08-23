@@ -1,4 +1,4 @@
-[![CI](https://github.com/zhiliao007/YUVviewer/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/zhiliao007/YUVviewer/actions/workflows/ci.yml)
+[![CI](https://github.com/zhiliao007/YUVviewer/actions/workflows/ci.yml/badge.svg?branch=master)](https://github.com/zhiliao007/YUVviewer/actions/workflows/ci.yml)
 
 # YUVviewer
 
