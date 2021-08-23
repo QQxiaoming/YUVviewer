@@ -45,7 +45,7 @@ xcopy /y "%OPENCV_DIR%\libopencv_imgproc420.dll" ".\InnoSetup\build\"
 xcopy /y "%OPENCV_DIR%\libopencv_core420.dll" ".\InnoSetup\build\"
 :: 打包
 echo "wait inno build setup..."
-compil32 /cc ".\InnoSetup\build_temp_setup.iss"
+iscc /q ".\InnoSetup\build_temp_setup.iss"
 del .\InnoSetup\build_temp_setup.iss
 echo "build success!"
 :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::

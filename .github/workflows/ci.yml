@@ -110,6 +110,6 @@ jobs:
       - name: Upload build asserts
         uses: actions/upload-artifact@v2.2.4
         with:
-          name: YUVviewer_setup.exe
+          name: YUVviewer_windows
           path: |
             ./InnoSetup/YUVviewer_setup.exe
