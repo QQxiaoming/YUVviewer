@@ -8,6 +8,7 @@
 #define YUVVIEWER_H
 
 #include <QMainWindow>
+#include <QCloseEvent>
 #include "ImgViewer.h"
 #include "configFile.h"
 

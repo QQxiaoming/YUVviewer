@@ -61,12 +61,18 @@ jobs:
       - name: Install prerequisites
         run: |
           Choco-Install -PackageName innosetup --force
-          Choco-Install -PackageName opencv --force
+          Choco-Install -PackageName cmake --force
+          git clone https://github.com/opencv/opencv.git --branch 4.0.0 --depth 1
+          cmake -S opencv -B opencv/build  -D CMAKE_CXX_COMPILER=g++ -D CMAKE_INSTALL_PREFIX=C:/opencv4.0.0/x64/mingw/bin -D WITH_TBB=ON -D WITH_IPP=ON -D BUILD_NEW_PYTHON_SUPPORT=OFF -D WITH_V4L=OFF -D ENABLE_PRECOMPILED_HEADERS=ON -D INSTALL_C_EXAMPLES=OFF -D INSTALL_PYTHON_EXAMPLES=OFF -D BUILD_EXAMPLES=OFF -D WITH_QT=OFF -D WITH_OPENGL=OFF
+          mingw32-make
+          mingw32-make install
 
       - name: Build all
         run: |
           ./tools/sed/sed.exe -i "s/QT_DIR=C:\/Qt\/Qt5.12.8\/5.12.8\/mingw73_32\/bin/QT_DIR=%Qt5_Dir%/g" ./build_setup.bat
           ./tools/sed/sed.exe -i "s/QT_TOOLS_DIR=C:\/Qt\/Qt5.12.8\/Tools\/mingw730_32\/bin/QT_TOOLS_DIR=C:\/ProgramData\/Chocolatey\/lib\/mingw\/tools\/install\/mingw64\/x86_64-w64-mingw32\/bin/g" ./build_setup.bat
+          ./tools/sed/sed.exe -i "s/OPENCV_DIR=D:\/Qt\/opencv4.2.0\/x64\/mingw\/bin/OPENCV_DIR=C:\/opencv4.0.0\/x64\/mingw\/bin/g" ./build_setup.bat
+          ./tools/sed/sed.exe -i "s/OPENCV_DIR=D:\/Qt\/opencv4.2.0/OPENCV_DIR=C:\/opencv4.0.0/g" ./partform_win32.pri
           ./build_setup.bat
 
       - name: Upload build asserts

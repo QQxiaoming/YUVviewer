@@ -9,7 +9,6 @@
 #include <QMessageBox>
 #include <QFileDialog>
 #include <QToolTip>
-#include <QCloseEvent>
 #include <QPoint>
 #include <QScreen>
 #include <QDebug>

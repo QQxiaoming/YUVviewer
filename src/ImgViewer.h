@@ -12,6 +12,11 @@
 #include <QString>
 #include <QImage>
 #include <QPainter>
+#include <QCloseEvent> 
+#include <QPaintEvent> 
+#include <QMouseEvent> 
+#include <QWheelEvent> 
+#include <QResizeEvent>
 #include "YUVdecoder.h"
 
 namespace Ui {
