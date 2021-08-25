@@ -17,6 +17,10 @@ class YUV2RGB(object):
         'BGR565_L'  : lambda yuvfilename, W, H, startframe, totalframe: YUV2RGB.bgr565_little_endian(yuvfilename, W, H, startframe, totalframe),
         'BGR565_B'  : lambda yuvfilename, W, H, startframe, totalframe: YUV2RGB.bgr565_big_endian(yuvfilename, W, H, startframe, totalframe),
         'RGB888'    : lambda yuvfilename, W, H, startframe, totalframe: YUV2RGB.rgb888(yuvfilename, W, H, startframe, totalframe),
+        'BayerBG'   : lambda yuvfilename, W, H, startframe, totalframe: YUV2RGB.bayerBG(yuvfilename, W, H, startframe, totalframe),
+        'BayerGB'   : lambda yuvfilename, W, H, startframe, totalframe: YUV2RGB.bayerGB(yuvfilename, W, H, startframe, totalframe),
+        'BayerRG'   : lambda yuvfilename, W, H, startframe, totalframe: YUV2RGB.bayerRG(yuvfilename, W, H, startframe, totalframe),
+        'BayerGR'   : lambda yuvfilename, W, H, startframe, totalframe: YUV2RGB.bayerGR(yuvfilename, W, H, startframe, totalframe),
     }
 
     @classmethod
@@ -235,5 +239,69 @@ class YUV2RGB(object):
                         for l in range(3):
                             oneframe_RGB888[j, k, l] = int.from_bytes(fp.read(1), byteorder='little', signed=False)
                 oneframe_RGB = cv2.cvtColor(oneframe_RGB888, cv2.COLOR_BGR2RGB)
+                arr[i] = oneframe_RGB
+        return arr
+
+    @classmethod
+    def bayerBG(cls,yuvfilename, W, H, startframe, totalframe):
+        arr = np.zeros((totalframe, H, W), np.uint8)
+
+        with open(yuvfilename, 'rb') as fp:
+            seekPixels = startframe * H * W
+            fp.seek(seekPixels)
+            for i in range(totalframe):
+                oneframe_BayerBG = np.zeros((H, W), np.uint8)
+                for j in range(H):
+                    for k in range(W):
+                        oneframe_BayerBG[j, k] = int.from_bytes(fp.read(1), byteorder='little', signed=False)
+                oneframe_RGB = cv2.cvtColor(oneframe_BayerBG, cv2.COLOR_BayerBG2RGB)
+                arr[i] = oneframe_RGB
+        return arr
+
+    @classmethod
+    def bayerGB(cls,yuvfilename, W, H, startframe, totalframe):
+        arr = np.zeros((totalframe, H, W), np.uint8)
+
+        with open(yuvfilename, 'rb') as fp:
+            seekPixels = startframe * H * W
+            fp.seek(seekPixels)
+            for i in range(totalframe):
+                oneframe_BayerGB = np.zeros((H, W), np.uint8)
+                for j in range(H):
+                    for k in range(W):
+                        oneframe_BayerGB[j, k] = int.from_bytes(fp.read(1), byteorder='little', signed=False)
+                oneframe_RGB = cv2.cvtColor(oneframe_BayerGB, cv2.COLOR_BayerGB2RGB)
+                arr[i] = oneframe_RGB
+        return arr
+
+    @classmethod
+    def bayerRG(cls,yuvfilename, W, H, startframe, totalframe):
+        arr = np.zeros((totalframe, H, W), np.uint8)
+
+        with open(yuvfilename, 'rb') as fp:
+            seekPixels = startframe * H * W
+            fp.seek(seekPixels)
+            for i in range(totalframe):
+                oneframe_BayerRG = np.zeros((H, W), np.uint8)
+                for j in range(H):
+                    for k in range(W):
+                        oneframe_BayerRG[j, k] = int.from_bytes(fp.read(1), byteorder='little', signed=False)
+                oneframe_RGB = cv2.cvtColor(oneframe_BayerRG, cv2.COLOR_BayerRG2RGB)
+                arr[i] = oneframe_RGB
+        return arr
+
+    @classmethod
+    def bayerGR(cls,yuvfilename, W, H, startframe, totalframe):
+        arr = np.zeros((totalframe, H, W), np.uint8)
+
+        with open(yuvfilename, 'rb') as fp:
+            seekPixels = startframe * H * W
+            fp.seek(seekPixels)
+            for i in range(totalframe):
+                oneframe_BayerGR = np.zeros((H, W), np.uint8)
+                for j in range(H):
+                    for k in range(W):
+                        oneframe_BayerGR[j, k] = int.from_bytes(fp.read(1), byteorder='little', signed=False)
+                oneframe_RGB = cv2.cvtColor(oneframe_BayerGR, cv2.COLOR_BayerGR2RGB)
                 arr[i] = oneframe_RGB
         return arr

@@ -158,6 +158,26 @@
               <string>RGB888</string>
              </property>
             </item>
+            <item>
+             <property name="text">
+              <string>BayerBG</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>BayerGB</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>BayerRG</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>BayerGR</string>
+             </property>
+            </item>
            </widget>
           </item>
           <item>
