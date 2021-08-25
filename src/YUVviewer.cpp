@@ -17,6 +17,9 @@
 #include "ui_UI_YUVviewer.h"
 
 const QString VERSION = APP_VERSION;
+const QString GIT_TAG =
+#include <git_tag.inc>
+;
 
 const QList<QPair<QString, QStringList>> YUVviewer::frameSizeTypeDict = {
     {"QQCIF",   {"88","72"}},
@@ -155,7 +158,10 @@ YUVviewer::~YUVviewer()
     {
         delete imgViewer;
     }
-    delete YUVviewerConfigFile;
+    if(YUVviewerConfigFile != nullptr)
+    {
+        delete YUVviewerConfigFile;
+    }
     delete ui;
 }
 
@@ -505,7 +511,7 @@ void YUVviewer::openFolder()
 
 void YUVviewer::about()
 {
-    QMessageBox::about(this, "About", "版本 \n " + VERSION + "\n作者\n wenqing.li@aliyun.com \n qiaoqm@aliyun.com");
+    QMessageBox::about(this, "About", "版本 \n " + VERSION + "\n提交 \n " + GIT_TAG + "\n作者\n wenqing.li@aliyun.com \n qiaoqm@aliyun.com");
 }
 
 void YUVviewer::help()
@@ -515,7 +521,11 @@ void YUVviewer::help()
 
 void YUVviewer::closeEvent(QCloseEvent *event)
 {
-    delete YUVviewerConfigFile;
+    if(YUVviewerConfigFile != nullptr)
+    {
+        delete YUVviewerConfigFile;
+        YUVviewerConfigFile = nullptr;
+    }
     event->accept();
 }
 
