@@ -291,6 +291,16 @@ void ImgViewer::mouseReleaseEvent(QMouseEvent *event)
             }
             this->repaint();
         }
+        else if(event->button() == Qt::MiddleButton)
+        {
+            this->scaled_img = this->currentImg->scaled(this->currentImg->size().width(),this->currentImg->size().height());
+            if(this->flipRGB)
+            {
+                this->scaled_img = this->scaled_img.rgbSwapped();
+            }
+            this->point = QPoint(0, 0);
+            this->repaint();
+        }
     }
 }
 
