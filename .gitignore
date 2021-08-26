@@ -54,3 +54,4 @@ CMakeLists.txt.user*
 # vscode
 /.vscode
 git_tag.inc
+git_tag.ci.inc
