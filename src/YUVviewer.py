@@ -11,7 +11,10 @@ from UI_YUVviewer import Ui_YUVviewer
 from configFile import ConfigFile
 from ImgViewer import ImgViewer
 
-VERSION = 'V0.3.6'
+VERSION = 'V0.4.0'
+GIT_TAG = 'error:not found!'
+with open('git_tag.inc') as fp:
+    GIT_TAG = fp.read()
 
 class YUVviewer(QtWidgets.QMainWindow, Ui_YUVviewer):
     frameSizeTypeDict = {
@@ -323,7 +326,7 @@ class YUVviewer(QtWidgets.QMainWindow, Ui_YUVviewer):
                 self._imgView(openfile_list)
 
     def about(self):
-        QMessageBox.about(self, 'About', '版本 \n ' + VERSION + '\n作者\n wenqing.li@aliyun.com \n qiaoqm@aliyun.com')
+        QMessageBox.about(self, 'About', '版本 \n ' + VERSION + "\n提交 \n " + GIT_TAG + '\n作者\n wenqing.li@aliyun.com \n qiaoqm@aliyun.com')
 
     def help(self):
         QMessageBox.question(self, 'Help', '1.主界面选择数据参数。\n2.点击打开文件或文件夹将进行图像数据解析并显示图像。\n3.图像显示界面中使用滚轮放大缩小图像，使用左键可拖动图像，双击左键保存图像为png格式，单击右键复位图像大小和位置，双击右键交换图像R和B通道显示。', QMessageBox.Ok)
