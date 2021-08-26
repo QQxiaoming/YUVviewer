@@ -11,7 +11,7 @@ from UI_YUVviewer import Ui_YUVviewer
 from configFile import ConfigFile
 from ImgViewer import ImgViewer
 
-VERSION = 'V0.4.1'
+VERSION = 'V0.4.2'
 GIT_TAG = 'error:not found!'
 with open('git_tag.inc') as fp:
     GIT_TAG = fp.read()
@@ -339,7 +339,11 @@ class YUVviewer(QtWidgets.QMainWindow, Ui_YUVviewer):
         self.close()
 
 if __name__ == '__main__':
-    QtWidgets.QApplication.setAttribute(QtCore.Qt.AA_EnableHighDpiScaling);
+    if len(sys.argv) == 2:
+        if sys.argv[1] == '--version' or sys.argv[1] == '-v':
+            print('YUVviewer ' + VERSION + "\n" + GIT_TAG.replace('"', '').replace('\n', ''))
+            sys.exit(0)
+    QtWidgets.QApplication.setAttribute(QtCore.Qt.AA_EnableHighDpiScaling)
     application = QtWidgets.QApplication(sys.argv)
     font = application.font()
     font.setFamily(font.defaultFamily())

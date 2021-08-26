@@ -184,6 +184,12 @@ class ImgViewer(QWidget, Ui_ImgViewerWindow):
                 if self.flipRGB:
                     self.scaled_img = self.scaled_img.rgbSwapped()
                 self.repaint()
+            elif e.button() == Qt.MiddleButton:
+                self.scaled_img = self.currentImg.scaled(self.currentImg.width(),self.scaled_img.height())
+                if self.flipRGB:
+                    self.scaled_img = self.scaled_img.rgbSwapped()
+                self.point = QPoint(0, 0)
+                self.repaint()
 
     def mouseDoubleClickEvent(self, event):
         if not len(self.img_list) == 0:

@@ -531,6 +531,13 @@ void YUVviewer::closeEvent(QCloseEvent *event)
 
 int main(int argc, char *argv[])
 {
+    if(argc == 2) {
+        if((!strncmp(argv[1],"--version",9)) | (!strncmp(argv[1],"-v",2)) ) {
+            std::cout << "YUVviewer " << VERSION.toStdString() << "\n" << GIT_TAG.toStdString() << "\n";
+            return 0;
+        }
+    }
+
     QApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
     QApplication application(argc, argv);
     QFont font = application.font();

@@ -50,6 +50,13 @@ jobs:
           path: |
             ./dpkg/*.deb
 
+      - name: Run tests
+        run: |
+          if ls ./dpkg | grep ".deb" ; then echo "Pass"; else echo "Failed" && exit 1; fi; 
+          timeout --foreground -s SIGKILL 20s ./build_release/out/YUVviewer --version > >(tee run.log) || {
+            if cat run.log | grep "YUVviewer" ; then echo "Pass" && exit 0; else echo "Failed" && exit 1; fi; 
+          }
+
   ubuntu-1804:
     runs-on: ubuntu-18.04
 
@@ -84,6 +91,13 @@ jobs:
           path: |
             ./dpkg/*.deb
 
+      - name: Run tests
+        run: |
+          if ls ./dpkg | grep ".deb" ; then echo "Pass"; else echo "Failed" && exit 1; fi; 
+          timeout --foreground -s SIGKILL 20s ./build_release/out/YUVviewer --version > >(tee run.log) || {
+            if cat run.log | grep "YUVviewer" ; then echo "Pass" && exit 0; else echo "Failed" && exit 1; fi; 
+          }
+      
   windows:
     runs-on: windows-2019
 
@@ -125,3 +139,7 @@ jobs:
           name: YUVviewer_windows
           path: |
             ./InnoSetup/YUVviewer_setup.exe
+
+      - name: Run tests
+        run: |
+          ./InnoSetup/build/YUVviewer.exe --version
