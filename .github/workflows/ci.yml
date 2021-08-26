@@ -27,7 +27,10 @@ jobs:
 
       - name: Setup OpenCV
         uses: Dovyski/setup-opencv-action@v1
-
+        with:
+          opencv-version: 4.0.0
+          opencv-extra-modules: false
+          
       - name: Install prerequisites
         run: |
           sudo apt update
@@ -53,7 +56,7 @@ jobs:
       - name: Run tests
         run: |
           if ls ./dpkg | grep ".deb" ; then echo "Pass"; else echo "Failed" && exit 1; fi; 
-          timeout --foreground -s SIGKILL 20s ./build_release/out/YUVviewer --version > >(tee run.log) || {
+          timeout --foreground -s SIGKILL 20s ./dpkg/YUVviewer_Linux_*/opt/YUVviewer/YUVviewer --version > >(tee run.log) || {
             if cat run.log | grep "YUVviewer" ; then echo "Pass" && exit 0; else echo "Failed" && exit 1; fi; 
           }
 
@@ -68,6 +71,9 @@ jobs:
 
       - name: Setup OpenCV
         uses: Dovyski/setup-opencv-action@v1
+        with:
+          opencv-version: 4.0.0
+          opencv-extra-modules: false
 
       - name: Install prerequisites
         run: |
@@ -94,7 +100,7 @@ jobs:
       - name: Run tests
         run: |
           if ls ./dpkg | grep ".deb" ; then echo "Pass"; else echo "Failed" && exit 1; fi; 
-          timeout --foreground -s SIGKILL 20s ./build_release/out/YUVviewer --version > >(tee run.log) || {
+          timeout --foreground -s SIGKILL 20s ./dpkg/YUVviewer_Linux_*/opt/YUVviewer/YUVviewer --version > >(tee run.log) || {
             if cat run.log | grep "YUVviewer" ; then echo "Pass" && exit 0; else echo "Failed" && exit 1; fi; 
           }
       
@@ -114,7 +120,7 @@ jobs:
           Choco-Install -PackageName innosetup --force
           Choco-Install -PackageName cmake --force
           git clone https://github.com/opencv/opencv.git --branch 4.0.0 --depth 1
-          cmake -G "MinGW Makefiles" -S opencv -B opencv/build -D CMAKE_INSTALL_PREFIX=C:/opencv4.0.0 -D ENABLE_PRECOMPILED_HEADERS=OFF -D WITH_MSMF=OFF
+          cmake -G "MinGW Makefiles" -S opencv -B opencv/build -D CMAKE_INSTALL_PREFIX=C:/opencv4.0.0 -D ENABLE_PRECOMPILED_HEADERS=OFF -D WITH_MSMF=OFF -D BUILD_PERF_TESTS=OFF -D BUILD_TESTS=OFF -D BUILD_WITH_DEBUG_INFO=OFF -D BUILD_DOCS=OFF -D CMAKE_BUILD_TYPE=RELEASE
           cd ./opencv/build
           mingw32-make
           mingw32-make install
