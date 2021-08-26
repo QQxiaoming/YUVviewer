@@ -35,7 +35,7 @@ jobs:
 
       - name: Build all
         run: |
-          git push --tags
+          git pull --tags
           git describe --always --long --dirty --abbrev=10 --tags | awk '{print "\""$0"\""}' > git_tag.inc
           sed -i 's/git_tag.inc/git_tag.ci.inc/g' YUVviewer.pro
           sed -i 's/QT_DIR=\/opt/QT_DIR=$(cd "$(dirname "$0")";pwd)/g' build_deb.sh
@@ -69,7 +69,7 @@ jobs:
 
       - name: Build all
         run: |
-          git push --tags
+          git pull --tags
           git describe --always --long --dirty --abbrev=10 --tags | awk '{print "\""$0"\""}' > git_tag.inc
           sed -i 's/git_tag.inc/git_tag.ci.inc/g' YUVviewer.pro
           sed -i 's/QT_DIR=\/opt/QT_DIR=$(cd "$(dirname "$0")";pwd)/g' build_deb.sh
@@ -107,7 +107,7 @@ jobs:
 
       - name: Build all
         run: |
-          git push --tags
+          git pull --tags
           git describe --always --long --dirty --abbrev=10 --tags | ./tools/sed/awk.exe '{print "\""$0"\""}' > git_tag.inc
           ./tools/sed/sed.exe -i 's/git_tag.inc/git_tag.ci.inc/g' YUVviewer.pro
           ./tools/sed/sed.exe -i "s/QT_DIR=C:\/Qt\/Qt5.12.8\/5.12.8\/mingw73_32\/bin/QT_DIR=%Qt5_Dir%/g" ./build_setup.bat
