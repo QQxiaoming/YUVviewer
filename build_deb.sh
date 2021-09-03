@@ -38,7 +38,7 @@ cp ./build_release/out/YUVviewer ./dpkg/YUVviewer_Linux_"$YVYVIEWER_VERSION"_x86
 rm -rf ./dpkg/YUVviewer_Linux_"$YVYVIEWER_VERSION"_x86_64/opt/YUVviewer/doc ./dpkg/YUVviewer_Linux_"$YVYVIEWER_VERSION"_x86_64/opt/YUVviewer/default.png ./dpkg/YUVviewer_Linux_"$YVYVIEWER_VERSION"_x86_64/opt/YUVviewer/AppRun ./dpkg/YUVviewer_Linux_"$YVYVIEWER_VERSION"_x86_64/opt/YUVviewer/default.desktop
 cp ./img/ico.png ./dpkg/YUVviewer_Linux_"$YVYVIEWER_VERSION"_x86_64/opt/YUVviewer/YUVviewer.png
 # 配置打包信息
-sed -i "s/Version: 0.33/Version: $YVYVIEWER_MAJARVERSION.$YVYVIEWER_SUBVERSION$YVYVIEWER_REVISION/g" ./dpkg/YUVviewer_Linux_"$YVYVIEWER_VERSION"_x86_64/DEBIAN/control
+sed -i "s/Version: 0.34/Version: $YVYVIEWER_MAJARVERSION.$YVYVIEWER_SUBVERSION$YVYVIEWER_REVISION/g" ./dpkg/YUVviewer_Linux_"$YVYVIEWER_VERSION"_x86_64/DEBIAN/control
 cd ./dpkg/YUVviewer_Linux_"$YVYVIEWER_VERSION"_x86_64
 SIZE=$(du -sh -B 1024 ./ | sed "s/.\///g")
 InstalledSize=$SIZE
