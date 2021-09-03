@@ -39,7 +39,10 @@ rm -rf ./dpkg/YUVviewer_Linux_"$YVYVIEWER_VERSION"_x86_64/opt/YUVviewer/doc ./dp
 cp ./img/ico.png ./dpkg/YUVviewer_Linux_"$YVYVIEWER_VERSION"_x86_64/opt/YUVviewer/YUVviewer.png
 # 配置打包信息
 sed -i "s/Version: 0.33/Version: $YVYVIEWER_MAJARVERSION.$YVYVIEWER_SUBVERSION$YVYVIEWER_REVISION/g" ./dpkg/YUVviewer_Linux_"$YVYVIEWER_VERSION"_x86_64/DEBIAN/control
-InstalledSize=94515.2 # TODO:计算打包文件size
+cd ./dpkg/YUVviewer_Linux_"$YVYVIEWER_VERSION"_x86_64
+SIZE=$(du -sh -B 1024 ./ | sed "s/.\///g")
+InstalledSize=$SIZE
+cd -
 sed -i "s/Installed-Size: 81203.2/Installed-Size: $InstalledSize/g" ./dpkg/YUVviewer_Linux_"$YVYVIEWER_VERSION"_x86_64/DEBIAN/control
 chmod 755 ./dpkg/YUVviewer_Linux_"$YVYVIEWER_VERSION"_x86_64/* -R
 # 打包
