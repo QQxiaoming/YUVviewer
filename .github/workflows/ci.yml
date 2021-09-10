@@ -176,7 +176,10 @@ jobs:
           sed -i'.original' -e 's/QT_DIR=\/opt/QT_DIR=$(cd "$(dirname "$0")";pwd)/g' build_dmg.sh
           sed -i'.original' -e 's/\/home\/xiaoming\/Desktop\/opencv/\/usr\/local/g' build_dmg.sh
           sed -i'.original' -e 's/\/home\/xiaoming\/Desktop\/opencv/\/usr\/local/g' partform_unix.pri
-          ./build_dmg.sh
+          qmake -makefile
+          make
+          cd ./build_release/out
+          macdeployqt YUVviewer.app -dmg -verbose=2
 
       - name: Upload build asserts
         uses: actions/upload-artifact@v2.2.4
