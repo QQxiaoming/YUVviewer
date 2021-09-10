@@ -98,6 +98,15 @@ unix:!macx:{
 macx:{
     QMAKE_RPATHDIR=$ORIGIN
     QMAKE_LFLAGS += -no-pie
+    
+    INCLUDEPATH += -I $${OPENCV_DIR}/include/opencv4
+    DEPENDPATH +=$${OPENCV_DIR}/include/opencv4
+
+    INCLUDEPATH += -I $${OPENCV_DIR}/include
+    DEPENDPATH +=$${OPENCV_DIR}/include
+
+    LIBS += -L $${OPENCV_DIR}/lib/ -lopencv_imgproc
+    LIBS += -L $${OPENCV_DIR}/lib/ -lopencv_core
 
     git_tag.commands = $$quote("cd $$PWD && git describe --always --long --dirty --abbrev=10 --tags | awk \'{print \"\\\"\"\$$0\"\\\"\"}\' > git_tag.inc")
 }
