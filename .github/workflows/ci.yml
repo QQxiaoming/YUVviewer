@@ -183,4 +183,4 @@ jobs:
         with:
           name: YUVviewer_macos
           path: |
-            ./build_release/out
+            ./build_release/out/YUVviewer.dmg
