@@ -173,8 +173,8 @@ jobs:
           git fetch --tags --force
           git describe --always --long --dirty --abbrev=10 --tags | awk '{print "\""$0"\""}' > git_tag.inc
           sed -i'.original' -e 's/git_tag.inc/git_tag.ci.inc/g' YUVviewer.pro
-          sed -i'.original' -e 's/QT_DIR=\/opt/QT_DIR=$(cd "$(dirname "$0")";pwd)/g' build_deb.sh
-          sed -i'.original' -e 's/\/home\/xiaoming\/Desktop\/opencv/\/usr\/local/g' build_deb.sh
+          sed -i'.original' -e 's/QT_DIR=\/opt/QT_DIR=$(cd "$(dirname "$0")";pwd)/g' build_dmg.sh
+          sed -i'.original' -e 's/\/home\/xiaoming\/Desktop\/opencv/\/usr\/local/g' build_dmg.sh
           sed -i'.original' -e 's/\/home\/xiaoming\/Desktop\/opencv/\/usr\/local/g' partform_unix.pri
           ./build_dmg.sh
 
