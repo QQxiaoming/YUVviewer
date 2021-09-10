@@ -108,6 +108,10 @@ macx:{
     LIBS += -L $${OPENCV_DIR}/lib/ -lopencv_imgproc
     LIBS += -L $${OPENCV_DIR}/lib/ -lopencv_core
 
+    TEST_FILES.files = test/*
+    TEST_FILES.path = test
+    QMAKE_BUNDLE_DATA += TEST_FILES
+
     git_tag.commands = $$quote("cd $$PWD && git describe --always --long --dirty --abbrev=10 --tags | awk \'{print \"\\\"\"\$$0\"\\\"\"}\' > git_tag.inc")
 }
 

@@ -173,15 +173,14 @@ jobs:
           git fetch --tags --force
           git describe --always --long --dirty --abbrev=10 --tags | awk '{print "\""$0"\""}' > git_tag.inc
           sed -i'.original' -e 's/git_tag.inc/git_tag.ci.inc/g' YUVviewer.pro
+          sed -i'.original' -e 's/QT_DIR=\/opt/QT_DIR=$(cd "$(dirname "$0")";pwd)/g' build_deb.sh
+          sed -i'.original' -e 's/\/home\/xiaoming\/Desktop\/opencv/\/usr\/local/g' build_deb.sh
           sed -i'.original' -e 's/\/home\/xiaoming\/Desktop\/opencv/\/usr\/local/g' partform_unix.pri
-          qmake -makefile
-          make
-          cd ./build_release/out
-          macdeployqt YUVviewer.app -dmg -verbose=2
+          ./build_dmg.sh
 
       - name: Upload build asserts
         uses: actions/upload-artifact@v2.2.4
         with:
           name: YUVviewer_macos
           path: |
-            ./build_release/out/YUVviewer.dmg
+            ./build_release/out
