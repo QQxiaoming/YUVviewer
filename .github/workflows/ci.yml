@@ -164,9 +164,10 @@ jobs:
           brew install --build-from-source cmake
           git clone https://github.com/opencv/opencv.git --branch 4.0.0 --depth 1
           cmake -S opencv -B opencv/build -D ENABLE_PRECOMPILED_HEADERS=OFF -D WITH_MSMF=OFF -D BUILD_PERF_TESTS=OFF -D BUILD_TESTS=OFF -D BUILD_WITH_DEBUG_INFO=OFF -D BUILD_DOCS=OFF -D CMAKE_BUILD_TYPE=RELEASE
+          cd ./opencv/build
           make
           make install
-          
+
       - name: Build all
         run: |
           git fetch --tags --force

@@ -79,9 +79,7 @@ win32:{
     git_tag.commands = $$quote("cd $$PWD && git describe --always --long --dirty --abbrev=10 --tags | $$PWD/tools/awk/awk.exe \'{print \"\\\"\"\$$0\"\\\"\"}\' > git_tag.inc")
 }
 
-
-
-unix:{
+unix:!macx:{
     QMAKE_RPATHDIR=$ORIGIN
     QMAKE_LFLAGS += -no-pie
 
@@ -93,6 +91,13 @@ unix:{
 
     LIBS += -L $${OPENCV_DIR}/lib/ -lopencv_imgproc
     LIBS += -L $${OPENCV_DIR}/lib/ -lopencv_core
+
+    git_tag.commands = $$quote("cd $$PWD && git describe --always --long --dirty --abbrev=10 --tags | awk \'{print \"\\\"\"\$$0\"\\\"\"}\' > git_tag.inc")
+}
+
+macx:{
+    QMAKE_RPATHDIR=$ORIGIN
+    QMAKE_LFLAGS += -no-pie
 
     git_tag.commands = $$quote("cd $$PWD && git describe --always --long --dirty --abbrev=10 --tags | awk \'{print \"\\\"\"\$$0\"\\\"\"}\' > git_tag.inc")
 }
