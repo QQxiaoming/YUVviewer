@@ -53,5 +53,9 @@ CMakeLists.txt.user*
 
 # vscode
 /.vscode
+
+# rust
+/target
+
 git_tag.inc
 git_tag.ci.inc

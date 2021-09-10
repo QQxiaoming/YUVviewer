@@ -34,7 +34,7 @@ jobs:
       - name: Install prerequisites
         run: |
           sudo apt update
-          sudo apt install -y make gcc
+          sudo apt install -y make gcc patchelf
 
       - name: Build all
         run: |
@@ -78,7 +78,7 @@ jobs:
       - name: Install prerequisites
         run: |
           sudo apt update
-          sudo apt install -y make gcc
+          sudo apt install -y make gcc patchelf
 
       - name: Build all
         run: |
@@ -148,3 +148,38 @@ jobs:
       - name: Run tests
         run: |
           ./InnoSetup/build/YUVviewer.exe --version
+
+  macos:
+    runs-on: macos-10.15
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Install Qt
+        uses: jurplel/install-qt-action@v2.14.0
+
+      - name: Install prerequisites
+        run: |
+          ruby - e  "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)" < /dev/null  2 > /dev/null
+          brew install --build-from-source cmake
+          git clone https://github.com/opencv/opencv.git --branch 4.0.0 --depth 1
+          cmake -S opencv -B opencv/build -D ENABLE_PRECOMPILED_HEADERS=OFF -D WITH_MSMF=OFF -D BUILD_PERF_TESTS=OFF -D BUILD_TESTS=OFF -D BUILD_WITH_DEBUG_INFO=OFF -D BUILD_DOCS=OFF -D CMAKE_BUILD_TYPE=RELEASE
+          make
+          make install
+          
+      - name: Build all
+        run: |
+          git fetch --tags --force
+          git describe --always --long --dirty --abbrev=10 --tags | awk '{print "\""$0"\""}' > git_tag.inc
+          sed -i'.original' -e 's/git_tag.inc/git_tag.ci.inc/g' YUVviewer.pro
+          qmake -makefile
+          make
+          cd ./build_release/out
+          macdeployqt YUVviewer.app -dmg -verbose=2
+
+      - name: Upload build asserts
+        uses: actions/upload-artifact@v2.2.4
+        with:
+          name: YUVviewer_macos
+          path: |
+            ./build_release/out/YUVviewer.dmg
