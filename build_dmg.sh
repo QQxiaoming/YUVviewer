@@ -24,6 +24,7 @@ YVYVIEWER_VERSION="V"$YVYVIEWER_MAJARVERSION""$YVYVIEWER_SUBVERSION""$YVYVIEWER_
 rm -rf .qmake.stash Makefile
 qmake -makefile
 make
+cp -R ./test ./build_release/out/YUVviewer.app/contents/resources/test
 cd ./build_release/out
 # 打包
 macdeployqt YUVviewer.app -dmg -verbose=2
