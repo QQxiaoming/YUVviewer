@@ -8,7 +8,7 @@
 
 ## 编译说明
 
-### windous
+### windows
 
 - 安装Qt、Inno Setup工具，编译opencv lib
 
