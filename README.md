@@ -1,4 +1,6 @@
 [![CI](https://github.com/zhiliao007/YUVviewer/actions/workflows/ci.yml/badge.svg?branch=master)](https://github.com/zhiliao007/YUVviewer/actions/workflows/ci.yml)
+[![GitHub tag (latest SemVer)](https://img.shields.io/github/tag/QQxiaoming/YUVviewer.svg)](https://github.com/QQxiaoming/YUVviewer/releases)
+[![GitHub All Releases](https://img.shields.io/github/downloads/QQxiaoming/YUVviewer/total.svg)](https://github.com/QQxiaoming/YUVviewer/releases)
 
 # YUVviewer
 
