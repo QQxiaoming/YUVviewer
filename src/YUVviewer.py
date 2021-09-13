@@ -11,7 +11,7 @@ from UI_YUVviewer import Ui_YUVviewer
 from configFile import ConfigFile
 from ImgViewer import ImgViewer
 
-VERSION = 'V0.4.4'
+VERSION = 'V0.4.5'
 GIT_TAG = 'error:not found!'
 with open('git_tag.inc') as fp:
     GIT_TAG = fp.read()
