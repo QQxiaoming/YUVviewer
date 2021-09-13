@@ -1,9 +1,9 @@
 
 #define MyAppName "YUVviewer"
-#define MyAppVersion "0.3.3"
-#define MyAppVersionInfoVersion "0.3.3.000"
-#define MyAppPublisher "zhiliao007 <wenqing.li@aliyun.com> QQxiaoming <2014500726@smail.xtu.edu.cn>"
-#define MyAppURL "https://github.com/zhiliao007/YUVviewer"
+#define MyAppVersion "#VERSION#"
+#define MyAppVersionInfoVersion "#VERSIONINFOVERSION#"
+#define MyAppPublisher "QQxiaoming <2014500726@smail.xtu.edu.cn> zhiliao007 <wenqing.li@aliyun.com>"
+#define MyAppURL "https://github.com/QQxiaoming/YUVviewer"
 #define MyAppExeName "YUVviewer.exe"
 #define MyAppOutputName "YUVviewer_setup"
 

@@ -1,12 +1,12 @@
 Package: yuvviewer
-Version: 0.34
+Version: #VERSION#
 Architecture: amd64
 Section: utils
 Depends: 
 Recommends: 
 Source: YUVviewer
-Installed-Size: 81203.2
+Installed-Size: #SIZE#
 Priority: extra
-Maintainer: zhiliao007 <wenqing.li@aliyun.com> QQxiaoming <2014500726@smail.xtu.edu.cn>
+Maintainer: QQxiaoming <2014500726@smail.xtu.edu.cn> zhiliao007 <wenqing.li@aliyun.com>
 Description: YUVviewer tools
-Homepage: https://github.com/zhiliao007/YUVviewer
+Homepage: https://github.com/QQxiaoming/YUVviewer

@@ -32,8 +32,8 @@ if exist ".\InnoSetup\build" (
 )
 :: 配置打包信息
 copy /y .\InnoSetup\build_setup.iss .\InnoSetup\build_temp_setup.iss
-.\tools\sed\sed.exe -i "s/#define MyAppVersion \"0.3.3\"/#define MyAppVersion \"%YVYVIEWER_VERSION%\"/g" .\InnoSetup\build_temp_setup.iss
-.\tools\sed\sed.exe -i "s/#define MyAppVersionInfoVersion \"0.3.3.000\"/#define MyAppVersionInfoVersion \"%YVYVIEWER_VERSION%.000\"/g" .\InnoSetup\build_temp_setup.iss
+.\tools\sed\sed.exe -i "s/#VERSION#/%YVYVIEWER_VERSION%/g" .\InnoSetup\build_temp_setup.iss
+.\tools\sed\sed.exe -i "s/#VERSIONINFOVERSION#/%YVYVIEWER_VERSION%.000/g" .\InnoSetup\build_temp_setup.iss
 del /f /q /a .\sed*
 :: 构建打包目录
 xcopy /y .\build_release\out\YUVviewer.exe .\InnoSetup\build\
