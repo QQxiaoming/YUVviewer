@@ -13,6 +13,8 @@
 #include <QScreen>
 #include <QDebug>
 #include <QString>
+#include <QSvgRenderer>
+#include <QXmlStreamReader>
 #include "YUVviewer.h"
 #include "ui_UI_YUVviewer.h"
 
@@ -54,6 +56,55 @@ const QList<QPair<QString, QStringList>> YUVviewer::frameSizeTypeDict = {
     {"4K UHD",  {"3840","2160"}},
     {"8K UHD",  {"7680","4320"}},
 };
+
+#define UI_SINGLE  (0xff000000ULL)
+#define UI_R       (0xff0000ULL|UI_SINGLE)
+#define UI_G       (0x00ff00ULL|UI_SINGLE)
+#define UI_B       (0x0000ffULL|UI_SINGLE)
+#define UI_Y       (0x808080ULL|UI_SINGLE)
+#define UI_U       (0xff00ffULL|UI_SINGLE)
+#define UI_V       (0x00ffffULL|UI_SINGLE)
+#define UI_RG53    (((0xff0000ULL|0x5000000)<<32)|(0x00ff00ULL|0x3000000))
+#define UI_GB35    (((0x00ff00ULL|0x3000000)<<32)|(0x0000ffULL|0x5000000))
+#define UI_BG53    (((0x0000ffULL|0x5000000)<<32)|(0x00ff00ULL|0x3000000))
+#define UI_GR35    (((0x00ff00ULL|0x3000000)<<32)|(0xff0000ULL|0x5000000))
+const QList<QPair<QString, QList<uint64_t>>> YUVviewer::YUVFormat_list = {
+    {"YV12",      {UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,
+                   UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,
+                   UI_U,UI_U,UI_U,UI_U,UI_U,UI_U,UI_U,UI_U,UI_U,UI_U,UI_U,UI_U,UI_U,UI_U,UI_U,UI_U,UI_U,UI_U,UI_U,UI_U,UI_U,UI_U,UI_U,UI_U,
+                   UI_V,UI_V,UI_V,UI_V,UI_V,UI_V,UI_V,UI_V,UI_V,UI_V,UI_V,UI_V,UI_V,UI_V,UI_V,UI_V,UI_V,UI_V,UI_V,UI_V,UI_V,UI_V,UI_V,UI_V}},
+    {"YU12/I420", {UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,
+                   UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,
+                   UI_V,UI_V,UI_V,UI_V,UI_V,UI_V,UI_V,UI_V,UI_V,UI_V,UI_V,UI_V,UI_V,UI_V,UI_V,UI_V,UI_V,UI_V,UI_V,UI_V,UI_V,UI_V,UI_V,UI_V,
+                   UI_U,UI_U,UI_U,UI_U,UI_U,UI_U,UI_U,UI_U,UI_U,UI_U,UI_U,UI_U,UI_U,UI_U,UI_U,UI_U,UI_U,UI_U,UI_U,UI_U,UI_U,UI_U,UI_U,UI_U}},
+    {"NV21",      {UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,
+                   UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,
+                   UI_V,UI_U,UI_V,UI_U,UI_V,UI_U,UI_V,UI_U,UI_V,UI_U,UI_V,UI_U,UI_V,UI_U,UI_V,UI_U,UI_V,UI_U,UI_V,UI_U,UI_V,UI_U,UI_V,UI_U,
+                   UI_V,UI_U,UI_V,UI_U,UI_V,UI_U,UI_V,UI_U,UI_V,UI_U,UI_V,UI_U,UI_V,UI_U,UI_V,UI_U,UI_V,UI_U,UI_V,UI_U,UI_V,UI_U,UI_V,UI_U}},
+    {"NV12",      {UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,
+                   UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,
+                   UI_U,UI_V,UI_U,UI_V,UI_U,UI_V,UI_U,UI_V,UI_U,UI_V,UI_U,UI_V,UI_U,UI_V,UI_U,UI_V,UI_U,UI_V,UI_U,UI_V,UI_U,UI_V,UI_U,UI_V,
+                   UI_U,UI_V,UI_U,UI_V,UI_U,UI_V,UI_U,UI_V,UI_U,UI_V,UI_U,UI_V,UI_U,UI_V,UI_U,UI_V,UI_U,UI_V,UI_U,UI_V,UI_U,UI_V,UI_U,UI_V}},
+    {"YUY2/YUYV", {UI_Y,UI_U,UI_Y,UI_V}},
+    {"YVYU",      {UI_Y,UI_V,UI_Y,UI_U}},
+    {"UYVY",      {UI_U,UI_Y,UI_V,UI_Y}},
+    {"4:4:4",     {UI_Y,UI_U,UI_V}},
+    {"RGB565_L",  {UI_GB35,UI_RG53}},
+    {"RGB565_B",  {UI_RG53,UI_GB35}},
+    {"BGR565_L",  {UI_GR35,UI_BG53}},
+    {"BGR565_B",  {UI_BG53,UI_GR35}},
+    {"RGB888",    {UI_R,UI_G,UI_B}},
+    {"BayerBG",   {UI_B,UI_G,UI_B,UI_G,UI_B,UI_G,UI_B,UI_G,UI_B,UI_G,UI_B,UI_G,UI_B,UI_G,UI_B,UI_G,UI_B,UI_G,UI_B,UI_G,UI_B,UI_G,UI_B,UI_G,
+                   UI_G,UI_R,UI_G,UI_R,UI_G,UI_R,UI_G,UI_R,UI_G,UI_R,UI_G,UI_R,UI_G,UI_R,UI_G,UI_R,UI_G,UI_R,UI_G,UI_R,UI_G,UI_R,UI_G,UI_R}},
+    {"BayerGB",   {UI_G,UI_B,UI_G,UI_B,UI_G,UI_B,UI_G,UI_B,UI_G,UI_B,UI_G,UI_B,UI_G,UI_B,UI_G,UI_B,UI_G,UI_B,UI_G,UI_B,UI_G,UI_B,UI_G,UI_B,
+                   UI_R,UI_G,UI_R,UI_G,UI_R,UI_G,UI_R,UI_G,UI_R,UI_G,UI_R,UI_G,UI_R,UI_G,UI_R,UI_G,UI_R,UI_G,UI_R,UI_G,UI_R,UI_G,UI_R,UI_G}},
+    {"BayerRG",   {UI_R,UI_G,UI_R,UI_G,UI_R,UI_G,UI_R,UI_G,UI_R,UI_G,UI_R,UI_G,UI_R,UI_G,UI_R,UI_G,UI_R,UI_G,UI_R,UI_G,UI_R,UI_G,UI_R,UI_G,
+                   UI_G,UI_B,UI_G,UI_B,UI_G,UI_B,UI_G,UI_B,UI_G,UI_B,UI_G,UI_B,UI_G,UI_B,UI_G,UI_B,UI_G,UI_B,UI_G,UI_B,UI_G,UI_B,UI_G,UI_B}},
+    {"BayerGR",   {UI_G,UI_R,UI_G,UI_R,UI_G,UI_R,UI_G,UI_R,UI_G,UI_R,UI_G,UI_R,UI_G,UI_R,UI_G,UI_R,UI_G,UI_R,UI_G,UI_R,UI_G,UI_R,UI_G,UI_R,
+                   UI_B,UI_G,UI_B,UI_G,UI_B,UI_G,UI_B,UI_G,UI_B,UI_G,UI_B,UI_G,UI_B,UI_G,UI_B,UI_G,UI_B,UI_G,UI_B,UI_G,UI_B,UI_G,UI_B,UI_G}}
+};
+
+
 
 
 YUVviewer::YUVviewer(QWidget *parent) :
@@ -109,16 +160,21 @@ YUVviewer::YUVviewer(QWidget *parent) :
         }
     }
 
-    QStringList YUVFormat_list = {"YV12", "YU12/I420", "NV21", "NV12", "YUY2/YUYV", "YVYU", "UYVY", "4:4:4","RGB565_L","RGB565_B","BGR565_L","BGR565_B","RGB888","BayerBG","BayerGB","BayerRG","BayerGR"};
+
     currentIndex = 0;
-    foreach(QString s ,YUVFormat_list)
-    {
-        if(s == YUVviewerConfigFile->config_dict.YUVFormat)
+    QList<uint64_t> color_list;
+    QList<QPair<QString, QList<uint64_t>>>::const_iterator yuvformat_it = YUVFormat_list.begin();
+    while (yuvformat_it != YUVFormat_list.end()) {
+        if(yuvformat_it->first == YUVviewerConfigFile->config_dict.YUVFormat)
         {
             ui->YUVFormat_ComboBox->setCurrentIndex(currentIndex);
+            color_list = yuvformat_it->second;
+            break;
         }
         currentIndex++;
+        yuvformat_it++;
     }
+    updateUiSvg(color_list);
 
     QStringList frameRate_list = {"30", "60", "120"};
     currentIndex = 0;
@@ -135,6 +191,7 @@ YUVviewer::YUVviewer(QWidget *parent) :
     ui->endFrame_LineEdit->setText(YUVviewerConfigFile->config_dict.endFrame);
 
 
+    QObject::connect(ui->YUVFormat_ComboBox, SIGNAL(currentTextChanged(const QString &)), this, SLOT(changeFormat(const QString &)));
     QObject::connect(ui->frameSizeType_Combo_RadioButton, SIGNAL(clicked()), this, SLOT(configComboBox()));
     QObject::connect(ui->frameSizeType_Other_RadioButton, SIGNAL(clicked()), this, SLOT(configOther()));
     QObject::connect(ui->frameSizeType_ComboBox, SIGNAL(currentTextChanged(const QString &)), this,SLOT(changeFrameSizeType(const QString &)));
@@ -163,6 +220,69 @@ YUVviewer::~YUVviewer()
         delete YUVviewerConfigFile;
     }
     delete ui;
+}
+
+QString YUVviewer::svgBoxSrc(int x, int y, int w, uint64_t c)
+{
+    if((c&UI_SINGLE) == UI_SINGLE) {
+        uint64_t color = c & 0xffffffULL;
+        return QString("<line class=\"0\" x1=\"%1\" y1=\"%2\" x2=\"%3\" y2=\"%4\" stroke=\"#%5\" fill=\"none\" stroke-width=\"%6\" />\n").arg(x).arg(y+w/2).arg(x+w).arg(y+w/2).arg(color,6,16,QLatin1Char('0')).arg(w);
+    } else {
+        uint64_t color0 = (c>>32) & 0xffffffULL;
+        uint64_t color1 = c & 0xffffffULL;
+        uint8_t fix_w = (w*(c>>56))/((c>>56)+((c & 0xff000000ULL)>>24));
+        QString ret = "";
+        ret += QString("<line class=\"0\" x1=\"%1\" y1=\"%2\" x2=\"%3\" y2=\"%4\" stroke=\"#%5\" fill=\"none\" stroke-width=\"%6\" />\n").arg(x).arg(y+w/2).arg(x+fix_w).arg(y+w/2).arg(color0,6,16,QLatin1Char('0')).arg(w);
+        ret += QString("<line class=\"0\" x1=\"%1\" y1=\"%2\" x2=\"%3\" y2=\"%4\" stroke=\"#%5\" fill=\"none\" stroke-width=\"%6\" />\n").arg(x+fix_w).arg(y+w/2).arg(x+w).arg(y+w/2).arg(color1,6,16,QLatin1Char('0')).arg(w);
+        return ret;
+    }
+}
+
+QString YUVviewer::svgBoxArraySrc(int x, int y, int w, int od, int xn, int yn,QList<uint64_t> ca)
+{
+    QString ret = "";
+    int num = ca.count();
+    if(num == 0) return  ret;
+    for(int i=0;i<yn;i++)
+    {
+        for(int j=0;j<xn;j++)
+        {
+            ret += svgBoxSrc(x+(w+od)*j,y+(w+od)*i,w,ca.at((i*xn+j)%num));
+        }
+    }
+    return  ret;
+}
+
+void YUVviewer::updateUiSvg(QList<uint64_t> color_list)
+{
+    QXmlStreamReader svgXmlStreamReader(
+        "<svg xmlns=\"http://www.w3.org/2000/svg\" version=\"1.1\">\n" +
+        svgBoxArraySrc(10,10,40,5,24,4,color_list) +
+        "</svg>\n");
+    QSvgRenderer svgRender;
+    svgRender.load(&svgXmlStreamReader);
+    QPixmap svgPixmap(480,80);
+    svgPixmap.fill(Qt::transparent);
+    QPainter svgPainter(&svgPixmap);
+    svgRender.render(&svgPainter);
+    ui->label_8->setPixmap(svgPixmap);
+    ui->label_8->setAlignment(Qt::AlignCenter);
+}
+
+void YUVviewer::changeFormat(const QString &text)
+{
+    QList<uint64_t> color_list;
+    QList<QPair<QString, QList<uint64_t>>>::const_iterator yuvformat_it = YUVFormat_list.begin();
+    while (yuvformat_it != YUVFormat_list.end()) {
+        if(yuvformat_it->first == text)
+        {
+            color_list = yuvformat_it->second;
+            break;
+        }
+        yuvformat_it++;
+    }
+    updateUiSvg(color_list);
+    ui->label_8->repaint();
 }
 
 void YUVviewer::configComboBox()

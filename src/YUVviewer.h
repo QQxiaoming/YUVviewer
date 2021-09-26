@@ -28,6 +28,7 @@ protected:
     void closeEvent(QCloseEvent *event);
 
 private slots:
+    void changeFormat(const QString &text);
     void configComboBox();
     void configOther();
     void changeFrameSizeType(const QString &text);
@@ -42,6 +43,9 @@ private slots:
     void help();
 
 private:
+    QString svgBoxSrc(int x, int y, int w, uint64_t c);
+    QString svgBoxArraySrc(int x, int y, int w, int od, int xn, int yn,QList<uint64_t> ca);
+    void updateUiSvg(QList<uint64_t> color_list);
     void showParaErrMessageBox(void);
     bool updateConfig(void);
     bool imgView(QStringList openfile_list);
@@ -49,6 +53,7 @@ private:
     ConfigFile *YUVviewerConfigFile;
     ImgViewer *imgViewer;
     static const QList<QPair<QString, QStringList>> frameSizeTypeDict;
+    static const QList<QPair<QString, QList<uint64_t>>> YUVFormat_list;
 };
 
 #endif // YUVVIEWER_H

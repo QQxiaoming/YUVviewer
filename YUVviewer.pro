@@ -14,7 +14,7 @@ unix:{
 ###############################################################################
 # 定义需要的Qt组件
 QT       += core gui
-QT       += xml
+QT       += xml svg
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 # 编译配置
