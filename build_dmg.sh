@@ -35,6 +35,7 @@ otool -L YUVviewer
 install_name_tool -change @rpath/libopencv_imgproc.4.0.dylib @executable_path/../Frameworks/libopencv_imgproc.dylib YUVviewer
 install_name_tool -change @rpath/libopencv_core.4.0.dylib @executable_path/../Frameworks/libopencv_core.dylib YUVviewer
 otool -L YUVviewer
+cd ./build_release/out
 macdeployqt YUVviewer.app -dmg -verbose=2
 echo build success!
 ###############################################################################
