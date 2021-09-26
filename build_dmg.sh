@@ -32,8 +32,8 @@ cp /usr/local/lib/libopencv_imgproc.dylib ./YUVviewer.app/Contents/Frameworks/li
 cp /usr/local/lib/libopencv_core.dylib ./YUVviewer.app/Contents/Frameworks/libopencv_core.dylib
 cd ./YUVviewer.app/Contents/MacOS
 otool -L YUVviewer
-install_name_tool -change /usr/local/lib/libopencv_imgproc.4.0.0.dylib @executable_path/../Frameworks/libopencv_imgproc.dylib YUVviewer
-install_name_tool -change /usr/local/lib/libopencv_core.4.0.0.dylib @executable_path/../Frameworks/libopencv_core.dylib YUVviewer
+install_name_tool -change @rpath/libopencv_imgproc.4.0.dylib @executable_path/../Frameworks/libopencv_imgproc.dylib YUVviewer
+install_name_tool -change @rpath/libopencv_core.4.0.dylib @executable_path/../Frameworks/libopencv_core.dylib YUVviewer
 otool -L YUVviewer
 macdeployqt YUVviewer.app -dmg -verbose=2
 echo build success!
