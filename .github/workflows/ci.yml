@@ -184,3 +184,10 @@ jobs:
           name: YUVviewer_macos
           path: |
             ./build_release/out/YUVviewer.dmg
+
+      - name: Run tests
+        run: |
+          sudo rm -rf /usr/local/lib/libopencv_imgproc.4.0.dylib /usr/local/lib/libopencv_core.4.0.dylib
+          sudo hdiutil attach ./build_release/out/YUVviewer.dmg
+          /Volumes/YUVviewer/YUVviewer.app/Contents/MacOS/YUVviewer --version
+        

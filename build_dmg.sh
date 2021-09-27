@@ -28,14 +28,11 @@ cp -R ./test ./build_release/out/YUVviewer.app/contents/resources/test
 cd ./build_release/out
 # 打包
 macdeployqt YUVviewer.app
-cp /usr/local/lib/libopencv_imgproc.dylib ./YUVviewer.app/Contents/Frameworks/libopencv_imgproc.dylib
-cp /usr/local/lib/libopencv_core.dylib ./YUVviewer.app/Contents/Frameworks/libopencv_core.dylib
+cp /usr/local/lib/libopencv_imgproc.4.0.dylib ./YUVviewer.app/Contents/Frameworks/libopencv_imgproc.4.0.dylib
+cp /usr/local/lib/libopencv_core.4.0.dylib ./YUVviewer.app/Contents/Frameworks/libopencv_core.4.0.dylib
 cd ./YUVviewer.app/Contents/MacOS
 otool -L YUVviewer
-install_name_tool -change @rpath/libopencv_imgproc.4.0.dylib @executable_path/../Frameworks/libopencv_imgproc.dylib YUVviewer
-install_name_tool -change @rpath/libopencv_core.4.0.dylib @executable_path/../Frameworks/libopencv_core.dylib YUVviewer
-otool -L YUVviewer
-cd ../../..
+cd ./build_release/out
 macdeployqt YUVviewer.app -dmg -verbose=2
 echo build success!
 ###############################################################################
