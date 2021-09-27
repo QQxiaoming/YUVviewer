@@ -9,7 +9,7 @@ OPENCV_DIR=/home/xiaoming/Desktop/opencv
 # 定义版本号
 YVYVIEWER_MAJARVERSION="0"
 YVYVIEWER_SUBVERSION="4"
-YVYVIEWER_REVISION="6"
+YVYVIEWER_REVISION="7"
 ###############################################################################
 
 
@@ -28,11 +28,9 @@ cp -R ./test ./build_release/out/YUVviewer.app/contents/resources/test
 cd ./build_release/out
 # 打包
 macdeployqt YUVviewer.app
-cp /usr/local/lib/libopencv_imgproc.4.0.dylib ./YUVviewer.app/Contents/Frameworks/libopencv_imgproc.4.0.dylib
-cp /usr/local/lib/libopencv_core.4.0.dylib ./YUVviewer.app/Contents/Frameworks/libopencv_core.4.0.dylib
-cd ./YUVviewer.app/Contents/MacOS
-otool -L YUVviewer
-cd ./build_release/out
+cp $OPENCV_DIR/lib/libopencv_imgproc.4.0.dylib ./YUVviewer.app/Contents/Frameworks/libopencv_imgproc.4.0.dylib
+cp $OPENCV_DIR/lib/libopencv_core.4.0.dylib ./YUVviewer.app/Contents/Frameworks/libopencv_core.4.0.dylib
+otool -L ./YUVviewer.app/Contents/MacOS/YUVviewer
 macdeployqt YUVviewer.app -dmg -verbose=2
 echo build success!
 ###############################################################################

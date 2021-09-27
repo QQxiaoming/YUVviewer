@@ -20,8 +20,6 @@
 ###############################################################################
 # 定义opencv lib路径
 OPENCV_DIR=D:\Qt\opencv4.2.0
-# 定义版本号路径
-YVYVIEWER_VERSION=0.3.4
 ###############################################################################
 ```
 
@@ -36,8 +34,6 @@ set "QT_TOOLS_DIR=D:/Qt/Qt5.9.2/Tools/mingw530_32/bin"
 set "INNO_SETUP_DIR=C:/Program Files (x86)/Inno Setup 6"
 :: 定义opencv目录
 set "OPENCV_DIR=D:/Qt/opencv4.2.0/x64/mingw/bin"
-:: 定义版本号
-set "YVYVIEWER_VERSION=0.3.4"
 :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 ```
 
@@ -53,8 +49,6 @@ set "YVYVIEWER_VERSION=0.3.4"
 ###############################################################################
 # 定义opencv lib路径
 OPENCV_DIR=/home/xiaoming/Desktop/opencv
-# 定义版本号路径
-YVYVIEWER_VERSION=0.3.4
 ###############################################################################
 ```
 
@@ -66,15 +60,36 @@ YVYVIEWER_VERSION=0.3.4
 QT_DIR=/opt/Qt5.12.2/5.12.2/gcc_64
 # 定义opencv目录
 OPENCV_DIR=/home/xiaoming/Desktop/opencv
-
-# 定义版本号
-YVYVIEWER_MAJARVERSION="0"
-YVYVIEWER_SUBVERSION="3"
-YVYVIEWER_REVISION="4"
 ###############################################################################
 ```
 
 - 执行build_deb.sh脚本等待编译打包完成。
+
+### macos
+
+- 安装Qt工具，编译opencv lib。
+
+- 修改partform_unix.pri文件以下内容
+
+```s
+###############################################################################
+# 定义opencv lib路径
+OPENCV_DIR=/home/xiaoming/Desktop/opencv
+###############################################################################
+```
+
+- 修改build_dmg.sh文件以下内容
+
+```sh
+###############################################################################
+# 定义QT目录
+QT_DIR=/opt/Qt5.12.2/5.12.2/gcc_64
+# 定义opencv目录
+OPENCV_DIR=/home/xiaoming/Desktop/opencv
+###############################################################################
+```
+
+- 执行build_dmg.sh脚本等待编译打包完成。
 
 ## python版本
 

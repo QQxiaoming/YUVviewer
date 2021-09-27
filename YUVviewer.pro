@@ -97,7 +97,7 @@ unix:!macx:{
 
 macx:{
     QMAKE_RPATHDIR=$ORIGIN
-    QMAKE_LFLAGS += -no-pie
+    QMAKE_LFLAGS += -Wl,-no-pie
     
     INCLUDEPATH += -I $${OPENCV_DIR}/include/opencv4
     DEPENDPATH +=$${OPENCV_DIR}/include/opencv4
