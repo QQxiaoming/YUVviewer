@@ -631,7 +631,7 @@ void YUVviewer::openFolder()
 
 void YUVviewer::about()
 {
-    QMessageBox::about(this, "About", "版本 \n " + VERSION + "\n提交 \n " + GIT_TAG + "\n作者\n wenqing.li@aliyun.com \n qiaoqm@aliyun.com");
+    QMessageBox::about(this, "About", "Version \n " + VERSION + "\nCommit \n " + GIT_TAG + "\nAuthor\n qiaoqm@aliyun.com \n wenqing.li@aliyun.com \nWebsite\n https://github.com/QQxiaoming/YUVviewer");
 }
 
 void YUVviewer::help()
@@ -657,8 +657,11 @@ int main(int argc, char *argv[])
             return 0;
         }
     }
-
     QApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
+    QApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
+    QApplication::setAttribute(Qt::AA_DontUseNativeDialogs);
+    QApplication::setAttribute(Qt::AA_DontUseNativeMenuBar);
+    QApplication::setAttribute(Qt::AA_DontCreateNativeWidgetSiblings);
     QApplication application(argc, argv);
     QFont font = application.font();
     font.setFamily(font.defaultFamily());
