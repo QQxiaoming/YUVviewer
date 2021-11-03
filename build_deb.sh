@@ -19,7 +19,7 @@ export LD_LIBRARY_PATH=$OPENCV_DIR/lib:$QT_DIR/lib:$LD_LIBRARY_PATH
 export QT_PLUGIN_PATH=$QT_DIR/plugins:$QT_PLUGIN_PATH
 export QML2_IMPORT_PATH=$QT_DIR/qml:$QML2_IMPORT_PATH
 # 合成版本号
-YVYVIEWER_VERSION="V"$YVYVIEWER_MAJARVERSION""$YVYVIEWER_SUBVERSION""$YVYVIEWER_REVISION""
+YVYVIEWER_VERSION="V"$YVYVIEWER_MAJARVERSION$YVYVIEWER_SUBVERSION$YVYVIEWER_REVISION
 # 编译
 rm -rf .qmake.stash Makefile
 qmake ./YUVviewer.pro -spec linux-g++ CONFIG+=qtquickcompiler
@@ -39,10 +39,8 @@ rm -rf ./dpkg/YUVviewer_Linux_"$YVYVIEWER_VERSION"_x86_64/opt/YUVviewer/doc ./dp
 cp ./img/ico.png ./dpkg/YUVviewer_Linux_"$YVYVIEWER_VERSION"_x86_64/opt/YUVviewer/YUVviewer.png
 # 配置打包信息
 sed -i "s/#VERSION#/$YVYVIEWER_MAJARVERSION.$YVYVIEWER_SUBVERSION$YVYVIEWER_REVISION/g" ./dpkg/YUVviewer_Linux_"$YVYVIEWER_VERSION"_x86_64/DEBIAN/control
-cd ./dpkg/YUVviewer_Linux_"$YVYVIEWER_VERSION"_x86_64
-SIZE=$(du -sh -B 1024 ./ | sed "s/.\///g")
+SIZE=$(du -sh -B 1024 ./dpkg/YUVviewer_Linux_"$YVYVIEWER_VERSION"_x86_64 | sed "s/.\///g")
 InstalledSize=$SIZE
-cd -
 sed -i "s/#SIZE#/$InstalledSize/g" ./dpkg/YUVviewer_Linux_"$YVYVIEWER_VERSION"_x86_64/DEBIAN/control
 chmod 755 ./dpkg/YUVviewer_Linux_"$YVYVIEWER_VERSION"_x86_64/* -R
 # 打包

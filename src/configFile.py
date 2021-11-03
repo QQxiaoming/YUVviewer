@@ -70,8 +70,8 @@ class ConfigFile(object):
                 elem.text = i + num * " "
             if not elem.tail or not elem.tail.strip():
                 elem.tail = i
-            for elem in elem:
-                self._xml_indent(elem, num, level + 1)
+            for elemit in elem:
+                self._xml_indent(elemit, num, level + 1)
             if not elem.tail or not elem.tail.strip():
                 elem.tail = i
         else:

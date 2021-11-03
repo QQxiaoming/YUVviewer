@@ -67,40 +67,39 @@ class ImgViewer(QWidget, Ui_ImgViewerWindow):
         if decoder is None:
             # 未能成功获取则返回无法解码
             return False
-        else:
-            # 成功获取解码器则准备解码
-            # 定义空列表
-            self.img_list = []
-            self.ui.imgViewer.setText('')
-            self.filelist = []
-            # 遍历文件列表
-            for filename in filelist:
-                try:
-                    # 使用获取的解码函数进行解码得到RGB的原始帧列表
-                    frame_RGB_list = decoder(filename, W, H, startframe, totalframe)
-                except Exception as e:
-                    continue
-                # 定义img列表用来保存每一帧的QPixmap
-                img_RGB_list = []
-                # 将原始帧转换到QPixmap并保存到img列表
-                for img in frame_RGB_list:
-                    # 提取图像的通道和尺寸，用于将OpenCV下的image转换成Qimage
-                    height, width, channel = img.shape
-                    bytesPerline = 3 * width
-                    qImg = QImage(img.data, width, height, bytesPerline, QImage.Format_RGB888).rgbSwapped()
-                    img_RGB_list.append(qImg)
-                # img_RGB_list以及文件名存入列表
-                self.img_list.append(img_RGB_list)
-                self.filelist.append(os.path.split(filename)[1])
-            #设置显示第一个YUV文件的第一帧图像
-            self.currentImg_RGB_list = self.img_list[0]
-            self.currentImg = self.currentImg_RGB_list[0]
-            self.setWindowTitle(self.filelist[0]+'-'+str(0))
-            self.scaled_img = self.currentImg.scaled(self.size())
-            if self.flipRGB:
-                    self.scaled_img = self.scaled_img.rgbSwapped()
-            self.point = QPoint(0, 0)
-            return True
+        # 成功获取解码器则准备解码
+        # 定义空列表
+        self.img_list = []
+        self.ui.imgViewer.setText('')
+        self.filelist = []
+        # 遍历文件列表
+        for filename in filelist:
+            try:
+                # 使用获取的解码函数进行解码得到RGB的原始帧列表
+                frame_RGB_list = decoder(filename, W, H, startframe, totalframe)
+            except Exception as e:
+                continue
+            # 定义img列表用来保存每一帧的QPixmap
+            img_RGB_list = []
+            # 将原始帧转换到QPixmap并保存到img列表
+            for img in frame_RGB_list:
+                # 提取图像的通道和尺寸，用于将OpenCV下的image转换成Qimage
+                height, width, channel = img.shape
+                bytesPerline = 3 * width
+                qImg = QImage(img.data, width, height, bytesPerline, QImage.Format_RGB888).rgbSwapped()
+                img_RGB_list.append(qImg)
+            # img_RGB_list以及文件名存入列表
+            self.img_list.append(img_RGB_list)
+            self.filelist.append(os.path.split(filename)[1])
+        #设置显示第一个YUV文件的第一帧图像
+        self.currentImg_RGB_list = self.img_list[0]
+        self.currentImg = self.currentImg_RGB_list[0]
+        self.setWindowTitle(self.filelist[0]+'-'+str(0))
+        self.scaled_img = self.currentImg.scaled(self.size())
+        if self.flipRGB:
+                self.scaled_img = self.scaled_img.rgbSwapped()
+        self.point = QPoint(0, 0)
+        return True
 
     def reciveimgdata(self,img_RGB_list,filename):
         if not img_RGB_list == []:

@@ -66,7 +66,7 @@ class YUVviewer(QtWidgets.QMainWindow, Ui_YUVviewer):
         for key,value in self.frameSizeTypeDict.items():
             self.ui.frameSizeType_ComboBox.insertItem(self.ui.frameSizeType_ComboBox.count(), key)
 
-        self.YUVviewerConfigFile = ConfigFile(os.path.join(os.getcwd(),'YUVViewer.ini'));
+        self.YUVviewerConfigFile = ConfigFile(os.path.join(os.getcwd(),'YUVViewer.ini'))
         if self.YUVviewerConfigFile.config_dict['frameSizeType'] == 'Other':
             self.ui.frameSizeType_Other_RadioButton.setChecked(True)
             self.ui.frameSizeType_ComboBox.setEnabled(False)
@@ -231,15 +231,17 @@ class YUVviewer(QtWidgets.QMainWindow, Ui_YUVviewer):
                     self.YUVviewerConfigFile.config_dict['frameRate'] = self.ui.frameRate_ComboBox.currentText()
                     self.YUVviewerConfigFile.config_dict['startFrame'] = self.ui.startFrame_LineEdit.text()
                     self.YUVviewerConfigFile.config_dict['endFrame'] = self.ui.endFrame_LineEdit.text()
-                    return True
+                    ret = True
                 else:
                     QMessageBox.critical(self, 'Error', 'frameSize invalid!!', QMessageBox.Ok)
-                    return False
+                    ret = False
             else:
                 QMessageBox.critical(self, 'Error', 'startFrame or endFrame invalid!!', QMessageBox.Ok)
-                return False
+                ret = False
         except Exception as e:
             QMessageBox.critical(self, 'Error', 'parameter invalid!!', QMessageBox.Ok)
+            ret = False
+        return ret
 
     def _imgView(self, openfile_list):
         if openfile_list:
@@ -259,25 +261,23 @@ class YUVviewer(QtWidgets.QMainWindow, Ui_YUVviewer):
                 self.show()
                 return False
             #单线程的方法
-            '''
-            try:
-                ret = self.imgViewer.setFileList(openfile_list,
-                                self.YUVviewerConfigFile.config_dict['YUVFormat'],
-                                frameSize_Width,
-                                frameSize_Height,
-                                int(self.YUVviewerConfigFile.config_dict['startFrame']),
-                                int(self.YUVviewerConfigFile.config_dict['endFrame']) - int(self.YUVviewerConfigFile.config_dict['startFrame']) + 1,
-                                )
-                if not ret:
-                    QMessageBox.critical(self, 'Error', 'unsupport YUVFormat!!', QMessageBox.Ok)
-                    self.show()
-                    return False
-            
-            except Exception as e:
-                QMessageBox.critical(self, 'Error', 'unknow error!!', QMessageBox.Ok)
-                self.show()
-                return False
-            '''
+            #try:
+            #    ret = self.imgViewer.setFileList(openfile_list,
+            #                    self.YUVviewerConfigFile.config_dict['YUVFormat'],
+            #                    frameSize_Width,
+            #                    frameSize_Height,
+            #                    int(self.YUVviewerConfigFile.config_dict['startFrame']),
+            #                    int(self.YUVviewerConfigFile.config_dict['endFrame']) - int(self.YUVviewerConfigFile.config_dict['startFrame']) + 1,
+            #                    )
+            #    if not ret:
+            #        QMessageBox.critical(self, 'Error', 'unsupport YUVFormat!!', QMessageBox.Ok)
+            #        self.show()
+            #        return False
+            #
+            #except Exception as e:
+            #    QMessageBox.critical(self, 'Error', 'unknow error!!', QMessageBox.Ok)
+            #    self.show()
+            #    return False
             if frameSize_Width > frameSize_Height:
                 self.imgViewer.resize(800, frameSize_Height/frameSize_Width*800)
             else:

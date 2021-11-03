@@ -1,4 +1,5 @@
 [![CI](https://github.com/QQxiaoming/YUVviewer/actions/workflows/ci.yml/badge.svg?branch=master)](https://github.com/QQxiaoming/YUVviewer/actions/workflows/ci.yml)
+[![CodeFactor](https://www.codefactor.io/repository/github/qqxiaoming/yuvviewer/badge)](https://www.codefactor.io/repository/github/qqxiaoming/yuvviewer)
 [![GitHub tag (latest SemVer)](https://img.shields.io/github/tag/QQxiaoming/YUVviewer.svg)](https://github.com/QQxiaoming/YUVviewer/releases)
 [![GitHub All Releases](https://img.shields.io/github/downloads/QQxiaoming/YUVviewer/total.svg)](https://github.com/QQxiaoming/YUVviewer/releases)
 

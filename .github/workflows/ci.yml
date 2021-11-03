@@ -30,7 +30,7 @@ jobs:
         with:
           opencv-version: 4.0.0
           opencv-extra-modules: false
-          
+
       - name: Install prerequisites
         run: |
           sudo apt update
@@ -55,9 +55,9 @@ jobs:
 
       - name: Run tests
         run: |
-          if ls ./dpkg | grep ".deb" ; then echo "Pass"; else echo "Failed" && exit 1; fi; 
+          if ls ./dpkg | grep ".deb" ; then echo "Pass"; else echo "Failed" && exit 1; fi;
           timeout --foreground -s SIGKILL 20s ./dpkg/YUVviewer_Linux_*/opt/YUVviewer/YUVviewer --version > >(tee run.log) || {
-            if cat run.log | grep "YUVviewer" ; then echo "Pass" && exit 0; else echo "Failed" && exit 1; fi; 
+            if cat run.log | grep "YUVviewer" ; then echo "Pass" && exit 0; else echo "Failed" && exit 1; fi;
           }
 
   ubuntu-1804:
@@ -99,11 +99,11 @@ jobs:
 
       - name: Run tests
         run: |
-          if ls ./dpkg | grep ".deb" ; then echo "Pass"; else echo "Failed" && exit 1; fi; 
+          if ls ./dpkg | grep ".deb" ; then echo "Pass"; else echo "Failed" && exit 1; fi;
           timeout --foreground -s SIGKILL 20s ./dpkg/YUVviewer_Linux_*/opt/YUVviewer/YUVviewer --version > >(tee run.log) || {
-            if cat run.log | grep "YUVviewer" ; then echo "Pass" && exit 0; else echo "Failed" && exit 1; fi; 
+            if cat run.log | grep "YUVviewer" ; then echo "Pass" && exit 0; else echo "Failed" && exit 1; fi;
           }
-      
+
   windows:
     runs-on: windows-2019
 
@@ -114,7 +114,7 @@ jobs:
         uses: jurplel/install-qt-action@v2.14.0
         with:
           arch: win64_mingw81
-          
+
       - name: Install prerequisites
         run: |
           Choco-Install -PackageName innosetup --force
@@ -189,4 +189,3 @@ jobs:
         run: |
           sudo hdiutil attach ./build_release/out/YUVviewer.dmg
           /Volumes/YUVviewer/YUVviewer.app/Contents/MacOS/YUVviewer --version
-        
