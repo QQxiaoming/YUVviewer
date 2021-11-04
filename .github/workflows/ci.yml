@@ -189,3 +189,19 @@ jobs:
         run: |
           sudo hdiutil attach ./build_release/out/YUVviewer.dmg
           /Volumes/YUVviewer/YUVviewer.app/Contents/MacOS/YUVviewer --version
+
+  python_version:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Install prerequisites
+        run: |
+          sudo apt update
+          sudo apt install -y make gcc patchelf python3-numpy python3-opencv python3-pyqt5
+
+      - name: Run tests
+        run: |
+          git describe --always --long --dirty --abbrev=10 --tags | awk '{print "\""$0"\""}' > git_tag.inc
+          python ./src/YUVviewer.py --version
