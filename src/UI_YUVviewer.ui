@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>550</width>
+    <width>750</width>
     <height>255</height>
    </rect>
   </property>
@@ -176,6 +176,26 @@
             <item>
              <property name="text">
               <string>BayerGR</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>BayerBG_RAW12</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>BayerGB_RAW12</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>BayerRG_RAW12</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>BayerGR_RAW12</string>
              </property>
             </item>
            </widget>

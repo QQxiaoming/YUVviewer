@@ -34,6 +34,10 @@ public:
     static QList<cv::Mat*> bayerGB(QString yuvfilename,int W, int H, int startframe, int totalframe);
     static QList<cv::Mat*> bayerRG(QString yuvfilename,int W, int H, int startframe, int totalframe);
     static QList<cv::Mat*> bayerGR(QString yuvfilename,int W, int H, int startframe, int totalframe);
+    static QList<cv::Mat*> bayerBG_RAW12(QString yuvfilename,int W, int H, int startframe, int totalframe);
+    static QList<cv::Mat*> bayerGB_RAW12(QString yuvfilename,int W, int H, int startframe, int totalframe);
+    static QList<cv::Mat*> bayerRG_RAW12(QString yuvfilename,int W, int H, int startframe, int totalframe);
+    static QList<cv::Mat*> bayerGR_RAW12(QString yuvfilename,int W, int H, int startframe, int totalframe);
     static QMap<QString, yuvdecoder_t> yuvdecoder_map;
 };
 
