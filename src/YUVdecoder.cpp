@@ -380,7 +380,7 @@ QList<cv::Mat*> YUV2RGB::rgb888(QString yuvfilename,int W, int H, int startframe
     return rgbImglist;
 }
 
-QList<cv::Mat*> YUV2RGB::bayerBG(QString yuvfilename,int W, int H, int startframe, int totalframe)
+QList<cv::Mat*> YUV2RGB::bayer(QString yuvfilename,int W, int H, int startframe, int totalframe,int code,int bit)
 {
     QList<cv::Mat*> rgbImglist;
     cv::Mat yuvImg;
@@ -389,225 +389,98 @@ QList<cv::Mat*> YUV2RGB::bayerBG(QString yuvfilename,int W, int H, int startfram
     file.open(QFile::ReadOnly);
     file.seek(startframe*W*H);
     QDataStream out(&file);
+    char *temp = nullptr;
+
+    switch (bit) {
+    case 8:
+        break;
+    case 12:
+        temp = new char[W*H*3/2];
+        break;
+    default:
+        break;
+    }
 
     while((!out.atEnd()) && (totalframe != 0))
     {
         cv::Mat *rgbImg = new cv::Mat;
         yuvImg.create(H, W, CV_8UC1);
-        out.readRawData((char *)yuvImg.data,W*H);
-        cvtColor(yuvImg, *rgbImg, cv::COLOR_BayerBG2RGB);
+        switch (bit) {
+        case 8:
+        {
+            out.readRawData((char *)yuvImg.data,W*H);
+            break;
+        }
+        case 12:
+        {
+            out.readRawData(temp,W*H*3/2);
+            for(int i=0,j=0;i<W*H*3/2;i+=3) {
+                uint16_t piex[3] = {(uint16_t)temp[i],(uint16_t)temp[i+1],(uint16_t)temp[i+1]};
+                yuvImg.data[j] = (uint8_t)(((piex[0]<<4) | (piex[2]&0xf))/16);
+                yuvImg.data[j+1] = (uint8_t)(((piex[1]<<4) | ((piex[2]>>4)&0xf))/16);
+                j+=2;
+            }
+            break;
+        }
+        default:
+            break;
+        }
+        cvtColor(yuvImg, *rgbImg, code);
         totalframe--;
         rgbImglist.insert(rgbImglist.end(), rgbImg);
+    }
+
+    switch (bit) {
+    case 8:
+        break;
+    case 12:
+        delete[] temp;
+        break;
+    default:
+        break;
     }
 
     file.close();
 
     return rgbImglist;
+}
+
+QList<cv::Mat*> YUV2RGB::bayerBG(QString yuvfilename,int W, int H, int startframe, int totalframe)
+{
+    return bayer(yuvfilename,W,H,startframe,totalframe,cv::COLOR_BayerBG2RGB,8);
 }
 
 QList<cv::Mat*> YUV2RGB::bayerGB(QString yuvfilename,int W, int H, int startframe, int totalframe)
 {
-    QList<cv::Mat*> rgbImglist;
-    cv::Mat yuvImg;
-    QFile file(yuvfilename);
-    QFileInfo fileInfo(yuvfilename);
-    file.open(QFile::ReadOnly);
-    file.seek(startframe*W*H);
-    QDataStream out(&file);
-
-    while((!out.atEnd()) && (totalframe != 0))
-    {
-        cv::Mat *rgbImg = new cv::Mat;
-        yuvImg.create(H, W, CV_8UC1);
-        out.readRawData((char *)yuvImg.data,W*H);
-        cvtColor(yuvImg, *rgbImg, cv::COLOR_BayerGB2RGB);
-        totalframe--;
-        rgbImglist.insert(rgbImglist.end(), rgbImg);
-    }
-
-    file.close();
-
-    return rgbImglist;
+    return bayer(yuvfilename,W,H,startframe,totalframe,cv::COLOR_BayerGB2RGB,8);
 }
 
 QList<cv::Mat*> YUV2RGB::bayerRG(QString yuvfilename,int W, int H, int startframe, int totalframe)
 {
-    QList<cv::Mat*> rgbImglist;
-    cv::Mat yuvImg;
-    QFile file(yuvfilename);
-    QFileInfo fileInfo(yuvfilename);
-    file.open(QFile::ReadOnly);
-    file.seek(startframe*W*H);
-    QDataStream out(&file);
-
-    while((!out.atEnd()) && (totalframe != 0))
-    {
-        cv::Mat *rgbImg = new cv::Mat;
-        yuvImg.create(H, W, CV_8UC1);
-        out.readRawData((char *)yuvImg.data,W*H);
-        cvtColor(yuvImg, *rgbImg, cv::COLOR_BayerRG2RGB);
-        totalframe--;
-        rgbImglist.insert(rgbImglist.end(), rgbImg);
-    }
-
-    file.close();
-
-    return rgbImglist;
+    return bayer(yuvfilename,W,H,startframe,totalframe,cv::COLOR_BayerRG2RGB,8);
 }
 
 QList<cv::Mat*> YUV2RGB::bayerGR(QString yuvfilename,int W, int H, int startframe, int totalframe)
 {
-    QList<cv::Mat*> rgbImglist;
-    cv::Mat yuvImg;
-    QFile file(yuvfilename);
-    QFileInfo fileInfo(yuvfilename);
-    file.open(QFile::ReadOnly);
-    file.seek(startframe*W*H);
-    QDataStream out(&file);
-
-    while((!out.atEnd()) && (totalframe != 0))
-    {
-        cv::Mat *rgbImg = new cv::Mat;
-        yuvImg.create(H, W, CV_8UC1);
-        out.readRawData((char *)yuvImg.data,W*H);
-        cvtColor(yuvImg, *rgbImg, cv::COLOR_BayerGR2RGB);
-        totalframe--;
-        rgbImglist.insert(rgbImglist.end(), rgbImg);
-    }
-
-    file.close();
-
-    return rgbImglist;
+    return bayer(yuvfilename,W,H,startframe,totalframe,cv::COLOR_BayerGR2RGB,8);
 }
 
 QList<cv::Mat*> YUV2RGB::bayerBG_RAW12(QString yuvfilename,int W, int H, int startframe, int totalframe)
 {
-    QList<cv::Mat*> rgbImglist;
-    cv::Mat yuvImg;
-    QFile file(yuvfilename);
-    QFileInfo fileInfo(yuvfilename);
-    file.open(QFile::ReadOnly);
-    file.seek(startframe*W*H);
-    QDataStream out(&file);
-    char *temp = new char[W*H*3/2];
-
-    while((!out.atEnd()) && (totalframe != 0))
-    {
-        cv::Mat *rgbImg = new cv::Mat;
-        yuvImg.create(H, W, CV_8UC1);
-        out.readRawData(temp,W*H*3/2);
-        for(int i=0,j=0;i<W*H*3/2;i+=3) {
-            uint16_t piex[3] = {(uint16_t)temp[i],(uint16_t)temp[i+1],(uint16_t)temp[i+1]};
-            yuvImg.data[j] = (uint8_t)(((piex[0]<<4) | (piex[2]&0xf))/16);
-            yuvImg.data[j+1] = (uint8_t)(((piex[1]<<4) | ((piex[2]>>4)&0xf))/16);
-            j+=2;
-        }
-        cvtColor(yuvImg, *rgbImg, cv::COLOR_BayerBG2RGB);
-        totalframe--;
-        rgbImglist.insert(rgbImglist.end(), rgbImg);
-    }
-
-    delete[] temp;
-    file.close();
-
-    return rgbImglist;
+    return bayer(yuvfilename,W,H,startframe,totalframe,cv::COLOR_BayerBG2RGB,12);
 }
 
 QList<cv::Mat*> YUV2RGB::bayerGB_RAW12(QString yuvfilename,int W, int H, int startframe, int totalframe)
 {
-    QList<cv::Mat*> rgbImglist;
-    cv::Mat yuvImg;
-    QFile file(yuvfilename);
-    QFileInfo fileInfo(yuvfilename);
-    file.open(QFile::ReadOnly);
-    file.seek(startframe*W*H);
-    QDataStream out(&file);
-    char *temp = new char[W*H*3/2];
-
-    while((!out.atEnd()) && (totalframe != 0))
-    {
-        cv::Mat *rgbImg = new cv::Mat;
-        yuvImg.create(H, W, CV_8UC1);
-        out.readRawData(temp,W*H*3/2);
-        for(int i=0,j=0;i<W*H*3/2;i+=3) {
-            uint16_t piex[3] = {(uint16_t)temp[i],(uint16_t)temp[i+1],(uint16_t)temp[i+1]};
-            yuvImg.data[j] = (uint8_t)(((piex[0]<<4) | (piex[2]&0xf))/16);
-            yuvImg.data[j+1] = (uint8_t)(((piex[1]<<4) | ((piex[2]>>4)&0xf))/16);
-            j+=2;
-        }
-        cvtColor(yuvImg, *rgbImg, cv::COLOR_BayerGB2RGB);
-        totalframe--;
-        rgbImglist.insert(rgbImglist.end(), rgbImg);
-    }
-
-    delete[] temp;
-    file.close();
-
-    return rgbImglist;
+    return bayer(yuvfilename,W,H,startframe,totalframe,cv::COLOR_BayerGB2RGB,12);
 }
 
 QList<cv::Mat*> YUV2RGB::bayerRG_RAW12(QString yuvfilename,int W, int H, int startframe, int totalframe)
 {
-    QList<cv::Mat*> rgbImglist;
-    cv::Mat yuvImg;
-    QFile file(yuvfilename);
-    QFileInfo fileInfo(yuvfilename);
-    file.open(QFile::ReadOnly);
-    file.seek(startframe*W*H);
-    QDataStream out(&file);
-    char *temp = new char[W*H*3/2];
-
-    while((!out.atEnd()) && (totalframe != 0))
-    {
-        cv::Mat *rgbImg = new cv::Mat;
-        yuvImg.create(H, W, CV_8UC1);
-        out.readRawData(temp,W*H*3/2);
-        for(int i=0,j=0;i<W*H*3/2;i+=3) {
-            uint16_t piex[3] = {(uint16_t)temp[i],(uint16_t)temp[i+1],(uint16_t)temp[i+1]};
-            yuvImg.data[j] = (uint8_t)(((piex[0]<<4) | (piex[2]&0xf))/16);
-            yuvImg.data[j+1] = (uint8_t)(((piex[1]<<4) | ((piex[2]>>4)&0xf))/16);
-            j+=2;
-        }
-        cvtColor(yuvImg, *rgbImg, cv::COLOR_BayerRG2RGB);
-        totalframe--;
-        rgbImglist.insert(rgbImglist.end(), rgbImg);
-    }
-
-    delete[] temp;
-    file.close();
-
-    return rgbImglist;
+    return bayer(yuvfilename,W,H,startframe,totalframe,cv::COLOR_BayerRG2RGB,12);
 }
 
 QList<cv::Mat*> YUV2RGB::bayerGR_RAW12(QString yuvfilename,int W, int H, int startframe, int totalframe)
 {
-    QList<cv::Mat*> rgbImglist;
-    cv::Mat yuvImg;
-    QFile file(yuvfilename);
-    QFileInfo fileInfo(yuvfilename);
-    file.open(QFile::ReadOnly);
-    file.seek(startframe*W*H);
-    QDataStream out(&file);
-    char *temp = new char[W*H*3/2];
-
-    while((!out.atEnd()) && (totalframe != 0))
-    {
-        cv::Mat *rgbImg = new cv::Mat;
-        yuvImg.create(H, W, CV_8UC1);
-        out.readRawData(temp,W*H*3/2);
-        for(int i=0,j=0;i<W*H*3/2;i+=3) {
-            uint16_t piex[3] = {(uint16_t)temp[i],(uint16_t)temp[i+1],(uint16_t)temp[i+1]};
-            yuvImg.data[j] = (uint8_t)(((piex[0]<<4) | (piex[2]&0xf))/16);
-            yuvImg.data[j+1] = (uint8_t)(((piex[1]<<4) | ((piex[2]>>4)&0xf))/16);
-            j+=2;
-        }
-        cvtColor(yuvImg, *rgbImg, cv::COLOR_BayerGR2RGB);
-        totalframe--;
-        rgbImglist.insert(rgbImglist.end(), rgbImg);
-    }
-
-    delete[] temp;
-    file.close();
-
-    return rgbImglist;
+    return bayer(yuvfilename,W,H,startframe,totalframe,cv::COLOR_BayerGR2RGB,12);
 }

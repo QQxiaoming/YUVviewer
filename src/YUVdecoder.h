@@ -30,6 +30,7 @@ public:
     static QList<cv::Mat*> bgr565_little_endian(QString yuvfilename,int W, int H, int startframe, int totalframe);
     static QList<cv::Mat*> bgr565_big_endian(QString yuvfilename,int W, int H, int startframe, int totalframe);
     static QList<cv::Mat*> rgb888(QString yuvfilename,int W, int H, int startframe, int totalframe);
+    static QList<cv::Mat*> bayer(QString yuvfilename,int W, int H, int startframe, int totalframe,int code,int bit);
     static QList<cv::Mat*> bayerBG(QString yuvfilename,int W, int H, int startframe, int totalframe);
     static QList<cv::Mat*> bayerGB(QString yuvfilename,int W, int H, int startframe, int totalframe);
     static QList<cv::Mat*> bayerRG(QString yuvfilename,int W, int H, int startframe, int totalframe);
