@@ -2,11 +2,13 @@
 
 # Form implementation generated from reading ui file 'UI_ImgViewer.ui'
 #
-# Created by: PyQt5 UI code generator 5.9.2
+# Created by: PyQt5 UI code generator 5.12.3
 #
 # WARNING! All changes made in this file will be lost!
 
+
 from PyQt5 import QtCore, QtGui, QtWidgets
+
 
 class Ui_ImgViewerWindow(object):
     def setupUi(self, ImgViewerWindow):
@@ -50,5 +52,4 @@ class Ui_ImgViewerWindow(object):
         _translate = QtCore.QCoreApplication.translate
         ImgViewerWindow.setWindowTitle(_translate("ImgViewerWindow", "Form"))
         self.imgViewer.setText(_translate("ImgViewerWindow", "<html><head/><body><p><span style=\" font-size:24pt; font-weight:600;\">loading file, please wait ....</span></p></body></html>"))
-
 import img_rc

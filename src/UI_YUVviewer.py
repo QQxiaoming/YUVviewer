@@ -1,28 +1,30 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file './src/UI_YUVviewer.ui'
+# Form implementation generated from reading ui file 'UI_YUVviewer.ui'
 #
-# Created by: PyQt5 UI code generator 5.9.2
+# Created by: PyQt5 UI code generator 5.12.3
 #
 # WARNING! All changes made in this file will be lost!
 
+
 from PyQt5 import QtCore, QtGui, QtWidgets
+
 
 class Ui_YUVviewer(object):
     def setupUi(self, YUVviewer):
         YUVviewer.setObjectName("YUVviewer")
-        YUVviewer.resize(550, 155)
+        YUVviewer.resize(750, 255)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(YUVviewer.sizePolicy().hasHeightForWidth())
         YUVviewer.setSizePolicy(sizePolicy)
-        YUVviewer.setMinimumSize(QtCore.QSize(550, 155))
-        YUVviewer.setMaximumSize(QtCore.QSize(16777215, 155))
+        YUVviewer.setMinimumSize(QtCore.QSize(550, 255))
+        YUVviewer.setMaximumSize(QtCore.QSize(16777215, 255))
         self.centralwidget = QtWidgets.QWidget(YUVviewer)
         self.centralwidget.setObjectName("centralwidget")
-        self.gridLayout_3 = QtWidgets.QGridLayout(self.centralwidget)
-        self.gridLayout_3.setObjectName("gridLayout_3")
+        self.verticalLayout_2 = QtWidgets.QVBoxLayout(self.centralwidget)
+        self.verticalLayout_2.setObjectName("verticalLayout_2")
         self.horizontalLayout_5 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_5.setObjectName("horizontalLayout_5")
         self.horizontalLayout_2 = QtWidgets.QHBoxLayout()
@@ -64,6 +66,10 @@ class Ui_YUVviewer(object):
         self.verticalLayout.addWidget(self.label)
         self.YUVFormat_ComboBox = QtWidgets.QComboBox(self.centralwidget)
         self.YUVFormat_ComboBox.setObjectName("YUVFormat_ComboBox")
+        self.YUVFormat_ComboBox.addItem("")
+        self.YUVFormat_ComboBox.addItem("")
+        self.YUVFormat_ComboBox.addItem("")
+        self.YUVFormat_ComboBox.addItem("")
         self.YUVFormat_ComboBox.addItem("")
         self.YUVFormat_ComboBox.addItem("")
         self.YUVFormat_ComboBox.addItem("")
@@ -192,7 +198,11 @@ class Ui_YUVviewer(object):
         self.help_PushButton.setObjectName("help_PushButton")
         self.verticalLayout_5.addWidget(self.help_PushButton)
         self.horizontalLayout_5.addLayout(self.verticalLayout_5)
-        self.gridLayout_3.addLayout(self.horizontalLayout_5, 0, 0, 1, 1)
+        self.verticalLayout_2.addLayout(self.horizontalLayout_5)
+        self.label_8 = QtWidgets.QLabel(self.centralwidget)
+        self.label_8.setText("")
+        self.label_8.setObjectName("label_8")
+        self.verticalLayout_2.addWidget(self.label_8)
         YUVviewer.setCentralWidget(self.centralwidget)
 
         self.retranslateUi(YUVviewer)
@@ -221,6 +231,10 @@ class Ui_YUVviewer(object):
         self.YUVFormat_ComboBox.setItemText(14, _translate("YUVviewer", "BayerGB"))
         self.YUVFormat_ComboBox.setItemText(15, _translate("YUVviewer", "BayerRG"))
         self.YUVFormat_ComboBox.setItemText(16, _translate("YUVviewer", "BayerGR"))
+        self.YUVFormat_ComboBox.setItemText(17, _translate("YUVviewer", "BayerBG_RAW12"))
+        self.YUVFormat_ComboBox.setItemText(18, _translate("YUVviewer", "BayerGB_RAW12"))
+        self.YUVFormat_ComboBox.setItemText(19, _translate("YUVviewer", "BayerRG_RAW12"))
+        self.YUVFormat_ComboBox.setItemText(20, _translate("YUVviewer", "BayerGR_RAW12"))
         self.label_3.setText(_translate("YUVviewer", "<html><head/><body><p align=\"center\">Witdth</p></body></html>"))
         self.label_2.setText(_translate("YUVviewer", "<html><head/><body><p align=\"center\">Height</p></body></html>"))
         self.exchange_PushButton.setText(_translate("YUVviewer", "↔"))

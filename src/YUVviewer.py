@@ -5,18 +5,34 @@ import sys
 import os
 from PyQt5 import QtCore, QtWidgets
 from PyQt5.QtWidgets import QFileDialog, QMessageBox, QToolTip
-from PyQt5.QtCore import QPoint
-from PyQt5.QtGui import QGuiApplication
+from PyQt5.QtCore import QPoint, QXmlStreamReader
+from PyQt5.QtGui import QGuiApplication,QPixmap,QPainter
+from PyQt5.QtSvg import QSvgRenderer
 from UI_YUVviewer import Ui_YUVviewer
 from configFile import ConfigFile
 from ImgViewer import ImgViewer
 
-VERSION = 'V0.4.5'
+VERSION = 'V0.4.8'
 GIT_TAG = 'error:not found!'
 with open('git_tag.inc') as fp:
     GIT_TAG = fp.read()
 
 class YUVviewer(QtWidgets.QMainWindow, Ui_YUVviewer):
+    UI_SINGLE = (0xff000000)
+    UI_R      = (0xff0000|UI_SINGLE)
+    UI_G      = (0x00ff00|UI_SINGLE)
+    UI_B      = (0x0000ff|UI_SINGLE)
+    UI_Y      = (0x808080|UI_SINGLE)
+    UI_U      = (0xff00ff|UI_SINGLE)
+    UI_V      = (0x00ffff|UI_SINGLE)
+    UI_RG53   = (((0xff0000|0x5000000)<<32)|(0x00ff00|0x3000000))
+    UI_GB35   = (((0x00ff00|0x3000000)<<32)|(0x0000ff|0x5000000))
+    UI_BG53   = (((0x0000ff|0x5000000)<<32)|(0x00ff00|0x3000000))
+    UI_GR35   = (((0x00ff00|0x3000000)<<32)|(0xff0000|0x5000000))
+    UI_RG44   = (((0xff0000|0x4000000)<<32)|(0x00ff00|0x4000000))
+    UI_GB44   = (((0x00ff00|0x4000000)<<32)|(0x0000ff|0x4000000))
+    UI_BG44   = (((0x0000ff|0x4000000)<<32)|(0x00ff00|0x4000000))
+    UI_GR44   = (((0x00ff00|0x4000000)<<32)|(0xff0000|0x4000000))
     frameSizeTypeDict = {
         'QQCIF':   ['88', '72'],
         'QQVGA':   ['160','120'],
@@ -50,6 +66,49 @@ class YUVviewer(QtWidgets.QMainWindow, Ui_YUVviewer):
         '4K UHD':  ['3840','2160'],
         '8K UHD':  ['7680','4320'],
     }
+    YUVFormat_list = {
+        "YV12":      [UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,
+                      UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,
+                      UI_U,UI_U,UI_U,UI_U,UI_U,UI_U,UI_U,UI_U,UI_U,UI_U,UI_U,UI_U,UI_U,UI_U,UI_U,UI_U,UI_U,UI_U,UI_U,UI_U,UI_U,UI_U,UI_U,UI_U,
+                      UI_V,UI_V,UI_V,UI_V,UI_V,UI_V,UI_V,UI_V,UI_V,UI_V,UI_V,UI_V,UI_V,UI_V,UI_V,UI_V,UI_V,UI_V,UI_V,UI_V,UI_V,UI_V,UI_V,UI_V],
+        "YU12/I420": [UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,
+                      UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,
+                      UI_V,UI_V,UI_V,UI_V,UI_V,UI_V,UI_V,UI_V,UI_V,UI_V,UI_V,UI_V,UI_V,UI_V,UI_V,UI_V,UI_V,UI_V,UI_V,UI_V,UI_V,UI_V,UI_V,UI_V,
+                      UI_U,UI_U,UI_U,UI_U,UI_U,UI_U,UI_U,UI_U,UI_U,UI_U,UI_U,UI_U,UI_U,UI_U,UI_U,UI_U,UI_U,UI_U,UI_U,UI_U,UI_U,UI_U,UI_U,UI_U],
+        "NV21":      [UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,
+                      UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,
+                      UI_V,UI_U,UI_V,UI_U,UI_V,UI_U,UI_V,UI_U,UI_V,UI_U,UI_V,UI_U,UI_V,UI_U,UI_V,UI_U,UI_V,UI_U,UI_V,UI_U,UI_V,UI_U,UI_V,UI_U,
+                      UI_V,UI_U,UI_V,UI_U,UI_V,UI_U,UI_V,UI_U,UI_V,UI_U,UI_V,UI_U,UI_V,UI_U,UI_V,UI_U,UI_V,UI_U,UI_V,UI_U,UI_V,UI_U,UI_V,UI_U],
+        "NV12":      [UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,
+                      UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,
+                      UI_U,UI_V,UI_U,UI_V,UI_U,UI_V,UI_U,UI_V,UI_U,UI_V,UI_U,UI_V,UI_U,UI_V,UI_U,UI_V,UI_U,UI_V,UI_U,UI_V,UI_U,UI_V,UI_U,UI_V,
+                      UI_U,UI_V,UI_U,UI_V,UI_U,UI_V,UI_U,UI_V,UI_U,UI_V,UI_U,UI_V,UI_U,UI_V,UI_U,UI_V,UI_U,UI_V,UI_U,UI_V,UI_U,UI_V,UI_U,UI_V],
+        "YUY2/YUYV": [UI_Y,UI_U,UI_Y,UI_V],
+        "YVYU":      [UI_Y,UI_V,UI_Y,UI_U],
+        "UYVY":      [UI_U,UI_Y,UI_V,UI_Y],
+        "4:4:4":     [UI_Y,UI_U,UI_V],
+        "RGB565_L":  [UI_GB35,UI_RG53],
+        "RGB565_B":  [UI_RG53,UI_GB35],
+        "BGR565_L":  [UI_GR35,UI_BG53],
+        "BGR565_B":  [UI_BG53,UI_GR35],
+        "RGB888":    [UI_R,UI_G,UI_B],
+        "BayerBG":   [UI_B,UI_G,UI_B,UI_G,UI_B,UI_G,UI_B,UI_G,UI_B,UI_G,UI_B,UI_G,UI_B,UI_G,UI_B,UI_G,UI_B,UI_G,UI_B,UI_G,UI_B,UI_G,UI_B,UI_G,
+                      UI_G,UI_R,UI_G,UI_R,UI_G,UI_R,UI_G,UI_R,UI_G,UI_R,UI_G,UI_R,UI_G,UI_R,UI_G,UI_R,UI_G,UI_R,UI_G,UI_R,UI_G,UI_R,UI_G,UI_R],
+        "BayerGB":   [UI_G,UI_B,UI_G,UI_B,UI_G,UI_B,UI_G,UI_B,UI_G,UI_B,UI_G,UI_B,UI_G,UI_B,UI_G,UI_B,UI_G,UI_B,UI_G,UI_B,UI_G,UI_B,UI_G,UI_B,
+                      UI_R,UI_G,UI_R,UI_G,UI_R,UI_G,UI_R,UI_G,UI_R,UI_G,UI_R,UI_G,UI_R,UI_G,UI_R,UI_G,UI_R,UI_G,UI_R,UI_G,UI_R,UI_G,UI_R,UI_G],
+        "BayerRG":   [UI_R,UI_G,UI_R,UI_G,UI_R,UI_G,UI_R,UI_G,UI_R,UI_G,UI_R,UI_G,UI_R,UI_G,UI_R,UI_G,UI_R,UI_G,UI_R,UI_G,UI_R,UI_G,UI_R,UI_G,
+                      UI_G,UI_B,UI_G,UI_B,UI_G,UI_B,UI_G,UI_B,UI_G,UI_B,UI_G,UI_B,UI_G,UI_B,UI_G,UI_B,UI_G,UI_B,UI_G,UI_B,UI_G,UI_B,UI_G,UI_B],
+        "BayerGR":   [UI_G,UI_R,UI_G,UI_R,UI_G,UI_R,UI_G,UI_R,UI_G,UI_R,UI_G,UI_R,UI_G,UI_R,UI_G,UI_R,UI_G,UI_R,UI_G,UI_R,UI_G,UI_R,UI_G,UI_R,
+                      UI_B,UI_G,UI_B,UI_G,UI_B,UI_G,UI_B,UI_G,UI_B,UI_G,UI_B,UI_G,UI_B,UI_G,UI_B,UI_G,UI_B,UI_G,UI_B,UI_G,UI_B,UI_G,UI_B,UI_G],
+        "BayerBG_RAW12": [UI_B,UI_G,UI_BG44,UI_B,UI_G,UI_BG44,UI_B,UI_G,UI_BG44,UI_B,UI_G,UI_BG44,UI_B,UI_G,UI_BG44,UI_B,UI_G,UI_BG44,UI_B,UI_G,UI_BG44,UI_B,UI_G,UI_BG44,
+                          UI_G,UI_R,UI_GR44,UI_G,UI_R,UI_GR44,UI_G,UI_R,UI_GR44,UI_G,UI_R,UI_GR44,UI_G,UI_R,UI_GR44,UI_G,UI_R,UI_GR44,UI_G,UI_R,UI_GR44,UI_G,UI_R,UI_GR44],
+        "BayerGB_RAW12": [UI_G,UI_B,UI_GB44,UI_G,UI_B,UI_GB44,UI_G,UI_B,UI_GB44,UI_G,UI_B,UI_GB44,UI_G,UI_B,UI_GB44,UI_G,UI_B,UI_GB44,UI_G,UI_B,UI_GB44,UI_G,UI_B,UI_GB44,
+                          UI_R,UI_G,UI_RG44,UI_R,UI_G,UI_RG44,UI_R,UI_G,UI_RG44,UI_R,UI_G,UI_RG44,UI_R,UI_G,UI_RG44,UI_R,UI_G,UI_RG44,UI_R,UI_G,UI_RG44,UI_R,UI_G,UI_RG44],
+        "BayerRG_RAW12": [UI_R,UI_G,UI_RG44,UI_R,UI_G,UI_RG44,UI_R,UI_G,UI_RG44,UI_R,UI_G,UI_RG44,UI_R,UI_G,UI_RG44,UI_R,UI_G,UI_RG44,UI_R,UI_G,UI_RG44,UI_R,UI_G,UI_RG44,
+                          UI_G,UI_B,UI_GB44,UI_G,UI_B,UI_GB44,UI_G,UI_B,UI_GB44,UI_G,UI_B,UI_GB44,UI_G,UI_B,UI_GB44,UI_G,UI_B,UI_GB44,UI_G,UI_B,UI_GB44,UI_G,UI_B,UI_GB44],
+        "BayerGR_RAW12": [UI_G,UI_R,UI_GR44,UI_G,UI_R,UI_GR44,UI_G,UI_R,UI_GR44,UI_G,UI_R,UI_GR44,UI_G,UI_R,UI_GR44,UI_G,UI_R,UI_GR44,UI_G,UI_R,UI_GR44,UI_G,UI_R,UI_GR44,
+                           UI_B,UI_G,UI_BG44,UI_B,UI_G,UI_BG44,UI_B,UI_G,UI_BG44,UI_B,UI_G,UI_BG44,UI_B,UI_G,UI_BG44,UI_B,UI_G,UI_BG44,UI_B,UI_G,UI_BG44,UI_B,UI_G,UI_BG44],
+    }
     def __init__(self):
         super(YUVviewer, self).__init__()
         self.ui = Ui_YUVviewer()
@@ -57,7 +116,7 @@ class YUVviewer(QtWidgets.QMainWindow, Ui_YUVviewer):
         self.setWindowTitle('YUVviewer ' + VERSION)
         screen = QGuiApplication.primaryScreen().geometry()
         size = self.geometry()
-        self.move((screen.width() - size.width()) / 2, (screen.height() - size.height()) / 2)
+        self.move((screen.width() - size.width()) // 2, (screen.height() - size.height()) // 2)
 
         self.ui.frameSizeType_ComboBox.setStyleSheet("combobox-popup: 0;")
         self.ui.YUVFormat_ComboBox.setStyleSheet("combobox-popup: 0;")
@@ -85,10 +144,15 @@ class YUVviewer(QtWidgets.QMainWindow, Ui_YUVviewer):
                     self.ui.frameSize_Height_LineEdit.setFocusPolicy(QtCore.Qt.NoFocus)
                     self.YUVviewerConfigFile.config_dict['frameSize_Height'] = value[1]
                     break
-
-        YUVFormat_list = ['YV12', 'YU12/I420', 'NV21', 'NV12', 'YUY2/YUYV', 'YVYU', 'UYVY', '4:4:4','RGB565_L','RGB565_B','BGR565_L','BGR565_B','RGB888','BayerBG','BayerGB','BayerRG','BayerGR']
-        currentIndex = YUVFormat_list.index(self.YUVviewerConfigFile.config_dict['YUVFormat'] )
+        
+        currentIndex = 0
+        for key,value in self.YUVFormat_list.items():
+            if key == self.YUVviewerConfigFile.config_dict['YUVFormat']:
+                color_list = value
+                break
+            currentIndex += 1
         self.ui.YUVFormat_ComboBox.setCurrentIndex(currentIndex)
+        self.updateUiSvg(color_list)
 
         frameRate_list = ['30', '60', '120']
         currentIndex = frameRate_list.index(self.YUVviewerConfigFile.config_dict['frameRate'])
@@ -97,6 +161,7 @@ class YUVviewer(QtWidgets.QMainWindow, Ui_YUVviewer):
         self.ui.startFrame_LineEdit.setText(self.YUVviewerConfigFile.config_dict['startFrame'])
         self.ui.endFrame_LineEdit.setText(self.YUVviewerConfigFile.config_dict['endFrame'])
 
+        self.ui.YUVFormat_ComboBox.currentTextChanged.connect(self.changeFormat)
         self.ui.frameSizeType_Combo_RadioButton.clicked.connect(self.configComboBox)
         self.ui.frameSizeType_Other_RadioButton.clicked.connect(self.configOther)
         self.ui.frameSizeType_ComboBox.currentTextChanged.connect(self.changeFrameSizeType)
@@ -111,6 +176,47 @@ class YUVviewer(QtWidgets.QMainWindow, Ui_YUVviewer):
         self.ui.openFolder_PushButton.clicked.connect(self.openFolder)
         self.ui.about_PushButton.clicked.connect(self.about)
         self.ui.help_PushButton.clicked.connect(self.help)
+
+    def svgBoxSrc(self, x, y, w, c):
+        if (c&self.UI_SINGLE) == self.UI_SINGLE:
+            color = c & 0xffffff
+            return '<line class=\"0\" x1=\"%d\" y1=\"%d\" x2=\"%d\" y2=\"%d\" stroke=\"#%06x\" fill=\"none\" stroke-width=\"%d\" />\n' % (x,y+w/2,x+w,y+w/2,color,w)
+        color0 = (c>>32) & 0xffffff;
+        color1 = c & 0xffffff;
+        fix_w = (w*(c>>56))/((c>>56)+((c & 0xff000000)>>24))
+        return '<line class=\"0\" x1=\"%d\" y1=\"%d\" x2=\"%d\" y2=\"%d\" stroke=\"#%06x\" fill=\"none\" stroke-width=\"%d\" />\n' % (x,y+w/2,x+fix_w,y+w/2,color0,w) + '<line class=\"0\" x1=\"%d\" y1=\"%d\" x2=\"%d\" y2=\"%d\" stroke=\"#%06x\" fill=\"none\" stroke-width=\"%d\" />\n' % (x+fix_w,y+w/2,x+w,y+w/2,color1,w)
+
+    def svgBoxArraySrc(self, x, y, w, od, xn, yn, ca):
+        num = len(ca)
+        if ca == 0:
+            return ''
+        ret = ''
+        for i in range(yn):
+            for j in range(xn):
+                ret += self.svgBoxSrc(x+(w+od)*j,y+(w+od)*i,w,ca[((i*xn+j)%num)])
+        return ret
+
+    def updateUiSvg(self,color_list):
+        svgXmlStreamReader = QXmlStreamReader('<svg xmlns=\"http://www.w3.org/2000/svg\" version=\"1.1\">\n' +
+                            self.svgBoxArraySrc(10,10,40,5,24,4,color_list) +
+                            '</svg>\n')
+        svgRender = QSvgRenderer()
+        svgRender.load(svgXmlStreamReader)
+        svgPixmap = QPixmap(480,80)
+        svgPixmap.fill(QtCore.Qt.transparent)
+        svgPainter = QPainter(svgPixmap)
+        svgRender.render(svgPainter)
+        self.ui.label_8.setPixmap(svgPixmap)
+        self.ui.label_8.setAlignment(QtCore.Qt.AlignCenter)
+        svgPainter.end()
+
+    def changeFormat(self,text):
+        for key,value in self.YUVFormat_list.items():
+            if key == self.ui.YUVFormat_ComboBox.currentText():
+                color_list = value
+                break
+        self.updateUiSvg(color_list)
+        self.ui.label_8.repaint()
 
     def configComboBox(self):
         self.ui.frameSizeType_ComboBox.setEnabled(True)
@@ -284,7 +390,7 @@ class YUVviewer(QtWidgets.QMainWindow, Ui_YUVviewer):
                 self.imgViewer.resize(frameSize_Width/frameSize_Height*400, 400)
             screen = QGuiApplication.primaryScreen().geometry()
             size = self.imgViewer.geometry()
-            self.imgViewer.move((screen.width() - size.width()) / 2, (screen.height() - size.height()) / 2)
+            self.imgViewer.move((screen.width() - size.width()) // 2, (screen.height() - size.height()) // 2)
             self.hide()
             self.imgViewer.show()
             return True
@@ -326,7 +432,7 @@ class YUVviewer(QtWidgets.QMainWindow, Ui_YUVviewer):
                 self._imgView(openfile_list)
 
     def about(self):
-        QMessageBox.about(self, 'About', '版本 \n ' + VERSION + "\n提交 \n " + GIT_TAG + '\n作者\n wenqing.li@aliyun.com \n qiaoqm@aliyun.com')
+        QMessageBox.about(self, 'About', 'Version \n ' + VERSION + "\nCommit \n " + GIT_TAG + '\nAuthor\n qiaoqm@aliyun.com \n wenqing.li@aliyun.com \nWebsite\n https://github.com/QQxiaoming/YUVviewer')
 
     def help(self):
         QMessageBox.question(self, 'Help', '1.主界面选择数据参数。\n2.点击打开文件或文件夹将进行图像数据解析并显示图像。\n3.图像显示界面中使用滚轮放大缩小图像，使用左键可拖动图像，双击左键保存图像为png格式，单击右键复位图像大小和位置，双击右键交换图像R和B通道显示，单机中键显示图像原始大小。', QMessageBox.Ok)
@@ -344,6 +450,10 @@ if __name__ == '__main__':
             print('YUVviewer ' + VERSION + "\n" + GIT_TAG.replace('"', '').replace('\n', ''))
             sys.exit(0)
     QtWidgets.QApplication.setAttribute(QtCore.Qt.AA_EnableHighDpiScaling)
+    QtWidgets.QApplication.setAttribute(QtCore.Qt.AA_UseHighDpiPixmaps)
+    QtWidgets.QApplication.setAttribute(QtCore.Qt.AA_DontUseNativeDialogs)
+    QtWidgets.QApplication.setAttribute(QtCore.Qt.AA_DontUseNativeMenuBar)
+    QtWidgets.QApplication.setAttribute(QtCore.Qt.AA_DontCreateNativeWidgetSiblings)
     application = QtWidgets.QApplication(sys.argv)
     font = application.font()
     font.setFamily(font.defaultFamily())
