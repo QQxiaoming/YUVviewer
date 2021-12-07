@@ -2,12 +2,15 @@
 [![CodeFactor](https://www.codefactor.io/repository/github/qqxiaoming/yuvviewer/badge)](https://www.codefactor.io/repository/github/qqxiaoming/yuvviewer)
 [![GitHub tag (latest SemVer)](https://img.shields.io/github/tag/QQxiaoming/YUVviewer.svg)](https://github.com/QQxiaoming/YUVviewer/releases)
 [![GitHub All Releases](https://img.shields.io/github/downloads/QQxiaoming/YUVviewer/total.svg)](https://github.com/QQxiaoming/YUVviewer/releases)
+[![GitHub stars](https://img.shields.io/github/stars/QQxiaoming/YUVviewer.svg)](https://github.com/QQxiaoming/YUVviewer)
 
 # YUVviewer
 
 本项目初期为基于PyQt、opencv-python的YUV文件查看浏览工具，即V0.3.2以及更低版本。
 
 从V0.3.3，基于Qt、OpenCV重构YUV文件查看浏览工具，原python版本同步更新（但可能晚于C++版本，推荐使用C++版本工具性能更好）。
+
+![img0](./img/docimg0.png)
 
 ## 编译说明
 

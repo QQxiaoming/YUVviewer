@@ -199,7 +199,7 @@ jobs:
       - name: Install prerequisites
         run: |
           sudo apt update
-          sudo apt install -y make gcc patchelf python3-numpy python3-opencv python3-pyqt5
+          sudo apt install -y make gcc patchelf python3-numpy python3-opencv python3-pyqt5 python3-pyqt5.qtsvg
 
       - name: Run tests
         run: |
