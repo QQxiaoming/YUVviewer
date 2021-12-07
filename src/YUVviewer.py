@@ -114,7 +114,7 @@ class YUVviewer(QtWidgets.QMainWindow, Ui_YUVviewer):
         self.ui = Ui_YUVviewer()
         self.ui.setupUi(self)
         self.setWindowTitle('YUVviewer ' + VERSION)
-        screen = QGuiApplication.primaryScreen().geometry()
+        screen = QGuiApplication.screenAt(self.mapToGlobal(QPoint(self.width()//2,0))).geometry()
         size = self.geometry()
         self.move((screen.width() - size.width()) // 2, (screen.height() - size.height()) // 2)
 
@@ -388,7 +388,7 @@ class YUVviewer(QtWidgets.QMainWindow, Ui_YUVviewer):
                 self.imgViewer.resize(800, frameSize_Height/frameSize_Width*800)
             else:
                 self.imgViewer.resize(frameSize_Width/frameSize_Height*400, 400)
-            screen = QGuiApplication.primaryScreen().geometry()
+            screen = QGuiApplication.screenAt(self.mapToGlobal(QPoint(self.width()//2,0))).geometry()
             size = self.imgViewer.geometry()
             self.imgViewer.move((screen.width() - size.width()) // 2, (screen.height() - size.height()) // 2)
             self.hide()

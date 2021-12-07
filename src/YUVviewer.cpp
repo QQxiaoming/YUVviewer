@@ -125,7 +125,7 @@ YUVviewer::YUVviewer(QWidget *parent) :
     ui->setupUi(this);
 
     this->setWindowTitle("YUVviewer " + VERSION);
-    QRect screen = QGuiApplication::primaryScreen()->geometry();
+    QRect screen = QGuiApplication::screenAt(this->mapToGlobal({this->width()/2,0}))->geometry();
     QRect size = this->geometry();
     this->move((screen.width() - size.width()) / 2, (screen.height() - size.height()) / 2);
 
@@ -579,7 +579,7 @@ bool YUVviewer::imgView(QStringList openfile_list)
     {
         imgViewer->resize(fframeSize_Width/fframeSize_Height*400.0, 400);
     }
-    QRect screen = QGuiApplication::primaryScreen()->geometry();
+    QRect screen = QGuiApplication::screenAt(this->mapToGlobal({this->width()/2,0}))->geometry();
     QRect size = imgViewer->geometry();
     imgViewer->move((screen.width() - size.width()) / 2, (screen.height() - size.height()) / 2);
     this->hide();
