@@ -115,15 +115,30 @@ jobs:
         with:
           arch: win64_mingw81
 
+      - name: Cache opencv
+        uses: actions/cache@v2
+        env:
+          cache-name: cache-opencv
+        with:
+          path: |
+            C:/opencv4.0.0
+          key: ${{ runner.os }}-build-${{ env.cache-name }}
+          restore-keys: |
+            ${{ runner.os }}-build-
+            ${{ runner.os }}-
+            
       - name: Install prerequisites
         run: |
           Choco-Install -PackageName innosetup --force
           Choco-Install -PackageName cmake --force
-          git clone https://github.com/opencv/opencv.git --branch 4.0.0 --depth 1
-          cmake -G "MinGW Makefiles" -S opencv -B opencv/build -D CMAKE_INSTALL_PREFIX=C:/opencv4.0.0 -D ENABLE_PRECOMPILED_HEADERS=OFF -D WITH_MSMF=OFF -D BUILD_PERF_TESTS=OFF -D BUILD_TESTS=OFF -D BUILD_WITH_DEBUG_INFO=OFF -D BUILD_DOCS=OFF -D CMAKE_BUILD_TYPE=RELEASE
-          cd ./opencv/build
-          mingw32-make
-          mingw32-make install
+          if(Test-Path C:/opencv4.0.0 -eq "False")
+          {
+            git clone https://github.com/opencv/opencv.git --branch 4.0.0 --depth 1
+            cmake -G "MinGW Makefiles" -S opencv -B opencv/build -D CMAKE_INSTALL_PREFIX=C:/opencv4.0.0 -D ENABLE_PRECOMPILED_HEADERS=OFF -D WITH_MSMF=OFF -D BUILD_PERF_TESTS=OFF -D BUILD_TESTS=OFF -D BUILD_WITH_DEBUG_INFO=OFF -D BUILD_DOCS=OFF -D CMAKE_BUILD_TYPE=RELEASE
+            cd ./opencv/build
+            mingw32-make
+            mingw32-make install
+          }
 
       - name: Build all
         run: |
