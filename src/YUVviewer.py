@@ -181,8 +181,8 @@ class YUVviewer(QtWidgets.QMainWindow, Ui_YUVviewer):
         if (c&self.UI_SINGLE) == self.UI_SINGLE:
             color = c & 0xffffff
             return '<line class=\"0\" x1=\"%d\" y1=\"%d\" x2=\"%d\" y2=\"%d\" stroke=\"#%06x\" fill=\"none\" stroke-width=\"%d\" />\n' % (x,y+w/2,x+w,y+w/2,color,w)
-        color0 = (c>>32) & 0xffffff;
-        color1 = c & 0xffffff;
+        color0 = (c>>32) & 0xffffff
+        color1 = c & 0xffffff
         fix_w = (w*(c>>56))/((c>>56)+((c & 0xff000000)>>24))
         return '<line class=\"0\" x1=\"%d\" y1=\"%d\" x2=\"%d\" y2=\"%d\" stroke=\"#%06x\" fill=\"none\" stroke-width=\"%d\" />\n' % (x,y+w/2,x+fix_w,y+w/2,color0,w) + '<line class=\"0\" x1=\"%d\" y1=\"%d\" x2=\"%d\" y2=\"%d\" stroke=\"#%06x\" fill=\"none\" stroke-width=\"%d\" />\n' % (x+fix_w,y+w/2,x+w,y+w/2,color1,w)
 
