@@ -126,7 +126,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-build-
             ${{ runner.os }}-
-            
+
       - name: Install prerequisites
         run: |
           Choco-Install -PackageName innosetup --force

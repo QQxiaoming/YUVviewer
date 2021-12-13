@@ -8,7 +8,7 @@ from PyQt5.QtWidgets import QWidget, QFileDialog, QMessageBox, QDesktopWidget
 from PyQt5.QtCore import QPoint, Qt, QThread, pyqtSignal
 from PyQt5.QtGui import QPixmap, QImage, QPainter
 from UI_ImgViewer import Ui_ImgViewerWindow
-from YUVdecoder import YUV2RGB
+from YUVdecoder import YUVdecoder_dict
 
 class YUVDecodeThread(QThread):
     finsh_signal = pyqtSignal(list, str)
@@ -22,19 +22,19 @@ class YUVDecodeThread(QThread):
         self.startframe = startframe
         self.totalframe = totalframe
         # 获取该格式的解码函数
-        self.decoder = YUV2RGB.YUVdecoder_dict.get(YUVFormat)
+        self.decoder = YUVdecoder_dict.get(YUVFormat)
 
     def run(self):
         if self.decoder is None:
             # 未能成功获取则返回无法解码
             self.finsh_signal.emit([],'')
         else:
-            try:
+            #try:
                 # 成功获取则返回计算结果
-                frame_RGB_list = self.decoder(self.filename, self.W, self.H, self.startframe, self.totalframe)
-            except Exception as e:
-                self.finsh_signal.emit([], '')
-                return
+            frame_RGB_list = self.decoder(self.filename, self.W, self.H, self.startframe, self.totalframe)
+            #except Exception as e:
+            #    self.finsh_signal.emit([], '')
+            #    return
             # 定义img列表用了保存每一帧的QPixmap
             img_RGB_list = []
             # 将原始帧转换到QPixmap并保存到img列表
@@ -63,7 +63,7 @@ class ImgViewer(QWidget, Ui_ImgViewerWindow):
         
     def setFileList(self,filelist,YUVFormat, W, H, startframe, totalframe):
         # 获取该格式的解码函数
-        decoder = YUV2RGB.YUVdecoder_dict.get(YUVFormat)
+        decoder = YUVdecoder_dict.get(YUVFormat)
         if decoder is None:
             # 未能成功获取则返回无法解码
             return False
@@ -128,7 +128,7 @@ class ImgViewer(QWidget, Ui_ImgViewerWindow):
 
     def setFileList_multithreading(self,filelist,YUVFormat, W, H, startframe, totalframe):
         # 获取该格式的解码函数
-        decoder = YUV2RGB.YUVdecoder_dict.get(YUVFormat)
+        decoder = YUVdecoder_dict.get(YUVFormat)
         if decoder is None:
             # 未能成功获取则返回无法解码
             return False

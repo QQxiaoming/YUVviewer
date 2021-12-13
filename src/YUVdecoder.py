@@ -3,30 +3,6 @@ import cv2
 import numpy as np
 
 class YUV2RGB(object):
-    YUVdecoder_dict = {
-        'YV12'         : lambda yuvfilename, W, H, startframe, totalframe: YUV2RGB.yv12(yuvfilename, W, H, startframe, totalframe),
-        'YU12/I420'    : lambda yuvfilename, W, H, startframe, totalframe: YUV2RGB.i420(yuvfilename, W, H, startframe, totalframe),
-        'NV21'         : lambda yuvfilename, W, H, startframe, totalframe: YUV2RGB.nv21(yuvfilename, W, H, startframe, totalframe),
-        'NV12'         : lambda yuvfilename, W, H, startframe, totalframe: YUV2RGB.nv12(yuvfilename, W, H, startframe, totalframe),
-        'YUY2/YUYV'    : lambda yuvfilename, W, H, startframe, totalframe: YUV2RGB.yuy2(yuvfilename, W, H, startframe, totalframe),
-        'YVYU'         : lambda yuvfilename, W, H, startframe, totalframe: YUV2RGB.yvyu(yuvfilename, W, H, startframe, totalframe),
-        'UYVY'         : lambda yuvfilename, W, H, startframe, totalframe: YUV2RGB.uyvy(yuvfilename, W, H, startframe, totalframe),
-        '4:4:4'        : lambda yuvfilename, W, H, startframe, totalframe: YUV2RGB.yuv444(yuvfilename, W, H, startframe, totalframe),
-        'RGB565_L'     : lambda yuvfilename, W, H, startframe, totalframe: YUV2RGB.rgb565_little_endian(yuvfilename, W, H, startframe, totalframe),
-        'RGB565_B'     : lambda yuvfilename, W, H, startframe, totalframe: YUV2RGB.rgb565_big_endian(yuvfilename, W, H, startframe, totalframe),
-        'BGR565_L'     : lambda yuvfilename, W, H, startframe, totalframe: YUV2RGB.bgr565_little_endian(yuvfilename, W, H, startframe, totalframe),
-        'BGR565_B'     : lambda yuvfilename, W, H, startframe, totalframe: YUV2RGB.bgr565_big_endian(yuvfilename, W, H, startframe, totalframe),
-        'RGB888'       : lambda yuvfilename, W, H, startframe, totalframe: YUV2RGB.rgb888(yuvfilename, W, H, startframe, totalframe),
-        'BayerBG'      : lambda yuvfilename, W, H, startframe, totalframe: YUV2RGB.bayerBG(yuvfilename, W, H, startframe, totalframe),
-        'BayerGB'      : lambda yuvfilename, W, H, startframe, totalframe: YUV2RGB.bayerGB(yuvfilename, W, H, startframe, totalframe),
-        'BayerRG'      : lambda yuvfilename, W, H, startframe, totalframe: YUV2RGB.bayerRG(yuvfilename, W, H, startframe, totalframe),
-        'BayerGR'      : lambda yuvfilename, W, H, startframe, totalframe: YUV2RGB.bayerGR(yuvfilename, W, H, startframe, totalframe),
-        'BayerBG_RAW12': lambda yuvfilename, W, H, startframe, totalframe: YUV2RGB.bayerBG_RAW12(yuvfilename, W, H, startframe, totalframe),
-        'BayerGB_RAW12': lambda yuvfilename, W, H, startframe, totalframe: YUV2RGB.bayerGB_RAW12(yuvfilename, W, H, startframe, totalframe),
-        'BayerRG_RAW12': lambda yuvfilename, W, H, startframe, totalframe: YUV2RGB.bayerRG_RAW12(yuvfilename, W, H, startframe, totalframe),
-        'BayerGR_RAW12': lambda yuvfilename, W, H, startframe, totalframe: YUV2RGB.bayerGR_RAW12(yuvfilename, W, H, startframe, totalframe),
-    }
-
     @classmethod
     def yv12(cls,yuvfilename, W, H, startframe, totalframe):
         arr = np.zeros((totalframe, H, W, 3), np.uint8)
@@ -160,76 +136,6 @@ class YUV2RGB(object):
         return arr
 
     @classmethod
-    def rgb565_little_endian(cls,yuvfilename, W, H, startframe, totalframe):
-        arr = np.zeros((totalframe, H, W, 3), np.uint8)
-
-        with open(yuvfilename, 'rb') as fp:
-            seekPixels = startframe * H * W * 2
-            fp.seek(seekPixels)
-            for i in range(totalframe):
-                oneframe_RGB565 = np.zeros((H, W, 2), np.uint8)
-                for j in range(H):
-                    for k in range(W):
-                        for l in range(2):
-                            oneframe_RGB565[j, k, l] = int.from_bytes(fp.read(1), byteorder='little', signed=False)
-                oneframe_BGR = cv2.cvtColor(oneframe_RGB565, cv2.COLOR_BGR5652RGB)
-                oneframe_RGB = cv2.cvtColor(oneframe_BGR, cv2.COLOR_BGR2RGB)
-                arr[i] = oneframe_RGB
-        return arr
-
-    @classmethod
-    def rgb565_big_endian(cls,yuvfilename, W, H, startframe, totalframe):
-        arr = np.zeros((totalframe, H, W, 3), np.uint8)
-
-        with open(yuvfilename, 'rb') as fp:
-            seekPixels = startframe * H * W * 2
-            fp.seek(seekPixels)
-            for i in range(totalframe):
-                oneframe_RGB565 = np.zeros((H, W, 2), np.uint8)
-                for j in range(H):
-                    for k in range(W):
-                        oneframe_RGB565[j, k, 1] = int.from_bytes(fp.read(1), byteorder='little', signed=False)
-                        oneframe_RGB565[j, k, 0] = int.from_bytes(fp.read(1), byteorder='little', signed=False)
-                oneframe_BGR = cv2.cvtColor(oneframe_RGB565, cv2.COLOR_BGR5652RGB)
-                oneframe_RGB = cv2.cvtColor(oneframe_BGR, cv2.COLOR_BGR2RGB)
-                arr[i] = oneframe_RGB
-        return arr
-
-    @classmethod
-    def bgr565_little_endian(cls,yuvfilename, W, H, startframe, totalframe):
-        arr = np.zeros((totalframe, H, W, 3), np.uint8)
-
-        with open(yuvfilename, 'rb') as fp:
-            seekPixels = startframe * H * W * 2
-            fp.seek(seekPixels)
-            for i in range(totalframe):
-                oneframe_BGR565 = np.zeros((H, W, 2), np.uint8)
-                for j in range(H):
-                    for k in range(W):
-                        for l in range(2):
-                            oneframe_BGR565[j, k, l] = int.from_bytes(fp.read(1), byteorder='little', signed=False)
-                oneframe_RGB = cv2.cvtColor(oneframe_BGR565, cv2.COLOR_BGR5652RGB)
-                arr[i] = oneframe_RGB
-        return arr
-
-    @classmethod
-    def bgr565_big_endian(cls,yuvfilename, W, H, startframe, totalframe):
-        arr = np.zeros((totalframe, H, W, 3), np.uint8)
-
-        with open(yuvfilename, 'rb') as fp:
-            seekPixels = startframe * H * W * 2
-            fp.seek(seekPixels)
-            for i in range(totalframe):
-                oneframe_BGR565 = np.zeros((H, W, 2), np.uint8)
-                for j in range(H):
-                    for k in range(W):
-                        oneframe_BGR565[j, k, 1] = int.from_bytes(fp.read(1), byteorder='little', signed=False)
-                        oneframe_BGR565[j, k, 0] = int.from_bytes(fp.read(1), byteorder='little', signed=False)
-                oneframe_RGB = cv2.cvtColor(oneframe_BGR565, cv2.COLOR_BGR5652RGB)
-                arr[i] = oneframe_RGB
-        return arr
-
-    @classmethod
     def rgb888(cls,yuvfilename, W, H, startframe, totalframe):
         arr = np.zeros((totalframe, H, W, 3), np.uint8)
 
@@ -247,7 +153,34 @@ class YUV2RGB(object):
         return arr
 
     @classmethod
-    def bayer(cls,yuvfilename, W, H, startframe, totalframe, code, bit):
+    def _do_rgb565(cls,yuvfilename, W, H, startframe, totalframe, rgbSwap, endian):
+        arr = np.zeros((totalframe, H, W, 3), np.uint8)
+
+        with open(yuvfilename, 'rb') as fp:
+            seekPixels = startframe * H * W * 2
+            fp.seek(seekPixels)
+            for i in range(totalframe):
+                oneframe_RGB565 = np.zeros((H, W, 2), np.uint8)
+                for j in range(H):
+                    for k in range(W):
+                        if endian == "big":
+                            oneframe_RGB565[j, k, 1] = int.from_bytes(fp.read(1), byteorder='little', signed=False)
+                            oneframe_RGB565[j, k, 0] = int.from_bytes(fp.read(1), byteorder='little', signed=False)
+                        elif endian == "little":
+                            oneframe_RGB565[j, k, 0] = int.from_bytes(fp.read(1), byteorder='little', signed=False)
+                            oneframe_RGB565[j, k, 1] = int.from_bytes(fp.read(1), byteorder='little', signed=False)
+                oneframe_RGB = cv2.cvtColor(oneframe_RGB565, cv2.COLOR_BGR5652RGB)
+                if rgbSwap:
+                    oneframe_RGB = cv2.cvtColor(oneframe_RGB, cv2.COLOR_BGR2RGB)
+                arr[i] = oneframe_RGB
+        return arr
+
+    @classmethod
+    def rgb565(cls, rgbSwap, endian):
+        return lambda yuvfilename, W, H, startframe, totalframe: cls._do_rgb565(yuvfilename, W, H, startframe, totalframe, rgbSwap, endian)
+
+    @classmethod
+    def _do_bayer(cls,yuvfilename, W, H, startframe, totalframe, code, bit):
         arr = np.zeros((totalframe, H, W, 3), np.uint8)
 
         if bit == 12:
@@ -279,33 +212,29 @@ class YUV2RGB(object):
         return arr
 
     @classmethod
-    def bayerBG(cls,yuvfilename, W, H, startframe, totalframe):
-        return cls.bayer(yuvfilename, W, H, startframe, totalframe,cv2.COLOR_BayerBG2RGB,8)
+    def bayer(cls, code, bit):
+        return lambda yuvfilename, W, H, startframe, totalframe: cls._do_bayer(yuvfilename, W, H, startframe, totalframe, code, bit)
 
-    @classmethod
-    def bayerGB(cls,yuvfilename, W, H, startframe, totalframe):
-        return cls.bayer(yuvfilename, W, H, startframe, totalframe,cv2.COLOR_BayerGB2RGB,8)
-
-    @classmethod
-    def bayerRG(cls,yuvfilename, W, H, startframe, totalframe):
-        return cls.bayer(yuvfilename, W, H, startframe, totalframe,cv2.COLOR_BayerRG2RGB,8)
-
-    @classmethod
-    def bayerGR(cls,yuvfilename, W, H, startframe, totalframe):
-        return cls.bayer(yuvfilename, W, H, startframe, totalframe,cv2.COLOR_BayerGR2RGB,8)
-
-    @classmethod
-    def bayerBG_RAW12(cls,yuvfilename, W, H, startframe, totalframe):
-        return cls.bayer(yuvfilename, W, H, startframe, totalframe,cv2.COLOR_BayerBG2RGB,12)
-
-    @classmethod
-    def bayerGB_RAW12(cls,yuvfilename, W, H, startframe, totalframe):
-        return cls.bayer(yuvfilename, W, H, startframe, totalframe,cv2.COLOR_BayerGB2RGB,12)
-
-    @classmethod
-    def bayerRG_RAW12(cls,yuvfilename, W, H, startframe, totalframe):
-        return cls.bayer(yuvfilename, W, H, startframe, totalframe,cv2.COLOR_BayerRG2RGB,12)
-
-    @classmethod
-    def bayerGR_RAW12(cls,yuvfilename, W, H, startframe, totalframe):
-        return cls.bayer(yuvfilename, W, H, startframe, totalframe,cv2.COLOR_BayerGR2RGB,12)
+YUVdecoder_dict = {
+    'YV12'         : YUV2RGB.yv12,
+    'YU12/I420'    : YUV2RGB.i420,
+    'NV21'         : YUV2RGB.nv21,
+    'NV12'         : YUV2RGB.nv12,
+    'YUY2/YUYV'    : YUV2RGB.yuy2,
+    'YVYU'         : YUV2RGB.yvyu,
+    'UYVY'         : YUV2RGB.uyvy,
+    '4:4:4'        : YUV2RGB.yuv444,
+    'RGB565_L'     : YUV2RGB.rgb565(True, "little"),
+    'RGB565_B'     : YUV2RGB.rgb565(True, "big"),
+    'BGR565_L'     : YUV2RGB.rgb565(False, "little"),
+    'BGR565_B'     : YUV2RGB.rgb565(False, "big"),
+    'RGB888'       : YUV2RGB.rgb888,
+    'BayerBG'      : YUV2RGB.bayer(cv2.COLOR_BayerBG2RGB, 8),
+    'BayerGB'      : YUV2RGB.bayer(cv2.COLOR_BayerGB2RGB, 8),
+    'BayerRG'      : YUV2RGB.bayer(cv2.COLOR_BayerRG2RGB, 8),
+    'BayerGR'      : YUV2RGB.bayer(cv2.COLOR_BayerGR2RGB, 8),
+    'BayerBG_RAW12': YUV2RGB.bayer(cv2.COLOR_BayerBG2RGB, 12),
+    'BayerGB_RAW12': YUV2RGB.bayer(cv2.COLOR_BayerGB2RGB, 12),
+    'BayerRG_RAW12': YUV2RGB.bayer(cv2.COLOR_BayerRG2RGB, 12),
+    'BayerGR_RAW12': YUV2RGB.bayer(cv2.COLOR_BayerGR2RGB, 12),
+}
