@@ -173,7 +173,7 @@ jobs:
 
       - name: Install Qt
         uses: jurplel/install-qt-action@v2.14.0
-            
+
       - name: Install prerequisites
         run: |
           ruby - e  "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)" < /dev/null  2 > /dev/null

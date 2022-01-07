@@ -415,7 +415,7 @@ QList<cv::Mat*> YUV2RGB::bayer(QString yuvfilename,int W, int H, int startframe,
         {
             out.readRawData(temp,W*H*3/2);
             for(int i=0,j=0;i<W*H*3/2;i+=3) {
-                uint16_t piex[3] = {(uint16_t)temp[i],(uint16_t)temp[i+1],(uint16_t)temp[i+1]};
+                uint16_t piex[3] = {(uint16_t)temp[i],(uint16_t)temp[i+1],(uint16_t)temp[i+2]};
                 yuvImg.data[j] = (uint8_t)(((piex[0]<<4) | (piex[2]&0xf))/16);
                 yuvImg.data[j+1] = (uint8_t)(((piex[1]<<4) | ((piex[2]>>4)&0xf))/16);
                 j+=2;
