@@ -3,14 +3,15 @@
 
 import sys
 import os
+from ImgViewer import ImgViewer
+from configFile import ConfigFile
 from PyQt5 import QtCore, QtWidgets
 from PyQt5.QtWidgets import QFileDialog, QMessageBox, QToolTip
 from PyQt5.QtCore import QPoint, QXmlStreamReader
 from PyQt5.QtGui import QGuiApplication,QPixmap,QPainter
 from PyQt5.QtSvg import QSvgRenderer
 from UI_YUVviewer import Ui_YUVviewer
-from configFile import ConfigFile
-from ImgViewer import ImgViewer
+
 
 VERSION = 'V0.4.8'
 GIT_TAG = 'error:not found!'

@@ -3,12 +3,12 @@
 
 import sys
 import os
+from YUVdecoder import YUVdecoder_dict
 from PyQt5 import QtCore
 from PyQt5.QtWidgets import QWidget, QFileDialog, QMessageBox, QDesktopWidget
 from PyQt5.QtCore import QPoint, Qt, QThread, pyqtSignal
 from PyQt5.QtGui import QPixmap, QImage, QPainter
 from UI_ImgViewer import Ui_ImgViewerWindow
-from YUVdecoder import YUVdecoder_dict
 
 class YUVDecodeThread(QThread):
     finsh_signal = pyqtSignal(list, str)
