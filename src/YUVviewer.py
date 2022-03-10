@@ -126,7 +126,9 @@ class YUVviewer(QtWidgets.QMainWindow, Ui_YUVviewer):
         for key,value in self.frameSizeTypeDict.items():
             self.ui.frameSizeType_ComboBox.insertItem(self.ui.frameSizeType_ComboBox.count(), key)
 
-        self.YUVviewerConfigFile = ConfigFile(os.path.join(os.getcwd(),'YUVViewer.ini'))
+        if os.path.exists(os.path.join(os.environ['HOME'],'.YUVViewer')):
+            os.mkdir(os.path.join(os.environ['HOME'],'.YUVViewer'))
+        self.YUVviewerConfigFile = ConfigFile(os.path.join(os.environ['HOME'],'.YUVViewer','YUVViewer.xml'))
         if self.YUVviewerConfigFile.config_dict['frameSizeType'] == 'Other':
             self.ui.frameSizeType_Other_RadioButton.setChecked(True)
             self.ui.frameSizeType_ComboBox.setEnabled(False)

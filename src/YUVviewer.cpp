@@ -139,7 +139,15 @@ YUVviewer::YUVviewer(QWidget *parent) :
         config_it++;
     }
 
-    YUVviewerConfigFile = new ConfigFile(QCoreApplication::applicationDirPath()+"/YUVViewer.ini");
+    QFileInfo dir(QDir::homePath()+"/.YUVViewer");
+    if(!dir.isDir()) {
+        if(!dir.isFile()) {
+            QDir mkdir(QDir::homePath());
+            mkdir.mkdir(".YUVViewer");
+        }
+    }
+
+    YUVviewerConfigFile = new ConfigFile(QDir::homePath()+"/.YUVViewer/YUVViewer.xml");
     if(YUVviewerConfigFile->config_dict.frameSizeType == "Other")
     {
         ui->frameSizeType_Other_RadioButton->setChecked(true);
