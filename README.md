@@ -6,95 +6,28 @@
 
 # YUVviewer
 
-本项目初期为基于PyQt、opencv-python的YUV文件查看浏览工具，即V0.3.2以及更低版本。
-
-从V0.3.3，基于Qt、OpenCV重构YUV文件查看浏览工具，原python版本同步更新（但可能晚于C++版本，推荐使用C++版本工具性能更好）。
+YUVviewer一款用于开发人员查看预览各种原始图像格式的小工具，其基于Qt和opencv的框架，支持windows/linux/macos，界面简单清晰，操作便携，主界面如下：
 
 ![img0](./img/docimg0.png)
 
+## 功能描述
+
+1. 主界面选择参数。
+2. 点击打开文件或文件夹将进行图像数据解析并显示图像。
+3. 图像显示界面中使用
+    - 滚轮放大缩小图像，
+    - 使用左键可拖动图像，
+    - 双击左键保存图像为png格式，
+    - 单击右键复位图像大小和位置，
+    - 双击右键交换图像R和B通道显示，
+    - 单击中键显示图像原始大小。
+
+## 格式支持
+
+目前支持格式包括：
+
+YV12、YU12/I420、NV21、NV12、YUY2/YUYV、YVYU、UYVY、YUV444、RGB565_L、RGB565_B、BGR565_L、BGR565_B、RGB888、BayerBG、BayerGB、BayerRG、BayerGR、BayerBG_RAW12、BayerGB_RAW12、BayerRG_RAW12、BayerGR_RAW12、
+
 ## 编译说明
 
-### windows
-
-- 安装Qt、Inno Setup工具，编译opencv lib
-
-- 修改partform_win32.pri文件以下内容
-
-```s
-###############################################################################
-# 定义opencv lib路径
-OPENCV_DIR=D:\Qt\opencv4.2.0
-###############################################################################
-```
-
-- 修改build_setup.bat文件以下内容
-
-```bat
-:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-:: 定义QT目录
-set "QT_DIR=D:/Qt/Qt5.9.2/5.9.2/mingw53_32/bin"
-set "QT_TOOLS_DIR=D:/Qt/Qt5.9.2/Tools/mingw530_32/bin"
-:: 定义Inno Setup目录
-set "INNO_SETUP_DIR=C:/Program Files (x86)/Inno Setup 6"
-:: 定义opencv目录
-set "OPENCV_DIR=D:/Qt/opencv4.2.0/x64/mingw/bin"
-:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-```
-
-- 执行build_setup.bat脚本等待编译打包完成。
-
-### linux
-
-- 安装Qt、patchelf工具，编译opencv lib以及linuxdeployqt工具(tools中已编译好适用于ubuntu18.04的linuxdeployqt工具)
-
-- 修改partform_unix.pri文件以下内容
-
-```s
-###############################################################################
-# 定义opencv lib路径
-OPENCV_DIR=/home/xiaoming/Desktop/opencv
-###############################################################################
-```
-
-- 修改build_deb.sh文件以下内容
-
-```sh
-###############################################################################
-# 定义QT目录
-QT_DIR=/opt/Qt5.12.2/5.12.2/gcc_64
-# 定义opencv目录
-OPENCV_DIR=/home/xiaoming/Desktop/opencv
-###############################################################################
-```
-
-- 执行build_deb.sh脚本等待编译打包完成。
-
-### macos
-
-- 安装Qt工具，编译opencv lib。
-
-- 修改partform_unix.pri文件以下内容
-
-```s
-###############################################################################
-# 定义opencv lib路径
-OPENCV_DIR=/home/xiaoming/Desktop/opencv
-###############################################################################
-```
-
-- 修改build_dmg.sh文件以下内容
-
-```sh
-###############################################################################
-# 定义QT目录
-QT_DIR=/opt/Qt5.12.2/5.12.2/gcc_64
-# 定义opencv目录
-OPENCV_DIR=/home/xiaoming/Desktop/opencv
-###############################################################################
-```
-
-- 执行build_dmg.sh脚本等待编译打包完成。
-
-## python版本
-
-运行 python ./src/YUVviewer.py
+　> [编译说明](./DEVELOPNOTE.md)

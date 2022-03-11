@@ -653,7 +653,7 @@ void YUVviewer::about()
 
 void YUVviewer::help()
 {
-    QMessageBox::question(this, "Help", "1.主界面选择数据参数。\n2.点击打开文件或文件夹将进行图像数据解析并显示图像。\n3.图像显示界面中使用滚轮放大缩小图像，使用左键可拖动图像，双击左键保存图像为png格式，单击右键复位图像大小和位置，双击右键交换图像R和B通道显示，单机中键显示图像原始大小。", QMessageBox::Ok);
+    QMessageBox::question(this, "Help", "1.主界面选择数据参数。\n2.点击打开文件或文件夹将进行图像数据解析并显示图像。\n3.图像显示界面中使用滚轮放大缩小图像，使用左键可拖动图像，双击左键保存图像为png格式，单击右键复位图像大小和位置，双击右键交换图像R和B通道显示，单击中键显示图像原始大小。", QMessageBox::Ok);
 }
 
 void YUVviewer::closeEvent(QCloseEvent *event)
