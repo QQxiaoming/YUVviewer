@@ -98,6 +98,7 @@ ConfigFile::~ConfigFile()
 {
     QFile file(configFilePath);
     file.open(QFile::ReadWrite | QFile::Text);
+    file.resize(0);
 
     QXmlStreamWriter writer(&file);
     writer.setCodec("UTF-8");  // XML 编码
