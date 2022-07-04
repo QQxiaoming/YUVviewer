@@ -1,7 +1,7 @@
 #!/bin/sh
 
 ###############################################################################
-# 定义QT目录
+# 定义Qt目录
 QT_DIR=/opt/Qt5.12.2/5.12.2/gcc_64
 # 定义opencv目录
 OPENCV_DIR=/home/xiaoming/Desktop/opencv

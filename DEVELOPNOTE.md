@@ -18,7 +18,7 @@ OPENCV_DIR=D:\Qt\opencv4.2.0
 
 ```bat
 :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-:: 定义QT目录
+:: 定义Qt目录
 set "QT_DIR=D:/Qt/Qt5.9.2/5.9.2/mingw53_32/bin"
 set "QT_TOOLS_DIR=D:/Qt/Qt5.9.2/Tools/mingw530_32/bin"
 :: 定义Inno Setup目录
@@ -47,7 +47,7 @@ OPENCV_DIR=/home/xiaoming/Desktop/opencv
 
 ```sh
 ###############################################################################
-# 定义QT目录
+# 定义Qt目录
 QT_DIR=/opt/Qt5.12.2/5.12.2/gcc_64
 # 定义opencv目录
 OPENCV_DIR=/home/xiaoming/Desktop/opencv
@@ -73,7 +73,7 @@ OPENCV_DIR=/home/xiaoming/Desktop/opencv
 
 ```sh
 ###############################################################################
-# 定义QT目录
+# 定义Qt目录
 QT_DIR=/opt/Qt5.12.2/5.12.2/gcc_64
 # 定义opencv目录
 OPENCV_DIR=/home/xiaoming/Desktop/opencv

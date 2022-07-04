@@ -1,7 +1,7 @@
 @echo off
 
 :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-:: 定义QT目录
+:: 定义Qt目录
 set "QT_DIR=C:/Qt/Qt5.12.8/5.12.8/mingw73_32/bin"
 set "QT_TOOLS_DIR=C:/Qt/Qt5.12.8/Tools/mingw730_32/bin"
 :: 定义Inno Setup目录
