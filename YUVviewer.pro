@@ -21,7 +21,7 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 TARGET = YUVviewer
 TEMPLATE = app
 DEFINES += QT_DEPRECATED_WARNINGS
-DEFINES += APP_VERSION="\\\"V$${YVYVIEWER_VERSION}\\\""
+DEFINES += APP_VERSION="\\\"V$${YUVVIEWER_VERSION}\\\""
 CONFIG += c++11
 
 # 源文件配置
@@ -70,7 +70,7 @@ win32:{
 
     LIBS += $${OPENCV_DIR}\x64\mingw\lib\libopencv_*.a
 
-    VERSION = $${YVYVIEWER_VERSION}.000
+    VERSION = $${YUVVIEWER_VERSION}.000
     RC_ICONS = "img\ico.ico"
     QMAKE_TARGET_PRODUCT = "YUVviewer"
     QMAKE_TARGET_DESCRIPTION = "YUVviewer based on Qt $$[QT_VERSION]"

@@ -9,7 +9,7 @@ set "INNO_SETUP_DIR=C:/Program Files (x86)/Inno Setup 6"
 :: 定义opencv目录
 set "OPENCV_DIR=D:/Qt/opencv4.2.0/x64/mingw/bin"
 :: 定义版本号
-set "YVYVIEWER_VERSION=0.4.9"
+set "YUVVIEWER_VERSION=0.4.9"
 :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 
@@ -32,8 +32,8 @@ if exist ".\InnoSetup\build" (
 )
 :: 配置打包信息
 copy /y .\InnoSetup\build_setup.iss .\InnoSetup\build_temp_setup.iss
-.\tools\sed\sed.exe -i "s/#VERSION#/%YVYVIEWER_VERSION%/g" .\InnoSetup\build_temp_setup.iss
-.\tools\sed\sed.exe -i "s/#VERSIONINFOVERSION#/%YVYVIEWER_VERSION%.000/g" .\InnoSetup\build_temp_setup.iss
+.\tools\sed\sed.exe -i "s/#VERSION#/%YUVVIEWER_VERSION%/g" .\InnoSetup\build_temp_setup.iss
+.\tools\sed\sed.exe -i "s/#VERSIONINFOVERSION#/%YUVVIEWER_VERSION%.000/g" .\InnoSetup\build_temp_setup.iss
 del /f /q /a .\sed*
 :: 构建打包目录
 xcopy /y .\build_release\out\YUVviewer.exe .\InnoSetup\build\
