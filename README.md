@@ -3,6 +3,7 @@
 [![GitHub tag (latest SemVer)](https://img.shields.io/github/tag/QQxiaoming/YUVviewer.svg)](https://github.com/QQxiaoming/YUVviewer/releases)
 [![GitHub All Releases](https://img.shields.io/github/downloads/QQxiaoming/YUVviewer/total.svg)](https://github.com/QQxiaoming/YUVviewer/releases)
 [![GitHub stars](https://img.shields.io/github/stars/QQxiaoming/YUVviewer.svg)](https://github.com/QQxiaoming/YUVviewer)
+[![GitHub forks](https://img.shields.io/github/forks/QQxiaoming/YUVviewer.svg)](https://github.com/QQxiaoming/YUVviewer)
 
 # YUVviewer
 
