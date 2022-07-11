@@ -6,12 +6,16 @@ on:
     paths-ignore:
       - 'doc/**'
       - 'README.md'
+      - 'README_zh_CN.md'
+      - 'DEVELOPNOTE.md'
       - '.readthedocs.yaml'
   pull_request:
     branches: [ main ]
     paths-ignore:
       - 'doc/**'
       - 'README.md'
+      - 'README_zh_CN.md'
+      - 'DEVELOPNOTE.md'
       - '.readthedocs.yaml'
   workflow_dispatch:
 
