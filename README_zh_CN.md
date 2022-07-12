@@ -4,6 +4,8 @@
 [![GitHub All Releases](https://img.shields.io/github/downloads/QQxiaoming/YUVviewer/total.svg)](https://github.com/QQxiaoming/YUVviewer/releases)
 [![GitHub stars](https://img.shields.io/github/stars/QQxiaoming/YUVviewer.svg)](https://github.com/QQxiaoming/YUVviewer)
 [![GitHub forks](https://img.shields.io/github/forks/QQxiaoming/YUVviewer.svg)](https://github.com/QQxiaoming/YUVviewer)
+[![Gitee stars](https://gitee.com/QQxiaoming/YUVviewer/badge/star.svg?theme=dark)](https://gitee.com/QQxiaoming/YUVviewer)
+[![Gitee forks](https://gitee.com/QQxiaoming/YUVviewer/badge/fork.svg?theme=dark)](https://gitee.com/QQxiaoming/YUVviewer)
 
 # YUVviewer
 
