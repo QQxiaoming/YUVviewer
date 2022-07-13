@@ -82,6 +82,6 @@ OPENCV_DIR=/home/xiaoming/Desktop/opencv
 
 - 执行build_dmg.sh脚本等待编译打包完成。
 
-## python版本
+## python版本(停止维护)
 
-运行 python ./src/YUVviewer.py
+运行 python ./src/old_code/YUVviewer.py

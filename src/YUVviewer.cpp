@@ -648,7 +648,20 @@ void YUVviewer::openFolder()
 
 void YUVviewer::about()
 {
-    QMessageBox::about(this, "About", "Version \n " + VERSION + "\nCommit \n " + GIT_TAG + "\nAuthor\n qiaoqm@aliyun.com \n wenqing.li@aliyun.com \nWebsite\n https://github.com/QQxiaoming/YUVviewer");
+    QMessageBox::about(this, tr("About"),
+        tr(
+            "<p>Version</p>"
+            "<p>&nbsp;%1</p>"
+            "<p>Commit</p>"
+            "<p>&nbsp;%2</p>"
+            "<p>Author</p>"
+            "<p>&nbsp;qiaoqm@aliyun.com</p>"
+            "<p>&nbsp;wenqing.li@aliyun.com</p>"
+            "<p>Website</p>"
+            "<p>&nbsp;<a href='https://github.com/QQxiaoming/YUVviewer'>https://github.com/QQxiaoming</p>"
+            "<p>&nbsp;<a href='https://gitee.com/QQxiaoming/YUVviewer'>https://gitee.com/QQxiaoming</a></p>"
+        ).arg(VERSION,GIT_TAG)
+    );
 }
 
 void YUVviewer::help()
