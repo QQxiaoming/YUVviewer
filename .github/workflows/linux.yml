@@ -1,0 +1,109 @@
+name: linux
+
+on:
+  push:
+    branches: [ main ]
+    paths-ignore:
+      - 'doc/**'
+      - 'README.md'
+      - 'README_zh_CN.md'
+      - 'DEVELOPNOTE.md'
+      - '.readthedocs.yaml'
+  pull_request:
+    branches: [ main ]
+    paths-ignore:
+      - 'doc/**'
+      - 'README.md'
+      - 'README_zh_CN.md'
+      - 'DEVELOPNOTE.md'
+      - '.readthedocs.yaml'
+  workflow_dispatch:
+
+jobs:
+  ubuntu-2004:
+    runs-on: ubuntu-20.04
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Install Qt
+        uses: jurplel/install-qt-action@v2.14.0
+
+      - name: Setup OpenCV
+        uses: Dovyski/setup-opencv-action@v1
+        with:
+          opencv-version: 4.0.0
+          opencv-extra-modules: false
+
+      - name: Install prerequisites
+        run: |
+          sudo apt update
+          sudo apt install -y make gcc patchelf
+
+      - name: Build all
+        run: |
+          git fetch --tags --force
+          git describe --always --long --dirty --abbrev=10 --tags | awk '{print "\""$0"\""}' > git_tag.inc
+          sed -i 's/git_tag.inc/git_tag.ci.inc/g' YUVviewer.pro
+          sed -i 's/QT_DIR=\/opt/QT_DIR=$(cd "$(dirname "$0")";pwd)/g' build_deb.sh
+          sed -i 's/\/home\/xiaoming\/Desktop\/opencv/\/usr\/local/g' build_deb.sh
+          sed -i 's/\/home\/xiaoming\/Desktop\/opencv/\/usr\/local/g' partform_unix.pri
+          ./build_deb.sh
+
+      - name: Upload build asserts
+        uses: actions/upload-artifact@v2.2.4
+        with:
+          name: YUVviewer_Ubuntu2004
+          path: |
+            ./dpkg/*.deb
+
+      - name: Run tests
+        run: |
+          if ls ./dpkg | grep ".deb" ; then echo "Pass"; else echo "Failed" && exit 1; fi;
+          timeout --foreground -s SIGKILL 20s ./dpkg/YUVviewer_Linux_*/opt/YUVviewer/YUVviewer --version > >(tee run.log) || {
+            if cat run.log | grep "YUVviewer" ; then echo "Pass" && exit 0; else echo "Failed" && exit 1; fi;
+          }
+
+  ubuntu-1804:
+    runs-on: ubuntu-18.04
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Install Qt
+        uses: jurplel/install-qt-action@v2.14.0
+
+      - name: Setup OpenCV
+        uses: Dovyski/setup-opencv-action@v1
+        with:
+          opencv-version: 4.0.0
+          opencv-extra-modules: false
+
+      - name: Install prerequisites
+        run: |
+          sudo apt update
+          sudo apt install -y make gcc patchelf
+
+      - name: Build all
+        run: |
+          git fetch --tags --force
+          git describe --always --long --dirty --abbrev=10 --tags | awk '{print "\""$0"\""}' > git_tag.inc
+          sed -i 's/git_tag.inc/git_tag.ci.inc/g' YUVviewer.pro
+          sed -i 's/QT_DIR=\/opt/QT_DIR=$(cd "$(dirname "$0")";pwd)/g' build_deb.sh
+          sed -i 's/\/home\/xiaoming\/Desktop\/opencv/\/usr\/local/g' build_deb.sh
+          sed -i 's/\/home\/xiaoming\/Desktop\/opencv/\/usr\/local/g' partform_unix.pri
+          ./build_deb.sh
+
+      - name: Upload build asserts
+        uses: actions/upload-artifact@v2.2.4
+        with:
+          name: YUVviewer_Ubuntu1804
+          path: |
+            ./dpkg/*.deb
+
+      - name: Run tests
+        run: |
+          if ls ./dpkg | grep ".deb" ; then echo "Pass"; else echo "Failed" && exit 1; fi;
+          timeout --foreground -s SIGKILL 20s ./dpkg/YUVviewer_Linux_*/opt/YUVviewer/YUVviewer --version > >(tee run.log) || {
+            if cat run.log | grep "YUVviewer" ; then echo "Pass" && exit 0; else echo "Failed" && exit 1; fi;
+          }
