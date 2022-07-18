@@ -16,8 +16,7 @@ namespace Ui {
 class YUVviewer;
 }
 
-class YUVviewer : public QMainWindow
-{
+class YUVviewer : public QMainWindow {
     Q_OBJECT
 
 public:

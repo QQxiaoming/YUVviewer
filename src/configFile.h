@@ -9,8 +9,7 @@
 
 #include <QString>
 
-typedef struct
-{
+typedef struct {
     QString lastPath;
     QString frameSizeType;
     QString YUVFormat;
@@ -21,8 +20,7 @@ typedef struct
     QString endFrame;
 }config_dict_t;
 
-class ConfigFile
-{
+class ConfigFile {
 public:
     ConfigFile(QString path);
     ~ConfigFile();

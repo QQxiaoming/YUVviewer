@@ -118,8 +118,7 @@ const QList<QPair<QString, QList<uint64_t>>> YUVviewer::YUVFormat_list = {
 
 YUVviewer::YUVviewer(QWidget *parent) :
     QMainWindow(parent),
-    ui(new Ui::YUVviewer)
-{
+    ui(new Ui::YUVviewer) {
     int currentIndex;
 
     ui->setupUi(this);
@@ -148,21 +147,17 @@ YUVviewer::YUVviewer(QWidget *parent) :
     }
 
     YUVviewerConfigFile = new ConfigFile(QDir::homePath()+"/.YUVViewer/YUVViewer.xml");
-    if(YUVviewerConfigFile->config_dict.frameSizeType == "Other")
-    {
+    if(YUVviewerConfigFile->config_dict.frameSizeType == "Other") {
         ui->frameSizeType_Other_RadioButton->setChecked(true);
         ui->frameSizeType_ComboBox->setEnabled(false);
         ui->frameSize_Width_LineEdit->setText(YUVviewerConfigFile->config_dict.frameSize_Width);
         ui->frameSize_Height_LineEdit->setText(YUVviewerConfigFile->config_dict.frameSize_Height);
-    }
-    else
-    {
+    } else {
         ui->frameSizeType_Combo_RadioButton->setChecked(true);
         ui->frameSizeType_ComboBox->setEnabled(true);
         QList<QPair<QString, QStringList>>::const_iterator config_it = frameSizeTypeDict.begin();
         while (config_it != frameSizeTypeDict.end()) {
-            if(config_it->first == YUVviewerConfigFile->config_dict.frameSizeType)
-            {
+            if(config_it->first == YUVviewerConfigFile->config_dict.frameSizeType) {
                 QStringList value = config_it->second;
                 ui->frameSizeType_ComboBox->setCurrentText(YUVviewerConfigFile->config_dict.frameSizeType);
                 ui->frameSize_Width_LineEdit->setText(value[0]);
@@ -182,8 +177,7 @@ YUVviewer::YUVviewer(QWidget *parent) :
     QList<uint64_t> color_list;
     QList<QPair<QString, QList<uint64_t>>>::const_iterator yuvformat_it = YUVFormat_list.begin();
     while (yuvformat_it != YUVFormat_list.end()) {
-        if(yuvformat_it->first == YUVviewerConfigFile->config_dict.YUVFormat)
-        {
+        if(yuvformat_it->first == YUVviewerConfigFile->config_dict.YUVFormat) {
             ui->YUVFormat_ComboBox->setCurrentIndex(currentIndex);
             color_list = yuvformat_it->second;
             break;
@@ -195,10 +189,8 @@ YUVviewer::YUVviewer(QWidget *parent) :
 
     QStringList frameRate_list = {"30", "60", "120"};
     currentIndex = 0;
-    foreach(QString s ,frameRate_list)
-    {
-        if(s == YUVviewerConfigFile->config_dict.frameRate)
-        {
+    foreach(QString s ,frameRate_list) {
+        if(s == YUVviewerConfigFile->config_dict.frameRate) {
             ui->frameRate_ComboBox->setCurrentIndex(currentIndex);
         }
         currentIndex++;
@@ -207,16 +199,21 @@ YUVviewer::YUVviewer(QWidget *parent) :
     ui->startFrame_LineEdit->setText(YUVviewerConfigFile->config_dict.startFrame);
     ui->endFrame_LineEdit->setText(YUVviewerConfigFile->config_dict.endFrame);
 
-
-    QObject::connect(ui->YUVFormat_ComboBox, SIGNAL(currentTextChanged(const QString &)), this, SLOT(changeFormat(const QString &)));
+    QObject::connect(ui->YUVFormat_ComboBox, SIGNAL(currentTextChanged(const QString &)), 
+                                                    this, SLOT(changeFormat(const QString &)));
     QObject::connect(ui->frameSizeType_Combo_RadioButton, SIGNAL(clicked()), this, SLOT(configComboBox()));
     QObject::connect(ui->frameSizeType_Other_RadioButton, SIGNAL(clicked()), this, SLOT(configOther()));
-    QObject::connect(ui->frameSizeType_ComboBox, SIGNAL(currentTextChanged(const QString &)), this,SLOT(changeFrameSizeType(const QString &)));
+    QObject::connect(ui->frameSizeType_ComboBox, SIGNAL(currentTextChanged(const QString &)), 
+                                                    this,SLOT(changeFrameSizeType(const QString &)));
 
-    QObject::connect(ui->frameSize_Height_LineEdit, SIGNAL(textEdited(const QString &)), this, SLOT(frameSizeHeightValidator(const QString &)));
-    QObject::connect(ui->frameSize_Width_LineEdit, SIGNAL(textEdited(const QString &)), this, SLOT(frameSizeWidthValidator(const QString &)));
-    QObject::connect(ui->startFrame_LineEdit, SIGNAL(textEdited(const QString &)), this, SLOT(startFrameValidator(const QString &)));
-    QObject::connect(ui->endFrame_LineEdit, SIGNAL(textEdited(const QString &)), this, SLOT(endFrameValidator(const QString &)));
+    QObject::connect(ui->frameSize_Height_LineEdit, SIGNAL(textEdited(const QString &)), 
+                                                    this, SLOT(frameSizeHeightValidator(const QString &)));
+    QObject::connect(ui->frameSize_Width_LineEdit, SIGNAL(textEdited(const QString &)), 
+                                                    this, SLOT(frameSizeWidthValidator(const QString &)));
+    QObject::connect(ui->startFrame_LineEdit, SIGNAL(textEdited(const QString &)), 
+                                                    this, SLOT(startFrameValidator(const QString &)));
+    QObject::connect(ui->endFrame_LineEdit, SIGNAL(textEdited(const QString &)), 
+                                                    this, SLOT(endFrameValidator(const QString &)));
 
     QObject::connect(ui->exchange_PushButton, SIGNAL(clicked()), this, SLOT(exchaneSize()));
     QObject::connect(ui->openFile_PushButton, SIGNAL(clicked()), this, SLOT(openFile()));
@@ -226,52 +223,47 @@ YUVviewer::YUVviewer(QWidget *parent) :
     imgViewer = nullptr;
 }
 
-YUVviewer::~YUVviewer()
-{
-    if(imgViewer != nullptr)
-    {
+YUVviewer::~YUVviewer() {
+    if(imgViewer != nullptr) {
         delete imgViewer;
     }
-    if(YUVviewerConfigFile != nullptr)
-    {
+    if(YUVviewerConfigFile != nullptr) {
         delete YUVviewerConfigFile;
     }
     delete ui;
 }
 
-QString YUVviewer::svgBoxSrc(int x, int y, int w, uint64_t c)
-{
+QString YUVviewer::svgBoxSrc(int x, int y, int w, uint64_t c) {
     if((c&UI_SINGLE) == UI_SINGLE) {
         uint64_t color = c & 0xffffffULL;
-        return QString("<line class=\"0\" x1=\"%1\" y1=\"%2\" x2=\"%3\" y2=\"%4\" stroke=\"#%5\" fill=\"none\" stroke-width=\"%6\" />\n").arg(x).arg(y+w/2).arg(x+w).arg(y+w/2).arg(color,6,16,QLatin1Char('0')).arg(w);
+        return QString("<line class=\"0\" x1=\"%1\" y1=\"%2\" x2=\"%3\" y2=\"%4\" stroke=\"#%5\" fill=\"none\" stroke-width=\"%6\" />\n")
+                    .arg(x).arg(y+w/2).arg(x+w).arg(y+w/2).arg(color,6,16,QLatin1Char('0')).arg(w);
     } else {
         uint64_t color0 = (c>>32) & 0xffffffULL;
         uint64_t color1 = c & 0xffffffULL;
         uint8_t fix_w = (w*(c>>56))/((c>>56)+((c & 0xff000000ULL)>>24));
         QString ret = "";
-        ret += QString("<line class=\"0\" x1=\"%1\" y1=\"%2\" x2=\"%3\" y2=\"%4\" stroke=\"#%5\" fill=\"none\" stroke-width=\"%6\" />\n").arg(x).arg(y+w/2).arg(x+fix_w).arg(y+w/2).arg(color0,6,16,QLatin1Char('0')).arg(w);
-        ret += QString("<line class=\"0\" x1=\"%1\" y1=\"%2\" x2=\"%3\" y2=\"%4\" stroke=\"#%5\" fill=\"none\" stroke-width=\"%6\" />\n").arg(x+fix_w).arg(y+w/2).arg(x+w).arg(y+w/2).arg(color1,6,16,QLatin1Char('0')).arg(w);
+        ret += QString("<line class=\"0\" x1=\"%1\" y1=\"%2\" x2=\"%3\" y2=\"%4\" stroke=\"#%5\" fill=\"none\" stroke-width=\"%6\" />\n")
+                    .arg(x).arg(y+w/2).arg(x+fix_w).arg(y+w/2).arg(color0,6,16,QLatin1Char('0')).arg(w);
+        ret += QString("<line class=\"0\" x1=\"%1\" y1=\"%2\" x2=\"%3\" y2=\"%4\" stroke=\"#%5\" fill=\"none\" stroke-width=\"%6\" />\n")
+                    .arg(x+fix_w).arg(y+w/2).arg(x+w).arg(y+w/2).arg(color1,6,16,QLatin1Char('0')).arg(w);
         return ret;
     }
 }
 
-QString YUVviewer::svgBoxArraySrc(int x, int y, int w, int od, int xn, int yn,QList<uint64_t> ca)
-{
+QString YUVviewer::svgBoxArraySrc(int x, int y, int w, int od, int xn, int yn,QList<uint64_t> ca) {
     QString ret = "";
     int num = ca.count();
     if(num == 0) return  ret;
-    for(int i=0;i<yn;i++)
-    {
-        for(int j=0;j<xn;j++)
-        {
+    for(int i=0;i<yn;i++) {
+        for(int j=0;j<xn;j++) {
             ret += svgBoxSrc(x+(w+od)*j,y+(w+od)*i,w,ca.at((i*xn+j)%num));
         }
     }
     return  ret;
 }
 
-void YUVviewer::updateUiSvg(QList<uint64_t> color_list)
-{
+void YUVviewer::updateUiSvg(QList<uint64_t> color_list) {
     QXmlStreamReader svgXmlStreamReader(
         "<svg xmlns=\"http://www.w3.org/2000/svg\" version=\"1.1\">\n" +
         svgBoxArraySrc(10,10,40,5,24,4,color_list) +
@@ -286,13 +278,11 @@ void YUVviewer::updateUiSvg(QList<uint64_t> color_list)
     ui->label_8->setAlignment(Qt::AlignCenter);
 }
 
-void YUVviewer::changeFormat(const QString &text)
-{
+void YUVviewer::changeFormat(const QString &text) {
     QList<uint64_t> color_list;
     QList<QPair<QString, QList<uint64_t>>>::const_iterator yuvformat_it = YUVFormat_list.begin();
     while (yuvformat_it != YUVFormat_list.end()) {
-        if(yuvformat_it->first == text)
-        {
+        if(yuvformat_it->first == text) {
             color_list = yuvformat_it->second;
             break;
         }
@@ -302,13 +292,11 @@ void YUVviewer::changeFormat(const QString &text)
     ui->label_8->repaint();
 }
 
-void YUVviewer::configComboBox()
-{
+void YUVviewer::configComboBox() {
     ui->frameSizeType_ComboBox->setEnabled(true);
     QList<QPair<QString, QStringList>>::const_iterator config_it = frameSizeTypeDict.begin();
     while (config_it != frameSizeTypeDict.end()) {
-        if(config_it->first == ui->frameSizeType_ComboBox->currentText())
-        {
+        if(config_it->first == ui->frameSizeType_ComboBox->currentText()) {
             QStringList value = config_it->second;
             ui->frameSize_Width_LineEdit->setText(value[0]);
             ui->frameSize_Width_LineEdit->setFocusPolicy(Qt::NoFocus);
@@ -320,12 +308,10 @@ void YUVviewer::configComboBox()
     }
 }
 
-void YUVviewer::changeFrameSizeType(const QString &text)
-{
+void YUVviewer::changeFrameSizeType(const QString &text) {
     QList<QPair<QString, QStringList>>::const_iterator config_it = frameSizeTypeDict.begin();
     while (config_it != frameSizeTypeDict.end()) {
-        if(config_it->first == text)
-        {
+        if(config_it->first == text) {
             QStringList value = config_it->second;
             ui->frameSize_Width_LineEdit->setText(value[0]);
             ui->frameSize_Width_LineEdit->setFocusPolicy(Qt::NoFocus);
@@ -337,8 +323,7 @@ void YUVviewer::changeFrameSizeType(const QString &text)
     }
 }
 
-void YUVviewer::configOther()
-{
+void YUVviewer::configOther() {
     ui->frameSizeType_ComboBox->setEnabled(false);
     ui->frameSize_Width_LineEdit->setText(YUVviewerConfigFile->config_dict.frameSize_Width);
     ui->frameSize_Height_LineEdit->setText(YUVviewerConfigFile->config_dict.frameSize_Height);
@@ -346,95 +331,70 @@ void YUVviewer::configOther()
     ui->frameSize_Height_LineEdit->setFocusPolicy(Qt::StrongFocus);
 }
 
-void YUVviewer::frameSizeHeightValidator(const QString &currentText)
-{
+void YUVviewer::frameSizeHeightValidator(const QString &currentText) {
     bool isInt;
     int currentVale = currentText.toInt(&isInt);
-    if(isInt == true)
-    {
-        if(((currentVale%2) == 0) && (currentVale > 0))
-        {
+    if(isInt == true) {
+        if(((currentVale%2) == 0) && (currentVale > 0)) {
             ui->frameSize_Height_LineEdit->setStyleSheet("QLineEdit{border:1px solid gray border-radius:1px}");
-        }
-        else
-        {
+        } else {
             QToolTip::showText(ui->frameSize_Height_LineEdit->mapToGlobal(QPoint(0, 10)), "Height must be positive even");
             ui->frameSize_Height_LineEdit->setStyleSheet("QLineEdit{border: 1px solid red;border-radius: 3px;}");
         }
-    }
-    else
-    {
+    } else {
         QToolTip::showText(ui->frameSize_Height_LineEdit->mapToGlobal(QPoint(0, 10)), "Height must be num");
         ui->frameSize_Height_LineEdit->setStyleSheet("QLineEdit{border: 1px solid red;border-radius: 3px;}");
     }
 }
 
-void YUVviewer::frameSizeWidthValidator(const QString &currentText)
-{
+void YUVviewer::frameSizeWidthValidator(const QString &currentText) {
     bool isInt;
     int currentVale = currentText.toInt(&isInt);
-    if(isInt == true)
-    {
-        if(((currentVale%2) == 0) && (currentVale > 0))
-        {
+    if(isInt == true) {
+        if(((currentVale%2) == 0) && (currentVale > 0)) {
             ui->frameSize_Width_LineEdit->setStyleSheet("QLineEdit{border:1px solid gray border-radius:1px}");
-        }
-        else
-        {
+        } else {
             QToolTip::showText(ui->frameSize_Width_LineEdit->mapToGlobal(QPoint(0, 10)), "Width must be positive even");
             ui->frameSize_Width_LineEdit->setStyleSheet("QLineEdit{border: 1px solid red;border-radius: 3px;}");
         }
-    }
-    else
-    {
+    } else {
         QToolTip::showText(ui->frameSize_Width_LineEdit->mapToGlobal(QPoint(0, 10)), "Width must be num");
         ui->frameSize_Width_LineEdit->setStyleSheet("QLineEdit{border: 1px solid red;border-radius: 3px;}");
     }
 }
 
-void YUVviewer::startFrameValidator(const QString & currentText)
-{
+void YUVviewer::startFrameValidator(const QString & currentText) {
     bool isInt;
     int currentVale = currentText.toInt(&isInt);
-    if(isInt != true)
-    {
+    if(isInt != true) {
         QToolTip::showText(ui->startFrame_LineEdit->mapToGlobal(QPoint(0, 10)), "startFrame must be num");
         ui->startFrame_LineEdit->setStyleSheet("QLineEdit{border: 1px solid red;border-radius: 3px;}");
         return;
     }
-    if(currentVale >= 0)
-    {
+    if(currentVale >= 0) {
         ui->startFrame_LineEdit->setStyleSheet("QLineEdit{border:1px solid gray border-radius:1px}");
         int endFrameVale = ui->endFrame_LineEdit->text().toInt(&isInt);
-        if(isInt != true)
-        {
+        if(isInt != true) {
             QToolTip::showText(ui->endFrame_LineEdit->mapToGlobal(QPoint(0, 10)), "endFrame must be num");
             ui->endFrame_LineEdit->setStyleSheet("QLineEdit{border: 1px solid red;border-radius: 3px;}");
             return;
         }
-        if(currentVale <= endFrameVale)
-        {
+        if(currentVale <= endFrameVale) {
             ui->endFrame_LineEdit->setStyleSheet("QLineEdit{border:1px solid gray border-radius:1px}");
-        }
-        else
-        {
+        } else {
             QToolTip::showText(ui->endFrame_LineEdit->mapToGlobal(QPoint(0, 10)), "endFrame must be greater than or equal to startFrame");
             ui->endFrame_LineEdit->setStyleSheet("QLineEdit{border: 1px solid red;border-radius: 3px;}");
         }
-    }
-    else
-    {
+    } else {
         QToolTip::showText(ui->startFrame_LineEdit->mapToGlobal(QPoint(0, 10)), "startFrame must be greater than or equal to 0");
         ui->startFrame_LineEdit->setStyleSheet("QLineEdit{border: 1px solid red;border-radius: 3px;}");
     }
 }
 
-void YUVviewer::endFrameValidator(const QString & currentText)
-{
+void YUVviewer::endFrameValidator(const QString & currentText) {
     bool isInt;
     int currentVale = currentText.toInt(&isInt);
-    if(isInt != true)
-    {
+    if(isInt != true) {
         QToolTip::showText(ui->endFrame_LineEdit->mapToGlobal(QPoint(0, 10)), "endFrame must be num");
         ui->endFrame_LineEdit->setStyleSheet("QLineEdit{border: 1px solid red;border-radius: 3px;}");
         return;
@@ -443,23 +403,18 @@ void YUVviewer::endFrameValidator(const QString & currentText)
     ui->endFrame_LineEdit->setStyleSheet("QLineEdit{border:1px solid gray border-radius:1px}");
 
     int startVale = ui->startFrame_LineEdit->text().toInt(&isInt);
-    if(isInt == true)
-    {
-        if(currentVale < startVale)
-        {
+    if(isInt == true) {
+        if(currentVale < startVale) {
             QToolTip::showText(ui->endFrame_LineEdit->mapToGlobal(QPoint(0, 10)), "endFrame must be greater than or equal to startFrame");
             ui->endFrame_LineEdit->setStyleSheet("QLineEdit{border: 1px solid red;border-radius: 3px;}");
         }
-    }
-    else
-    {
+    } else {
         QToolTip::showText(ui->startFrame_LineEdit->mapToGlobal(QPoint(0, 10)), "startFrame must be num");
         ui->startFrame_LineEdit->setStyleSheet("QLineEdit{border: 1px solid red;border-radius: 3px;}");
     }
 }
 
-void YUVviewer::exchaneSize() 
-{ 
+void YUVviewer::exchaneSize() { 
     ui->frameSizeType_Other_RadioButton->setChecked(true);
     ui->frameSizeType_ComboBox->setEnabled(false);
     QString width = ui->frameSize_Width_LineEdit->text();
@@ -469,49 +424,38 @@ void YUVviewer::exchaneSize()
     frameSizeHeightValidator(ui->frameSize_Height_LineEdit->text());
 }
 
-void YUVviewer::showParaErrMessageBox(void)
-{
+void YUVviewer::showParaErrMessageBox(void) {
     QMessageBox::critical(this, "Error", "parameter invalid!!", QMessageBox::Ok);
 }
 
-bool YUVviewer::updateConfig(void)
-{
+bool YUVviewer::updateConfig(void) {
     bool isInt;
     int startFrame = ui->startFrame_LineEdit->text().toInt(&isInt);
-    if(!isInt)
-    {
+    if(!isInt) {
         showParaErrMessageBox();
         return false;
     }
     int endFrame = ui->endFrame_LineEdit->text().toInt(&isInt);
-    if(!isInt)
-    {
+    if(!isInt) {
         showParaErrMessageBox();
         return false;
     }
     int temp_Width = ui->frameSize_Width_LineEdit->text().toInt(&isInt);
-    if(!isInt)
-    {
+    if(!isInt) {
         showParaErrMessageBox();
         return false;
     }
     int temp_Height = ui->frameSize_Height_LineEdit->text().toInt(&isInt);
-    if(!isInt)
-    {
+    if(!isInt) {
         showParaErrMessageBox();
         return false;
     }
 
-    if(startFrame <= endFrame)
-    {
-        if(((temp_Width % 2) == 0) && ((temp_Height % 2) == 0) && (temp_Width > 0) && (temp_Height > 0))
-        {
-            if(ui->frameSizeType_Combo_RadioButton->isChecked())
-            {
+    if(startFrame <= endFrame) {
+        if(((temp_Width % 2) == 0) && ((temp_Height % 2) == 0) && (temp_Width > 0) && (temp_Height > 0)) {
+            if(ui->frameSizeType_Combo_RadioButton->isChecked()) {
                 YUVviewerConfigFile->config_dict.frameSizeType = ui->frameSizeType_ComboBox->currentText();
-            }
-            else if (ui->frameSizeType_Other_RadioButton->isChecked())
-            {
+            } else if (ui->frameSizeType_Other_RadioButton->isChecked()) {
                 YUVviewerConfigFile->config_dict.frameSizeType = ui->frameSizeType_Other_RadioButton->text();
             }
             YUVviewerConfigFile->config_dict.YUVFormat = ui->YUVFormat_ComboBox->currentText();
@@ -522,28 +466,21 @@ bool YUVviewer::updateConfig(void)
             YUVviewerConfigFile->config_dict.endFrame = ui->endFrame_LineEdit->text();
 
             return true;
-        }
-        else
-        {
+        } else {
             QMessageBox::critical(this, "Error", "frameSize invalid!!", QMessageBox::Ok);
             return false;
         }
-    }
-    else
-    {
+    } else {
         QMessageBox::critical(this, "Error", "startFrame or endFrame invalid!!", QMessageBox::Ok);
         return false;
     }
 }
 
-bool YUVviewer::imgView(QStringList openfile_list)
-{
-    if (openfile_list.empty())
-    {
+bool YUVviewer::imgView(QStringList openfile_list) {
+    if (openfile_list.empty()) {
         return false;
     }
-    if(imgViewer != nullptr)
-    {
+    if(imgViewer != nullptr) {
         delete imgViewer;
         imgViewer = nullptr;
     }
@@ -571,20 +508,16 @@ bool YUVviewer::imgView(QStringList openfile_list)
                            endFrame-startFrame+1
                            );
     #endif
-    if(!isSuccess)
-    {
+    if(!isSuccess) {
         QMessageBox::critical(this, "Error", "unsupport YUVFormat!!", QMessageBox::Ok);
         this->show();
         return false;
     }
     float fframeSize_Width = (float)frameSize_Width;
     float fframeSize_Height = (float)frameSize_Height;
-    if(frameSize_Width > frameSize_Height)
-    {
+    if(frameSize_Width > frameSize_Height) {
         imgViewer->resize(800, fframeSize_Height/fframeSize_Width*800.0);
-    }
-    else
-    {
+    } else {
         imgViewer->resize(fframeSize_Width/fframeSize_Height*400.0, 400);
     }
     QRect screen = QGuiApplication::screenAt(this->mapToGlobal({this->width()/2,0}))->geometry();
@@ -596,19 +529,15 @@ bool YUVviewer::imgView(QStringList openfile_list)
     return true;
 }
 
-void YUVviewer::openFile()
-{
-    if(updateConfig())
-    {
+void YUVviewer::openFile() {
+    if(updateConfig()) {
         QString openDir = "";
         QFileInfo lastPath(YUVviewerConfigFile->config_dict.lastPath);
-        if(lastPath.isDir())
-        {
+        if(lastPath.isDir()) {
             openDir = YUVviewerConfigFile->config_dict.lastPath;
         }
         QStringList openfile_list = QFileDialog::getOpenFileNames(this, "选择文件", openDir, "YUV files(*.yuv *.data *.raw)");
-        if(openfile_list.size() != 0)
-        {
+        if(openfile_list.size() != 0) {
             QFileInfo file(openfile_list[0]);
             YUVviewerConfigFile->config_dict.lastPath = file.absolutePath();
             imgView(openfile_list);
@@ -616,38 +545,31 @@ void YUVviewer::openFile()
     }
 }
 
-void YUVviewer::openFolder()
-{
-    if(updateConfig())
-    {
+void YUVviewer::openFolder() {
+    if(updateConfig()) {
         QString openDir = "";
         QFileInfo lastPath(YUVviewerConfigFile->config_dict.lastPath);
-        if(lastPath.isDir())
-        {
+        if(lastPath.isDir()) {
             openDir = YUVviewerConfigFile->config_dict.lastPath;
         }
         QString openfolder_name = QFileDialog::getExistingDirectory(this, "选择文件夹", openDir);
-        if (!openfolder_name.isEmpty())
-        {
+        if (!openfolder_name.isEmpty()) {
             YUVviewerConfigFile->config_dict.lastPath = openfolder_name;
             QDir dir(openfolder_name);
             QStringList nameFilters = {"*.yuv","*.data","*.raw"};
             QStringList openfilename_list = dir.entryList(nameFilters, QDir::Files|QDir::Readable, QDir::Name);
             QStringList openfile_list;
-            foreach (QString file_name, openfilename_list)
-            {
+            foreach (QString file_name, openfilename_list) {
                 openfile_list.append(QDir::toNativeSeparators(openfolder_name + '/' +file_name));
             }
-            if(openfile_list.size() != 0)
-            {
+            if(openfile_list.size() != 0) {
                 imgView(openfile_list);
             }
         }
     }
 }
 
-void YUVviewer::about()
-{
+void YUVviewer::about() {
     QMessageBox::about(this, tr("About"),
         tr(
             "<p>Version</p>"
@@ -664,23 +586,19 @@ void YUVviewer::about()
     );
 }
 
-void YUVviewer::help()
-{
+void YUVviewer::help() {
     QMessageBox::question(this, "Help", "1.主界面选择数据参数。\n2.点击打开文件或文件夹将进行图像数据解析并显示图像。\n3.图像显示界面中使用滚轮放大缩小图像，使用左键可拖动图像，双击左键保存图像为png格式，单击右键复位图像大小和位置，双击右键交换图像R和B通道显示，单击中键显示图像原始大小。", QMessageBox::Ok);
 }
 
-void YUVviewer::closeEvent(QCloseEvent *event)
-{
-    if(YUVviewerConfigFile != nullptr)
-    {
+void YUVviewer::closeEvent(QCloseEvent *event) {
+    if(YUVviewerConfigFile != nullptr) {
         delete YUVviewerConfigFile;
         YUVviewerConfigFile = nullptr;
     }
     event->accept();
 }
 
-int main(int argc, char *argv[])
-{
+int main(int argc, char *argv[]) {
     if(argc == 2) {
         if((!strncmp(argv[1],"--version",9)) | (!strncmp(argv[1],"-v",2)) ) {
             std::cout << "YUVviewer " << VERSION.toStdString() << "\n" << GIT_TAG.toStdString() << "\n";

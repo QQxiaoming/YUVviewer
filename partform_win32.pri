@@ -2,5 +2,5 @@
 # 定义opencv lib路径
 OPENCV_DIR=D:\Qt\opencv4.2.0
 # 定义版本号路径
-YUVVIEWER_VERSION=0.4.9
+YUVVIEWER_VERSION=0.4.10
 ###############################################################################

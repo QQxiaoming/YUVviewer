@@ -23,8 +23,7 @@ namespace Ui {
 class ImgViewerWindow;
 }
 
-class YUVDecodeThread : public QThread
-{
+class YUVDecodeThread : public QThread {
     Q_OBJECT
 
 public:
@@ -52,8 +51,7 @@ private:
     static void image_cleanup(cv::Mat* ptr);
 };
 
-class ImgViewer : public QWidget
-{
+class ImgViewer : public QWidget {
     Q_OBJECT
 
 public:
