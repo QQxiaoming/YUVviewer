@@ -16,8 +16,8 @@ YUVVIEWER_REVISION="10"
 ###############################################################################
 export PATH=$QT_DIR/bin:$PATH
 export LD_LIBRARY_PATH=$OPENCV_DIR/lib:$QT_DIR/lib:$LD_LIBRARY_PATH
-export QT_PLUGIN_PATH=$QT_DIR/plugins:$QT_PLUGIN_PATH
-export QML2_IMPORT_PATH=$QT_DIR/qml:$QML2_IMPORT_PATH
+export QT_PLUGIN_PATH=$QT_DIR/plugins
+export QML2_IMPORT_PATH=$QT_DIR/qml
 # 合成版本号
 YUVVIEWER_VERSION="V"$YUVVIEWER_MAJARVERSION$YUVVIEWER_SUBVERSION$YUVVIEWER_REVISION
 # 编译
