@@ -2,7 +2,7 @@ name: windows
 
 on:
   push:
-    branches: [ main ]
+    branches: [ main, dev/qt6 ]
     paths-ignore:
       - 'doc/**'
       - 'README.md'
