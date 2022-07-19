@@ -36,29 +36,29 @@ cp ./build_release/out/YUVviewer ./dpkg/YUVviewer_Linux_"$YUVVIEWER_VERSION"_x86
 # 使用linuxdeployqt拷贝依赖so库到打包目录
 ./tools/linuxdeployqt ./dpkg/YUVviewer_Linux_"$YUVVIEWER_VERSION"_x86_64/opt/YUVviewer/YUVviewer -appimage
 # 由于linuxdeployqt目前（截止2022.07.18）还不支持Qt6的plugins依赖分析，这里我们手动拷贝
-mkdir ./dpkg/TTFviewer_Linux_"$YUVVIEWER_VERSION"_x86_64/opt/TTFviewer/plugins
-mkdir ./dpkg/TTFviewer_Linux_"$YUVVIEWER_VERSION"_x86_64/opt/TTFviewer/plugins/iconengines
-cp $QT_PLUGIN_PATH/iconengines/libqsvgicon.so ./dpkg/TTFviewer_Linux_"$YUVVIEWER_VERSION"_x86_64/opt/TTFviewer/plugins/iconengines/libqsvgicon.so
-mkdir ./dpkg/TTFviewer_Linux_"$YUVVIEWER_VERSION"_x86_64/opt/TTFviewer/plugins/imageformats
-cp $QT_PLUGIN_PATH/imageformats/libqgif.so ./dpkg/TTFviewer_Linux_"$YUVVIEWER_VERSION"_x86_64/opt/TTFviewer/plugins/imageformats/libqgif.so
-cp $QT_PLUGIN_PATH/imageformats/libqicns.so ./dpkg/TTFviewer_Linux_"$YUVVIEWER_VERSION"_x86_64/opt/TTFviewer/plugins/imageformats/libqicns.so
-cp $QT_PLUGIN_PATH/imageformats/libqico.so ./dpkg/TTFviewer_Linux_"$YUVVIEWER_VERSION"_x86_64/opt/TTFviewer/plugins/imageformats/libqico.so
-cp $QT_PLUGIN_PATH/imageformats/libqjpeg.so ./dpkg/TTFviewer_Linux_"$YUVVIEWER_VERSION"_x86_64/opt/TTFviewer/plugins/imageformats/libqjpeg.so
-cp $QT_PLUGIN_PATH/imageformats/libqsvg.so ./dpkg/TTFviewer_Linux_"$YUVVIEWER_VERSION"_x86_64/opt/TTFviewer/plugins/imageformats/libqsvg.so
-cp $QT_PLUGIN_PATH/imageformats/libqtga.so ./dpkg/TTFviewer_Linux_"$YUVVIEWER_VERSION"_x86_64/opt/TTFviewer/plugins/imageformats/libqtga.so
-cp $QT_PLUGIN_PATH/imageformats/libqtiff.so ./dpkg/TTFviewer_Linux_"$YUVVIEWER_VERSION"_x86_64/opt/TTFviewer/plugins/imageformats/libqtiff.so
-cp $QT_PLUGIN_PATH/imageformats/libqwbmp.so ./dpkg/TTFviewer_Linux_"$YUVVIEWER_VERSION"_x86_64/opt/TTFviewer/plugins/imageformats/libqwbmp.so
-cp $QT_PLUGIN_PATH/imageformats/libqwebp.so ./dpkg/TTFviewer_Linux_"$YUVVIEWER_VERSION"_x86_64/opt/TTFviewer/plugins/imageformats/libqwebp.so
-mkdir ./dpkg/TTFviewer_Linux_"$YUVVIEWER_VERSION"_x86_64/opt/TTFviewer/plugins/platforminputcontexts
-cp $QT_PLUGIN_PATH/platforminputcontexts/libcomposeplatforminputcontextplugin.so ./dpkg/TTFviewer_Linux_"$YUVVIEWER_VERSION"_x86_64/opt/TTFviewer/plugins/platforminputcontexts/libcomposeplatforminputcontextplugin.so
-cp $QT_PLUGIN_PATH/platforminputcontexts/libibusplatforminputcontextplugin.so ./dpkg/TTFviewer_Linux_"$YUVVIEWER_VERSION"_x86_64/opt/TTFviewer/plugins/platforminputcontexts/libibusplatforminputcontextplugin.so
-mkdir ./dpkg/TTFviewer_Linux_"$YUVVIEWER_VERSION"_x86_64/opt/TTFviewer/plugins/platforms
-cp $QT_PLUGIN_PATH/platforms/libqxcb.so ./dpkg/TTFviewer_Linux_"$YUVVIEWER_VERSION"_x86_64/opt/TTFviewer/plugins/platforms/libqxcb.so
-mkdir ./dpkg/TTFviewer_Linux_"$YUVVIEWER_VERSION"_x86_64/opt/TTFviewer/plugins/xcbglintegrations
-cp $QT_PLUGIN_PATH/xcbglintegrations/libqxcb-egl-integration.so ./dpkg/TTFviewer_Linux_"$YUVVIEWER_VERSION"_x86_64/opt/TTFviewer/plugins/xcbglintegrations/libqxcb-egl-integration.so
-cp $QT_PLUGIN_PATH/xcbglintegrations/libqxcb-glx-integration.so ./dpkg/TTFviewer_Linux_"$YUVVIEWER_VERSION"_x86_64/opt/TTFviewer/plugins/xcbglintegrations/libqxcb-glx-integration.so
-cp $QT_DIR/lib/libQt6XcbQpa.so.6 ./dpkg/TTFviewer_Linux_"$YUVVIEWER_VERSION"_x86_64/opt/TTFviewer/lib/libQt6XcbQpa.so.6
-cp $QT_DIR/lib/libQt6OpenGL.so.6 ./dpkg/TTFviewer_Linux_"$YUVVIEWER_VERSION"_x86_64/opt/TTFviewer/lib/libQt6OpenGL.so.6
+mkdir ./dpkg/YUVviewer_Linux_"$YUVVIEWER_VERSION"_x86_64/opt/YUVviewer/plugins
+mkdir ./dpkg/YUVviewer_Linux_"$YUVVIEWER_VERSION"_x86_64/opt/YUVviewer/plugins/iconengines
+cp $QT_PLUGIN_PATH/iconengines/libqsvgicon.so ./dpkg/YUVviewer_Linux_"$YUVVIEWER_VERSION"_x86_64/opt/YUVviewer/plugins/iconengines/libqsvgicon.so
+mkdir ./dpkg/YUVviewer_Linux_"$YUVVIEWER_VERSION"_x86_64/opt/YUVviewer/plugins/imageformats
+cp $QT_PLUGIN_PATH/imageformats/libqgif.so ./dpkg/YUVviewer_Linux_"$YUVVIEWER_VERSION"_x86_64/opt/YUVviewer/plugins/imageformats/libqgif.so
+cp $QT_PLUGIN_PATH/imageformats/libqicns.so ./dpkg/YUVviewer_Linux_"$YUVVIEWER_VERSION"_x86_64/opt/YUVviewer/plugins/imageformats/libqicns.so
+cp $QT_PLUGIN_PATH/imageformats/libqico.so ./dpkg/YUVviewer_Linux_"$YUVVIEWER_VERSION"_x86_64/opt/YUVviewer/plugins/imageformats/libqico.so
+cp $QT_PLUGIN_PATH/imageformats/libqjpeg.so ./dpkg/YUVviewer_Linux_"$YUVVIEWER_VERSION"_x86_64/opt/YUVviewer/plugins/imageformats/libqjpeg.so
+cp $QT_PLUGIN_PATH/imageformats/libqsvg.so ./dpkg/YUVviewer_Linux_"$YUVVIEWER_VERSION"_x86_64/opt/YUVviewer/plugins/imageformats/libqsvg.so
+cp $QT_PLUGIN_PATH/imageformats/libqtga.so ./dpkg/YUVviewer_Linux_"$YUVVIEWER_VERSION"_x86_64/opt/YUVviewer/plugins/imageformats/libqtga.so
+cp $QT_PLUGIN_PATH/imageformats/libqtiff.so ./dpkg/YUVviewer_Linux_"$YUVVIEWER_VERSION"_x86_64/opt/YUVviewer/plugins/imageformats/libqtiff.so
+cp $QT_PLUGIN_PATH/imageformats/libqwbmp.so ./dpkg/YUVviewer_Linux_"$YUVVIEWER_VERSION"_x86_64/opt/YUVviewer/plugins/imageformats/libqwbmp.so
+cp $QT_PLUGIN_PATH/imageformats/libqwebp.so ./dpkg/YUVviewer_Linux_"$YUVVIEWER_VERSION"_x86_64/opt/YUVviewer/plugins/imageformats/libqwebp.so
+mkdir ./dpkg/YUVviewer_Linux_"$YUVVIEWER_VERSION"_x86_64/opt/YUVviewer/plugins/platforminputcontexts
+cp $QT_PLUGIN_PATH/platforminputcontexts/libcomposeplatforminputcontextplugin.so ./dpkg/YUVviewer_Linux_"$YUVVIEWER_VERSION"_x86_64/opt/YUVviewer/plugins/platforminputcontexts/libcomposeplatforminputcontextplugin.so
+cp $QT_PLUGIN_PATH/platforminputcontexts/libibusplatforminputcontextplugin.so ./dpkg/YUVviewer_Linux_"$YUVVIEWER_VERSION"_x86_64/opt/YUVviewer/plugins/platforminputcontexts/libibusplatforminputcontextplugin.so
+mkdir ./dpkg/YUVviewer_Linux_"$YUVVIEWER_VERSION"_x86_64/opt/YUVviewer/plugins/platforms
+cp $QT_PLUGIN_PATH/platforms/libqxcb.so ./dpkg/YUVviewer_Linux_"$YUVVIEWER_VERSION"_x86_64/opt/YUVviewer/plugins/platforms/libqxcb.so
+mkdir ./dpkg/YUVviewer_Linux_"$YUVVIEWER_VERSION"_x86_64/opt/YUVviewer/plugins/xcbglintegrations
+cp $QT_PLUGIN_PATH/xcbglintegrations/libqxcb-egl-integration.so ./dpkg/YUVviewer_Linux_"$YUVVIEWER_VERSION"_x86_64/opt/YUVviewer/plugins/xcbglintegrations/libqxcb-egl-integration.so
+cp $QT_PLUGIN_PATH/xcbglintegrations/libqxcb-glx-integration.so ./dpkg/YUVviewer_Linux_"$YUVVIEWER_VERSION"_x86_64/opt/YUVviewer/plugins/xcbglintegrations/libqxcb-glx-integration.so
+cp $QT_DIR/lib/libQt6XcbQpa.so.6 ./dpkg/YUVviewer_Linux_"$YUVVIEWER_VERSION"_x86_64/opt/YUVviewer/lib/libQt6XcbQpa.so.6
+cp $QT_DIR/lib/libQt6OpenGL.so.6 ./dpkg/YUVviewer_Linux_"$YUVVIEWER_VERSION"_x86_64/opt/YUVviewer/lib/libQt6OpenGL.so.6
 rm -rf ./dpkg/YUVviewer_Linux_"$YUVVIEWER_VERSION"_x86_64/opt/YUVviewer/doc ./dpkg/YUVviewer_Linux_"$YUVVIEWER_VERSION"_x86_64/opt/YUVviewer/default.png ./dpkg/YUVviewer_Linux_"$YUVVIEWER_VERSION"_x86_64/opt/YUVviewer/AppRun ./dpkg/YUVviewer_Linux_"$YUVVIEWER_VERSION"_x86_64/opt/YUVviewer/default.desktop
 cp ./img/ico.png ./dpkg/YUVviewer_Linux_"$YUVVIEWER_VERSION"_x86_64/opt/YUVviewer/YUVviewer.png
 # 配置打包信息
