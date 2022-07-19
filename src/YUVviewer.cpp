@@ -5,12 +5,11 @@
  * @date 2020-04-14
  */
 #include <QApplication>
-#include <QDesktopWidget>
+#include <QScreen>
 #include <QMessageBox>
 #include <QFileDialog>
 #include <QToolTip>
 #include <QPoint>
-#include <QScreen>
 #include <QDebug>
 #include <QString>
 #include <QSvgRenderer>
@@ -124,7 +123,7 @@ YUVviewer::YUVviewer(QWidget *parent) :
     ui->setupUi(this);
 
     this->setWindowTitle("YUVviewer " + VERSION);
-    QRect screen = QGuiApplication::screenAt(this->mapToGlobal({this->width()/2,0}))->geometry();
+    QRect screen = QGuiApplication::screenAt(this->mapToGlobal(QPoint(this->width()/2,0)))->geometry();
     QRect size = this->geometry();
     this->move((screen.width() - size.width()) / 2, (screen.height() - size.height()) / 2);
 
@@ -218,8 +217,10 @@ YUVviewer::YUVviewer(QWidget *parent) :
     QObject::connect(ui->exchange_PushButton, SIGNAL(clicked()), this, SLOT(exchaneSize()));
     QObject::connect(ui->openFile_PushButton, SIGNAL(clicked()), this, SLOT(openFile()));
     QObject::connect(ui->openFolder_PushButton, SIGNAL(clicked()), this, SLOT(openFolder()));
-    QObject::connect(ui->about_PushButton, SIGNAL(clicked()), this, SLOT(about()));
     QObject::connect(ui->help_PushButton, SIGNAL(clicked()), this, SLOT(help()));
+    QObject::connect(ui->about_PushButton, SIGNAL(clicked()), this, SLOT(about()));
+    QObject::connect(ui->aboutQt_PushButton, SIGNAL(clicked()), this, SLOT(aboutQt()));
+
     imgViewer = nullptr;
 }
 
@@ -520,7 +521,7 @@ bool YUVviewer::imgView(QStringList openfile_list) {
     } else {
         imgViewer->resize(fframeSize_Width/fframeSize_Height*400.0, 400);
     }
-    QRect screen = QGuiApplication::screenAt(this->mapToGlobal({this->width()/2,0}))->geometry();
+    QRect screen = QGuiApplication::screenAt(this->mapToGlobal(QPoint(this->width()/2,0)))->geometry();
     QRect size = imgViewer->geometry();
     imgViewer->move((screen.width() - size.width()) / 2, (screen.height() - size.height()) / 2);
     this->hide();
@@ -569,6 +570,14 @@ void YUVviewer::openFolder() {
     }
 }
 
+void YUVviewer::help() {
+    QMessageBox::question(this, "Help",
+        "1.主界面选择数据参数。\n2.点击打开文件或文件夹将进行图像数据解析并显示图像。\n"
+        "3.图像显示界面中使用滚轮放大缩小图像，使用左键可拖动图像，双击左键保存图像为png格式，"
+        "单击右键复位图像大小和位置，双击右键交换图像R和B通道显示，单击中键显示图像原始大小。",
+        QMessageBox::StandardButtons(QMessageBox::Ok));
+}
+
 void YUVviewer::about() {
     QMessageBox::about(this, tr("About"),
         tr(
@@ -586,8 +595,9 @@ void YUVviewer::about() {
     );
 }
 
-void YUVviewer::help() {
-    QMessageBox::question(this, "Help", "1.主界面选择数据参数。\n2.点击打开文件或文件夹将进行图像数据解析并显示图像。\n3.图像显示界面中使用滚轮放大缩小图像，使用左键可拖动图像，双击左键保存图像为png格式，单击右键复位图像大小和位置，双击右键交换图像R和B通道显示，单击中键显示图像原始大小。", QMessageBox::Ok);
+void YUVviewer::aboutQt()
+{
+    QMessageBox::aboutQt(this);
 }
 
 void YUVviewer::closeEvent(QCloseEvent *event) {
@@ -605,8 +615,6 @@ int main(int argc, char *argv[]) {
             return 0;
         }
     }
-    QApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
-    QApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
     QApplication::setAttribute(Qt::AA_DontUseNativeDialogs);
     QApplication::setAttribute(Qt::AA_DontUseNativeMenuBar);
     QApplication::setAttribute(Qt::AA_DontCreateNativeWidgetSiblings);

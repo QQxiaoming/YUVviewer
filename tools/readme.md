@@ -24,7 +24,7 @@ cd linuxdeployqt
 ```
 
 ```shell
-camke .
+cmake .
 
 make
 

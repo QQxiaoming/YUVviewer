@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>750</width>
-    <height>255</height>
+    <height>285</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -19,13 +19,13 @@
   <property name="minimumSize">
    <size>
     <width>550</width>
-    <height>255</height>
+    <height>285</height>
    </size>
   </property>
   <property name="maximumSize">
    <size>
     <width>16777215</width>
-    <height>255</height>
+    <height>285</height>
    </size>
   </property>
   <property name="windowTitle">
@@ -204,6 +204,12 @@
            <layout class="QHBoxLayout" name="horizontalLayout_6">
             <item>
              <widget class="QLabel" name="label_3">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
               <property name="text">
                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;Witdth&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
               </property>
@@ -237,7 +243,7 @@
             <item>
              <widget class="QLabel" name="label_2">
               <property name="sizePolicy">
-               <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+               <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
                 <horstretch>0</horstretch>
                 <verstretch>0</verstretch>
                </sizepolicy>
@@ -412,6 +418,13 @@
          </widget>
         </item>
         <item>
+         <widget class="QPushButton" name="help_PushButton">
+          <property name="text">
+           <string>Help</string>
+          </property>
+         </widget>
+        </item>
+        <item>
          <widget class="QPushButton" name="about_PushButton">
           <property name="text">
            <string>About</string>
@@ -419,9 +432,9 @@
          </widget>
         </item>
         <item>
-         <widget class="QPushButton" name="help_PushButton">
+         <widget class="QPushButton" name="aboutQt_PushButton">
           <property name="text">
-           <string>Help</string>
+           <string>AboutQt</string>
           </property>
          </widget>
         </item>

@@ -27,7 +27,6 @@ ConfigFile::ConfigFile(QString path) {
         QFile file(configFilePath);
         file.open(QFile::WriteOnly | QFile::Text);
         QXmlStreamWriter writer(&file);
-        writer.setCodec("UTF-8");  // XML 编码
         writer.setAutoFormatting(true); // 自动格式化
         writer.writeStartDocument("1.0");  // 开始文档（XML 声明）
         writer.writeStartElement("config");
@@ -49,21 +48,21 @@ ConfigFile::ConfigFile(QString path) {
 
         while(!reader.atEnd()) {
             if(reader.isStartElement()) {
-                if(reader.name() == "lastPath") {
+                if(reader.name().toString() == "lastPath") {
                     config_dict.lastPath = reader.readElementText();
-                } else if(reader.name() == "frameSizeType") {
+                } else if(reader.name().toString() == "frameSizeType") {
                     config_dict.frameSizeType = reader.readElementText();
-                } else if(reader.name() == "YUVFormat") {
+                } else if(reader.name().toString() == "YUVFormat") {
                     config_dict.YUVFormat = reader.readElementText();
-                } else if(reader.name() == "frameSize_Width") {
+                } else if(reader.name().toString() == "frameSize_Width") {
                     config_dict.frameSize_Width = reader.readElementText();
-                } else if(reader.name() == "frameSize_Height") {
+                } else if(reader.name().toString() == "frameSize_Height") {
                     config_dict.frameSize_Height = reader.readElementText();
-                } else if(reader.name() == "frameRate") {
+                } else if(reader.name().toString() == "frameRate") {
                     config_dict.frameRate = reader.readElementText();
-                } else if(reader.name() == "startFrame") {
+                } else if(reader.name().toString() == "startFrame") {
                     config_dict.startFrame = reader.readElementText();
-                } else if(reader.name() == "endFrame") {
+                } else if(reader.name().toString() == "endFrame") {
                     config_dict.endFrame = reader.readElementText();
                 }
             }
@@ -79,7 +78,6 @@ ConfigFile::~ConfigFile() {
     file.resize(0);
 
     QXmlStreamWriter writer(&file);
-    writer.setCodec("UTF-8");  // XML 编码
     writer.setAutoFormatting(true); // 自动格式化
     writer.writeStartDocument("1.0");  // 开始文档（XML 声明）
     writer.writeStartElement("config");

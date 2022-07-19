@@ -2,8 +2,8 @@
 
 :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 :: 定义Qt目录
-set "QT_DIR=C:/Qt/Qt5.12.8/5.12.8/mingw73_32/bin"
-set "QT_TOOLS_DIR=C:/Qt/Qt5.12.8/Tools/mingw730_32/bin"
+set "QT_DIR=C:/Qt/Qt6.2.0/6.2.0/mingw81_32/bin"
+set "QT_TOOLS_DIR=C:/Qt/Qt6.2.0/Tools/mingw810_32/bin"
 :: 定义Inno Setup目录
 set "INNO_SETUP_DIR=C:/Program Files (x86)/Inno Setup 6"
 :: 定义opencv目录
@@ -42,7 +42,8 @@ xcopy /y .\test\* .\InnoSetup\build\test\
 windeployqt --dir .\InnoSetup\build .\InnoSetup\build\YUVviewer.exe
 xcopy /y "%OPENCV_DIR%\libopencv_imgproc420.dll" ".\InnoSetup\build\"
 xcopy /y "%OPENCV_DIR%\libopencv_core420.dll" ".\InnoSetup\build\"
-xcopy /y "%QT_TOOLS_DIR%\..\lib\*.dll" ".\InnoSetup\build\"
+xcopy /y "%QT_TOOLS_DIR%\..\bin\lib*.dll" ".\InnoSetup\build\"
+xcopy /y "%QT_TOOLS_DIR%\..\lib\lib*.dll" ".\InnoSetup\build\"
 :: 打包
 echo "wait inno build setup..."
 iscc /q ".\InnoSetup\build_temp_setup.iss"
