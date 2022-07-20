@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>750</width>
+    <width>610</width>
     <height>285</height>
    </rect>
   </property>
@@ -77,246 +77,238 @@
          </widget>
         </item>
         <item>
-         <layout class="QVBoxLayout" name="verticalLayout">
-          <item>
-           <widget class="QLabel" name="label">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="text">
-             <string>YUV Format</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QComboBox" name="YUVFormat_ComboBox">
-            <item>
-             <property name="text">
-              <string>YV12</string>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>YU12/I420</string>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>NV21</string>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>NV12</string>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>YUY2/YUYV</string>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>YVYU</string>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>UYVY</string>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>4:4:4</string>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>RGB565_L</string>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>RGB565_B</string>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>BGR565_L</string>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>BGR565_B</string>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>RGB888</string>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>BayerBG</string>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>BayerGB</string>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>BayerRG</string>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>BayerGR</string>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>BayerBG_RAW12</string>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>BayerGB_RAW12</string>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>BayerRG_RAW12</string>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>BayerGR_RAW12</string>
-             </property>
-            </item>
-           </widget>
-          </item>
-          <item>
-           <layout class="QHBoxLayout" name="horizontalLayout_6">
-            <item>
-             <widget class="QLabel" name="label_3">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
+         <widget class="QGroupBox" name="groupBox_3">
+          <property name="title">
+           <string>YUV Format</string>
+          </property>
+          <layout class="QVBoxLayout" name="verticalLayout">
+           <item>
+            <widget class="QComboBox" name="YUVFormat_ComboBox">
+             <item>
               <property name="text">
-               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;Witdth&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+               <string>YV12</string>
               </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QLabel" name="label_7">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="minimumSize">
-               <size>
-                <width>20</width>
-                <height>20</height>
-               </size>
-              </property>
-              <property name="maximumSize">
-               <size>
-                <width>20</width>
-                <height>20</height>
-               </size>
-              </property>
+             </item>
+             <item>
               <property name="text">
-               <string/>
+               <string>YU12/I420</string>
               </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QLabel" name="label_2">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
+             </item>
+             <item>
               <property name="text">
-               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;Height&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+               <string>NV21</string>
               </property>
-             </widget>
-            </item>
-           </layout>
-          </item>
-          <item>
-           <layout class="QHBoxLayout" name="horizontalLayout">
-            <item>
-             <widget class="QLineEdit" name="frameSize_Width_LineEdit">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="minimumSize">
-               <size>
-                <width>0</width>
-                <height>26</height>
-               </size>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QPushButton" name="exchange_PushButton">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="minimumSize">
-               <size>
-                <width>20</width>
-                <height>20</height>
-               </size>
-              </property>
-              <property name="maximumSize">
-               <size>
-                <width>20</width>
-                <height>20</height>
-               </size>
-              </property>
+             </item>
+             <item>
               <property name="text">
-               <string>↔</string>
+               <string>NV12</string>
               </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QLineEdit" name="frameSize_Height_LineEdit">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
+             </item>
+             <item>
+              <property name="text">
+               <string>YUY2/YUYV</string>
               </property>
-              <property name="minimumSize">
-               <size>
-                <width>0</width>
-                <height>26</height>
-               </size>
+             </item>
+             <item>
+              <property name="text">
+               <string>YVYU</string>
               </property>
-             </widget>
-            </item>
-           </layout>
-          </item>
-         </layout>
+             </item>
+             <item>
+              <property name="text">
+               <string>UYVY</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>4:4:4</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>RGB565_L</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>RGB565_B</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>BGR565_L</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>BGR565_B</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>RGB888</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>BayerBG</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>BayerGB</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>BayerRG</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>BayerGR</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>BayerBG_RAW12</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>BayerGB_RAW12</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>BayerRG_RAW12</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>BayerGR_RAW12</string>
+              </property>
+             </item>
+            </widget>
+           </item>
+           <item>
+            <layout class="QHBoxLayout" name="horizontalLayout_6">
+             <item>
+              <widget class="QLabel" name="label_3">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="text">
+                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;Witdth&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLabel" name="label_7">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="minimumSize">
+                <size>
+                 <width>20</width>
+                 <height>20</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>20</width>
+                 <height>20</height>
+                </size>
+               </property>
+               <property name="text">
+                <string/>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLabel" name="label_2">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="text">
+                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;Height&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+           <item>
+            <layout class="QHBoxLayout" name="horizontalLayout">
+             <item>
+              <widget class="QLineEdit" name="frameSize_Width_LineEdit">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="minimumSize">
+                <size>
+                 <width>0</width>
+                 <height>26</height>
+                </size>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="exchange_PushButton">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="minimumSize">
+                <size>
+                 <width>20</width>
+                 <height>20</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>20</width>
+                 <height>20</height>
+                </size>
+               </property>
+               <property name="text">
+                <string>↔</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLineEdit" name="frameSize_Height_LineEdit">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="minimumSize">
+                <size>
+                 <width>0</width>
+                 <height>26</height>
+                </size>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+          </layout>
+         </widget>
         </item>
        </layout>
       </item>
