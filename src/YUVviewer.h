@@ -38,8 +38,9 @@ private slots:
     void exchaneSize();
     void openFile();
     void openFolder();
-    void about();
     void help();
+    void about();
+    void aboutQt();
 
 private:
     QString svgBoxSrc(int x, int y, int w, uint64_t c);

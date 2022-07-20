@@ -37,6 +37,7 @@ Makefile*
 *build-*
 .qmake.stash
 *_resource.rc
+.qtc_clangd
 
 # QtCreator
 
