@@ -41,14 +41,9 @@ mkdir ./dpkg/YUVviewer_Linux_"$YUVVIEWER_VERSION"_x86_64/opt/YUVviewer/plugins/i
 cp $QT_PLUGIN_PATH/iconengines/libqsvgicon.so ./dpkg/YUVviewer_Linux_"$YUVVIEWER_VERSION"_x86_64/opt/YUVviewer/plugins/iconengines/libqsvgicon.so
 mkdir ./dpkg/YUVviewer_Linux_"$YUVVIEWER_VERSION"_x86_64/opt/YUVviewer/plugins/imageformats
 cp $QT_PLUGIN_PATH/imageformats/libqgif.so ./dpkg/YUVviewer_Linux_"$YUVVIEWER_VERSION"_x86_64/opt/YUVviewer/plugins/imageformats/libqgif.so
-cp $QT_PLUGIN_PATH/imageformats/libqicns.so ./dpkg/YUVviewer_Linux_"$YUVVIEWER_VERSION"_x86_64/opt/YUVviewer/plugins/imageformats/libqicns.so
 cp $QT_PLUGIN_PATH/imageformats/libqico.so ./dpkg/YUVviewer_Linux_"$YUVVIEWER_VERSION"_x86_64/opt/YUVviewer/plugins/imageformats/libqico.so
 cp $QT_PLUGIN_PATH/imageformats/libqjpeg.so ./dpkg/YUVviewer_Linux_"$YUVVIEWER_VERSION"_x86_64/opt/YUVviewer/plugins/imageformats/libqjpeg.so
 cp $QT_PLUGIN_PATH/imageformats/libqsvg.so ./dpkg/YUVviewer_Linux_"$YUVVIEWER_VERSION"_x86_64/opt/YUVviewer/plugins/imageformats/libqsvg.so
-cp $QT_PLUGIN_PATH/imageformats/libqtga.so ./dpkg/YUVviewer_Linux_"$YUVVIEWER_VERSION"_x86_64/opt/YUVviewer/plugins/imageformats/libqtga.so
-cp $QT_PLUGIN_PATH/imageformats/libqtiff.so ./dpkg/YUVviewer_Linux_"$YUVVIEWER_VERSION"_x86_64/opt/YUVviewer/plugins/imageformats/libqtiff.so
-cp $QT_PLUGIN_PATH/imageformats/libqwbmp.so ./dpkg/YUVviewer_Linux_"$YUVVIEWER_VERSION"_x86_64/opt/YUVviewer/plugins/imageformats/libqwbmp.so
-cp $QT_PLUGIN_PATH/imageformats/libqwebp.so ./dpkg/YUVviewer_Linux_"$YUVVIEWER_VERSION"_x86_64/opt/YUVviewer/plugins/imageformats/libqwebp.so
 mkdir ./dpkg/YUVviewer_Linux_"$YUVVIEWER_VERSION"_x86_64/opt/YUVviewer/plugins/platforminputcontexts
 cp $QT_PLUGIN_PATH/platforminputcontexts/libcomposeplatforminputcontextplugin.so ./dpkg/YUVviewer_Linux_"$YUVVIEWER_VERSION"_x86_64/opt/YUVviewer/plugins/platforminputcontexts/libcomposeplatforminputcontextplugin.so
 cp $QT_PLUGIN_PATH/platforminputcontexts/libibusplatforminputcontextplugin.so ./dpkg/YUVviewer_Linux_"$YUVVIEWER_VERSION"_x86_64/opt/YUVviewer/plugins/platforminputcontexts/libibusplatforminputcontextplugin.so
