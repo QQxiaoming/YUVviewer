@@ -97,6 +97,7 @@ unix:!macx:{
 
 macx:{
     QMAKE_RPATHDIR=$ORIGIN
+    ICON = "img/ico.icns"
     
     INCLUDEPATH += -I $${OPENCV_DIR}/include/opencv4
     DEPENDPATH +=$${OPENCV_DIR}/include/opencv4
