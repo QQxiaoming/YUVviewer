@@ -65,4 +65,3 @@ jobs:
           timeout --foreground -s SIGKILL 20s ./dpkg/YUVviewer_Linux_*/opt/YUVviewer/YUVviewer --version > >(tee run.log) || {
             if cat run.log | grep "YUVviewer" ; then echo "Pass" && exit 0; else echo "Failed" && exit 1; fi;
           }
- 
