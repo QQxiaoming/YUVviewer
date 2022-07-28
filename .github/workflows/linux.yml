@@ -40,7 +40,7 @@ jobs:
       - name: Install prerequisites
         run: |
           sudo apt update
-          sudo apt install -y make gcc patchelf qt5-default
+          sudo apt install -y make gcc patchelf chrpath qt5-default
 
       - name: Build all
         run: |
