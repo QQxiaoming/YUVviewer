@@ -32,7 +32,7 @@ set "OPENCV_DIR=D:/Qt/opencv4.2.0/x64/mingw/bin"
 
 ## linux
 
-- 安装Qt、patchelf工具，编译opencv lib以及linuxdeployqt工具(tools中已编译好适用于ubuntu18.04的linuxdeployqt工具)
+- 安装Qt、patchelf工具，编译opencv lib以及linuxdeployqt工具(tools中已编译好适用于ubuntu20.04的linuxdeployqt工具)
 
 - 修改partform_unix.pri文件以下内容
 
@@ -48,7 +48,7 @@ OPENCV_DIR=/home/xiaoming/Desktop/opencv
 ```sh
 ###############################################################################
 # 定义Qt目录
-QT_DIR=/opt/Qt5.12.2/5.12.2/gcc_64
+QT_DIR=/opt/Qt6.2.0/6.2.0/gcc_64
 # 定义opencv目录
 OPENCV_DIR=/home/xiaoming/Desktop/opencv
 ###############################################################################
@@ -74,7 +74,7 @@ OPENCV_DIR=/home/xiaoming/Desktop/opencv
 ```sh
 ###############################################################################
 # 定义Qt目录
-QT_DIR=/opt/Qt5.12.2/5.12.2/gcc_64
+QT_DIR=/opt/Qt6.2.0/6.2.0/gcc_64
 # 定义opencv目录
 OPENCV_DIR=/home/xiaoming/Desktop/opencv
 ###############################################################################

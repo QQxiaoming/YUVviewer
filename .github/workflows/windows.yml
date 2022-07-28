@@ -30,6 +30,7 @@ jobs:
         uses: jurplel/install-qt-action@v2.14.0
         with:
           arch: win64_mingw81
+          version: '6.2.0'
 
       - name: Cache opencv
         uses: actions/cache@v2
@@ -62,8 +63,8 @@ jobs:
           git fetch --tags --force
           git describe --always --long --dirty --abbrev=10 --tags | ./tools/awk/awk.exe '{print \"\\\"\"$0\"\\\"\"}'  > git_tag.inc
           ./tools/sed/sed.exe -i "s/git_tag.inc/git_tag.ci.inc/g" YUVviewer.pro
-          ./tools/sed/sed.exe -i "s/QT_DIR=C:\/Qt\/Qt5.12.8\/5.12.8\/mingw73_32\/bin/QT_DIR=%Qt5_Dir%/g" ./build_setup.bat
-          ./tools/sed/sed.exe -i "s/QT_TOOLS_DIR=C:\/Qt\/Qt5.12.8\/Tools\/mingw730_32\/bin/QT_TOOLS_DIR=C:\/ProgramData\/Chocolatey\/lib\/mingw\/tools\/install\/mingw64\/bin/g" ./build_setup.bat
+          ./tools/sed/sed.exe -i "s/QT_DIR=C:\/Qt\/Qt6.2.0\/6.2.0\/mingw81_32\/bin/QT_DIR=%Qt5_Dir%/g" ./build_setup.bat
+          ./tools/sed/sed.exe -i "s/QT_TOOLS_DIR=C:\/Qt\/Qt6.2.0\/Tools\/mingw810_32\/bin/QT_TOOLS_DIR=C:\/ProgramData\/Chocolatey\/lib\/mingw\/tools\/install\/mingw64\/bin/g" ./build_setup.bat
           ./tools/sed/sed.exe -i "s/OPENCV_DIR=D:\/Qt\/opencv4.2.0\/x64\/mingw\/bin/OPENCV_DIR=C:\/opencv4.0.0\/x64\/mingw\/bin/g" ./build_setup.bat
           ./tools/sed/sed.exe -i "s/libopencv_imgproc420/libopencv_imgproc400/g" ./build_setup.bat
           ./tools/sed/sed.exe -i "s/libopencv_core420/libopencv_core400/g" ./build_setup.bat

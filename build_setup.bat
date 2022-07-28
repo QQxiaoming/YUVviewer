@@ -2,14 +2,14 @@
 
 :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 :: 定义Qt目录
-set "QT_DIR=C:/Qt/Qt5.12.8/5.12.8/mingw73_32/bin"
-set "QT_TOOLS_DIR=C:/Qt/Qt5.12.8/Tools/mingw730_32/bin"
+set "QT_DIR=C:/Qt/Qt6.2.0/6.2.0/mingw81_32/bin"
+set "QT_TOOLS_DIR=C:/Qt/Qt6.2.0/Tools/mingw810_32/bin"
 :: 定义Inno Setup目录
 set "INNO_SETUP_DIR=C:/Program Files (x86)/Inno Setup 6"
 :: 定义opencv目录
 set "OPENCV_DIR=D:/Qt/opencv4.2.0/x64/mingw/bin"
 :: 定义版本号
-set "YUVVIEWER_VERSION=0.4.10"
+set "YUVVIEWER_VERSION=0.5.0"
 :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 
