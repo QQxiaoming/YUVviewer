@@ -39,3 +39,9 @@ YV12、YU12/I420、NV21、NV12、YUY2/YUYV、YVYU、UYVY、YUV444、RGB565_L、R
 ## 编译说明
 
 　> [编译说明](./DEVELOPNOTE.md)
+
+## 贡献
+
+如果您对本项目有建议或想法，欢迎在GitHub或Gitee上提交issue和pull requests。
+
+目前项目已完全迁移至Qt6开发，建议使用版本Qt6.2.0或更高版本。

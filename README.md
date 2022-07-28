@@ -39,3 +39,9 @@ YV12、YU12/I420、NV21、NV12、YUY2/YUYV、YVYU、UYVY、YUV444、RGB565_L、R
 ## Build
 
 　> [Build documentation](./DEVELOPNOTE.md)
+
+## Contributing
+
+If you have suggestions or ideas for this project, please submit issues and pull requests on GitHub or Gitee.
+
+At present, the project has been completely migrated to Qt6 development, it is recommended to use version Qt6.2.0 or higher.
