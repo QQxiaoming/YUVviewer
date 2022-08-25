@@ -34,6 +34,10 @@ QMap<QString, yuvdecoder_t> YUV2RGB::yuvdecoder_map = {
     {"BayerGB",         YUV2RGB::bayerGB},
     {"BayerRG",         YUV2RGB::bayerRG},
     {"BayerGR",         YUV2RGB::bayerGR},
+    {"BayerBG_RAW10",   YUV2RGB::bayerBG_RAW10},
+    {"BayerGB_RAW10",   YUV2RGB::bayerGB_RAW10},
+    {"BayerRG_RAW10",   YUV2RGB::bayerRG_RAW10},
+    {"BayerGR_RAW10",   YUV2RGB::bayerGR_RAW10},
     {"BayerBG_RAW12",   YUV2RGB::bayerBG_RAW12},
     {"BayerGB_RAW12",   YUV2RGB::bayerGB_RAW12},
     {"BayerRG_RAW12",   YUV2RGB::bayerRG_RAW12},
@@ -366,6 +370,9 @@ QList<cv::Mat*> YUV2RGB::bayer(QString yuvfilename,int W, int H, int startframe,
     switch (bit) {
     case 8:
         break;
+    case 10:
+        temp = new char[W*H*5/4];
+        break;
     case 12:
         temp = new char[W*H*3/2];
         break;
@@ -379,6 +386,18 @@ QList<cv::Mat*> YUV2RGB::bayer(QString yuvfilename,int W, int H, int startframe,
         switch (bit) {
         case 8: {
             out.readRawData((char *)yuvImg.data,W*H);
+            break;
+        }
+        case 10: {
+            out.readRawData(temp,W*H*5/4);
+            for(int i=0,j=0;i<W*H*5/4;i+=5) {
+                uint16_t piex[5] = {(uint16_t)temp[i],(uint16_t)temp[i+1],(uint16_t)temp[i+2],(uint16_t)temp[i+3],(uint16_t)temp[i+4]};
+                yuvImg.data[j] = (uint8_t)(((piex[0]<<2) | (piex[4]&0x3))/4);
+                yuvImg.data[j+1] = (uint8_t)(((piex[1]<<2) | ((piex[4]>>2)&0x3))/4);
+                yuvImg.data[j+2] = (uint8_t)(((piex[2]<<2) | ((piex[4]>>2)&0x3))/4);
+                yuvImg.data[j+3] = (uint8_t)(((piex[3]<<2) | ((piex[4]>>2)&0x3))/4);
+                j+=4;
+            }
             break;
         }
         case 12: {
@@ -402,6 +421,7 @@ QList<cv::Mat*> YUV2RGB::bayer(QString yuvfilename,int W, int H, int startframe,
     switch (bit) {
     case 8:
         break;
+    case 10:
     case 12:
         delete[] temp;
         break;
@@ -428,6 +448,22 @@ QList<cv::Mat*> YUV2RGB::bayerRG(QString yuvfilename,int W, int H, int startfram
 
 QList<cv::Mat*> YUV2RGB::bayerGR(QString yuvfilename,int W, int H, int startframe, int totalframe) {
     return bayer(yuvfilename,W,H,startframe,totalframe,cv::COLOR_BayerGR2RGB,8);
+}
+
+QList<cv::Mat*> YUV2RGB::bayerBG_RAW10(QString yuvfilename,int W, int H, int startframe, int totalframe) {
+    return bayer(yuvfilename,W,H,startframe,totalframe,cv::COLOR_BayerBG2RGB,10);
+}
+
+QList<cv::Mat*> YUV2RGB::bayerGB_RAW10(QString yuvfilename,int W, int H, int startframe, int totalframe) {
+    return bayer(yuvfilename,W,H,startframe,totalframe,cv::COLOR_BayerGB2RGB,10);
+}
+
+QList<cv::Mat*> YUV2RGB::bayerRG_RAW10(QString yuvfilename,int W, int H, int startframe, int totalframe) {
+    return bayer(yuvfilename,W,H,startframe,totalframe,cv::COLOR_BayerRG2RGB,10);
+}
+
+QList<cv::Mat*> YUV2RGB::bayerGR_RAW10(QString yuvfilename,int W, int H, int startframe, int totalframe) {
+    return bayer(yuvfilename,W,H,startframe,totalframe,cv::COLOR_BayerGR2RGB,10);
 }
 
 QList<cv::Mat*> YUV2RGB::bayerBG_RAW12(QString yuvfilename,int W, int H, int startframe, int totalframe) {

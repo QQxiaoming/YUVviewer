@@ -57,6 +57,7 @@ const QList<QPair<QString, QStringList>> YUVviewer::frameSizeTypeDict = {
 };
 
 #define UI_SINGLE  (0xff000000ULL)
+#define UI_A       (0xffffffULL|UI_SINGLE)
 #define UI_R       (0xff0000ULL|UI_SINGLE)
 #define UI_G       (0x00ff00ULL|UI_SINGLE)
 #define UI_B       (0x0000ffULL|UI_SINGLE)
@@ -105,6 +106,14 @@ const QList<QPair<QString, QList<uint64_t>>> YUVviewer::YUVFormat_list = {
                          UI_G,UI_B,UI_G,UI_B,UI_G,UI_B,UI_G,UI_B,UI_G,UI_B,UI_G,UI_B,UI_G,UI_B,UI_G,UI_B,UI_G,UI_B,UI_G,UI_B,UI_G,UI_B,UI_G,UI_B}},
     {"BayerGR",         {UI_G,UI_R,UI_G,UI_R,UI_G,UI_R,UI_G,UI_R,UI_G,UI_R,UI_G,UI_R,UI_G,UI_R,UI_G,UI_R,UI_G,UI_R,UI_G,UI_R,UI_G,UI_R,UI_G,UI_R,
                          UI_B,UI_G,UI_B,UI_G,UI_B,UI_G,UI_B,UI_G,UI_B,UI_G,UI_B,UI_G,UI_B,UI_G,UI_B,UI_G,UI_B,UI_G,UI_B,UI_G,UI_B,UI_G,UI_B,UI_G}},
+    {"BayerBG_RAW10",   {UI_A,UI_A,UI_B,UI_G,UI_B,UI_G,UI_BG44,UI_B,UI_G,UI_B,UI_G,UI_BG44,UI_B,UI_G,UI_B,UI_G,UI_BG44,UI_B,UI_G,UI_B,UI_G,UI_BG44,UI_A,UI_A,
+                         UI_A,UI_A,UI_G,UI_R,UI_G,UI_R,UI_GR44,UI_G,UI_R,UI_G,UI_R,UI_GR44,UI_G,UI_R,UI_G,UI_R,UI_GR44,UI_G,UI_R,UI_G,UI_R,UI_GR44,UI_A,UI_A}},
+    {"BayerGB_RAW10",   {UI_A,UI_A,UI_G,UI_B,UI_G,UI_B,UI_GB44,UI_G,UI_B,UI_G,UI_B,UI_GB44,UI_G,UI_B,UI_G,UI_B,UI_GB44,UI_G,UI_B,UI_G,UI_B,UI_GB44,UI_A,UI_A,
+                         UI_A,UI_A,UI_R,UI_G,UI_R,UI_G,UI_RG44,UI_R,UI_G,UI_R,UI_G,UI_RG44,UI_R,UI_G,UI_R,UI_G,UI_RG44,UI_R,UI_G,UI_R,UI_G,UI_RG44,UI_A,UI_A}},
+    {"BayerRG_RAW10",   {UI_A,UI_A,UI_R,UI_G,UI_R,UI_G,UI_RG44,UI_R,UI_G,UI_R,UI_G,UI_RG44,UI_R,UI_G,UI_R,UI_G,UI_RG44,UI_R,UI_G,UI_R,UI_G,UI_RG44,UI_A,UI_A,
+                         UI_A,UI_A,UI_G,UI_B,UI_G,UI_B,UI_GB44,UI_G,UI_B,UI_G,UI_B,UI_GB44,UI_G,UI_B,UI_G,UI_B,UI_GB44,UI_G,UI_B,UI_G,UI_B,UI_GB44,UI_A,UI_A}},
+    {"BayerGR_RAW10",   {UI_A,UI_A,UI_G,UI_R,UI_G,UI_R,UI_GR44,UI_G,UI_R,UI_G,UI_R,UI_GR44,UI_G,UI_R,UI_G,UI_R,UI_GR44,UI_G,UI_R,UI_G,UI_R,UI_GR44,UI_A,UI_A,
+                         UI_A,UI_A,UI_B,UI_G,UI_B,UI_G,UI_BG44,UI_B,UI_G,UI_B,UI_G,UI_BG44,UI_B,UI_G,UI_B,UI_G,UI_BG44,UI_B,UI_G,UI_B,UI_G,UI_BG44,UI_A,UI_A}},
     {"BayerBG_RAW12",   {UI_B,UI_G,UI_BG44,UI_B,UI_G,UI_BG44,UI_B,UI_G,UI_BG44,UI_B,UI_G,UI_BG44,UI_B,UI_G,UI_BG44,UI_B,UI_G,UI_BG44,UI_B,UI_G,UI_BG44,UI_B,UI_G,UI_BG44,
                          UI_G,UI_R,UI_GR44,UI_G,UI_R,UI_GR44,UI_G,UI_R,UI_GR44,UI_G,UI_R,UI_GR44,UI_G,UI_R,UI_GR44,UI_G,UI_R,UI_GR44,UI_G,UI_R,UI_GR44,UI_G,UI_R,UI_GR44}},
     {"BayerGB_RAW12",   {UI_G,UI_B,UI_GB44,UI_G,UI_B,UI_GB44,UI_G,UI_B,UI_GB44,UI_G,UI_B,UI_GB44,UI_G,UI_B,UI_GB44,UI_G,UI_B,UI_GB44,UI_G,UI_B,UI_GB44,UI_G,UI_B,UI_GB44,
@@ -237,6 +246,7 @@ YUVviewer::~YUVviewer() {
 QString YUVviewer::svgBoxSrc(int x, int y, int w, uint64_t c) {
     if((c&UI_SINGLE) == UI_SINGLE) {
         uint64_t color = c & 0xffffffULL;
+        if(color == 0xffffff) return QString();
         return QString("<line class=\"0\" x1=\"%1\" y1=\"%2\" x2=\"%3\" y2=\"%4\" stroke=\"#%5\" fill=\"none\" stroke-width=\"%6\" />\n")
                     .arg(x).arg(y+w/2).arg(x+w).arg(y+w/2).arg(color,6,16,QLatin1Char('0')).arg(w);
     } else {

@@ -171,6 +171,26 @@
              </item>
              <item>
               <property name="text">
+               <string>BayerBG_RAW10</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>BayerGB_RAW10</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>BayerRG_RAW10</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>BayerGR_RAW10</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
                <string>BayerBG_RAW12</string>
               </property>
              </item>
