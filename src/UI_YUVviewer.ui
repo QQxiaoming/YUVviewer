@@ -209,6 +209,26 @@
                <string>BayerGR_RAW12</string>
               </property>
              </item>
+             <item>
+              <property name="text">
+               <string>BayerBG_RAW16</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>BayerGB_RAW16</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>BayerRG_RAW16</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>BayerGR_RAW16</string>
+              </property>
+             </item>
             </widget>
            </item>
            <item>
