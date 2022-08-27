@@ -60,3 +60,4 @@ CMakeLists.txt.user*
 
 git_tag.inc
 git_tag.ci.inc
+.DS_Store
