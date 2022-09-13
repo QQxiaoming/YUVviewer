@@ -9,7 +9,7 @@ set "INNO_SETUP_DIR=C:/Program Files (x86)/Inno Setup 6"
 :: 定义opencv目录
 set "OPENCV_DIR=D:/Qt/opencv4.2.0/x64/mingw/bin"
 :: 定义版本号
-set "YUVVIEWER_VERSION=0.5.0"
+set "YUVVIEWER_VERSION=0.5.1"
 :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 
