@@ -56,23 +56,26 @@ const QList<QPair<QString, QStringList>> YUVviewer::frameSizeTypeDict = {
     {"8K UHD",  {"7680","4320"}},
 };
 
-#define UI_SINGLE  (0xff000000ULL)
-#define UI_A       (0xffffffULL|UI_SINGLE)
-#define UI_R       (0xff0000ULL|UI_SINGLE)
-#define UI_G       (0x00ff00ULL|UI_SINGLE)
-#define UI_B       (0x0000ffULL|UI_SINGLE)
-#define UI_Y       (0x808080ULL|UI_SINGLE)
-#define UI_U       (0xff00ffULL|UI_SINGLE)
-#define UI_V       (0x00ffffULL|UI_SINGLE)
-#define UI_RG53    (((0xff0000ULL|0x5000000)<<32)|(0x00ff00ULL|0x3000000))
-#define UI_GB35    (((0x00ff00ULL|0x3000000)<<32)|(0x0000ffULL|0x5000000))
-#define UI_BG53    (((0x0000ffULL|0x5000000)<<32)|(0x00ff00ULL|0x3000000))
-#define UI_GR35    (((0x00ff00ULL|0x3000000)<<32)|(0xff0000ULL|0x5000000))
-#define UI_RG44    (((0xff0000ULL|0x4000000)<<32)|(0x00ff00ULL|0x4000000))
-#define UI_GB44    (((0x00ff00ULL|0x4000000)<<32)|(0x0000ffULL|0x4000000))
-#define UI_BG44    (((0x0000ffULL|0x4000000)<<32)|(0x00ff00ULL|0x4000000))
-#define UI_GR44    (((0x00ff00ULL|0x4000000)<<32)|(0xff0000ULL|0x4000000))
-const QList<QPair<QString, QList<uint64_t>>> YUVviewer::YUVFormat_list = {
+#define UI_A        { .num = 0, .color = {0,0,0,0}, .bit = {0,0,0,0} }
+#define UI_R        { .num = 1, .color = {0xffff0000UL,0,0,0}, .bit = {1,0,0,0} }
+#define UI_G        { .num = 1, .color = {0xff00ff00UL,0,0,0}, .bit = {1,0,0,0} }
+#define UI_B        { .num = 1, .color = {0xff0000ffUL,0,0,0}, .bit = {1,0,0,0} }
+#define UI_Y        { .num = 1, .color = {0xff808080UL,0,0,0}, .bit = {1,0,0,0} }
+#define UI_U        { .num = 1, .color = {0xffff00ffUL,0,0,0}, .bit = {1,0,0,0} }
+#define UI_V        { .num = 1, .color = {0xff00ffffUL,0,0,0}, .bit = {1,0,0,0} }
+#define UI_RG53     { .num = 2, .color = {0xffff0000UL,0xff00ff00UL,0,0}, .bit = {5,3,0,0} }
+#define UI_GB35     { .num = 2, .color = {0xff00ff00UL,0xff0000ffUL,0,0}, .bit = {3,5,0,0} } 
+#define UI_BG53     { .num = 2, .color = {0xff0000ffUL,0xff00ff00UL,0,0}, .bit = {5,3,0,0} } 
+#define UI_GR35     { .num = 2, .color = {0xff00ff00UL,0xffff0000UL,0,0}, .bit = {3,5,0,0} } 
+#define UI_RG44     { .num = 2, .color = {0xffff0000UL,0xff00ff00UL,0,0}, .bit = {4,4,0,0} } 
+#define UI_GB44     { .num = 2, .color = {0xff00ff00UL,0xff0000ffUL,0,0}, .bit = {4,4,0,0} } 
+#define UI_BG44     { .num = 2, .color = {0xff0000ffUL,0xff00ff00UL,0,0}, .bit = {4,4,0,0} } 
+#define UI_GR44     { .num = 2, .color = {0xff00ff00UL,0xffff0000UL,0,0}, .bit = {4,4,0,0} }
+#define UI_RGRG2222 { .num = 4, .color = {0xffff0000UL,0xff00ff00UL,0xffff0000UL,0xff00ff00UL}, .bit = {2,2,2,2} } 
+#define UI_GBGB2222 { .num = 4, .color = {0xff00ff00UL,0xff0000ffUL,0xff00ff00UL,0xff0000ffUL}, .bit = {2,2,2,2} } 
+#define UI_BGBG2222 { .num = 4, .color = {0xff0000ffUL,0xff00ff00UL,0xff0000ffUL,0xff00ff00UL}, .bit = {2,2,2,2} } 
+#define UI_GRGR2222 { .num = 4, .color = {0xff00ff00UL,0xffff0000UL,0xff00ff00UL,0xffff0000UL}, .bit = {2,2,2,2} }
+const QList<QPair<QString, QList<YUVviewer::UICodePoint>>> YUVviewer::YUVFormat_pattern = {
     {"YV12",            {UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,
                          UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,
                          UI_U,UI_U,UI_U,UI_U,UI_U,UI_U,UI_U,UI_U,UI_U,UI_U,UI_U,UI_U,UI_U,UI_U,UI_U,UI_U,UI_U,UI_U,UI_U,UI_U,UI_U,UI_U,UI_U,UI_U,
@@ -106,14 +109,14 @@ const QList<QPair<QString, QList<uint64_t>>> YUVviewer::YUVFormat_list = {
                          UI_G,UI_B,UI_G,UI_B,UI_G,UI_B,UI_G,UI_B,UI_G,UI_B,UI_G,UI_B,UI_G,UI_B,UI_G,UI_B,UI_G,UI_B,UI_G,UI_B,UI_G,UI_B,UI_G,UI_B}},
     {"BayerGR",         {UI_G,UI_R,UI_G,UI_R,UI_G,UI_R,UI_G,UI_R,UI_G,UI_R,UI_G,UI_R,UI_G,UI_R,UI_G,UI_R,UI_G,UI_R,UI_G,UI_R,UI_G,UI_R,UI_G,UI_R,
                          UI_B,UI_G,UI_B,UI_G,UI_B,UI_G,UI_B,UI_G,UI_B,UI_G,UI_B,UI_G,UI_B,UI_G,UI_B,UI_G,UI_B,UI_G,UI_B,UI_G,UI_B,UI_G,UI_B,UI_G}},
-    {"BayerBG_RAW10",   {UI_A,UI_A,UI_B,UI_G,UI_B,UI_G,UI_BG44,UI_B,UI_G,UI_B,UI_G,UI_BG44,UI_B,UI_G,UI_B,UI_G,UI_BG44,UI_B,UI_G,UI_B,UI_G,UI_BG44,UI_A,UI_A,
-                         UI_A,UI_A,UI_G,UI_R,UI_G,UI_R,UI_GR44,UI_G,UI_R,UI_G,UI_R,UI_GR44,UI_G,UI_R,UI_G,UI_R,UI_GR44,UI_G,UI_R,UI_G,UI_R,UI_GR44,UI_A,UI_A}},
-    {"BayerGB_RAW10",   {UI_A,UI_A,UI_G,UI_B,UI_G,UI_B,UI_GB44,UI_G,UI_B,UI_G,UI_B,UI_GB44,UI_G,UI_B,UI_G,UI_B,UI_GB44,UI_G,UI_B,UI_G,UI_B,UI_GB44,UI_A,UI_A,
-                         UI_A,UI_A,UI_R,UI_G,UI_R,UI_G,UI_RG44,UI_R,UI_G,UI_R,UI_G,UI_RG44,UI_R,UI_G,UI_R,UI_G,UI_RG44,UI_R,UI_G,UI_R,UI_G,UI_RG44,UI_A,UI_A}},
-    {"BayerRG_RAW10",   {UI_A,UI_A,UI_R,UI_G,UI_R,UI_G,UI_RG44,UI_R,UI_G,UI_R,UI_G,UI_RG44,UI_R,UI_G,UI_R,UI_G,UI_RG44,UI_R,UI_G,UI_R,UI_G,UI_RG44,UI_A,UI_A,
-                         UI_A,UI_A,UI_G,UI_B,UI_G,UI_B,UI_GB44,UI_G,UI_B,UI_G,UI_B,UI_GB44,UI_G,UI_B,UI_G,UI_B,UI_GB44,UI_G,UI_B,UI_G,UI_B,UI_GB44,UI_A,UI_A}},
-    {"BayerGR_RAW10",   {UI_A,UI_A,UI_G,UI_R,UI_G,UI_R,UI_GR44,UI_G,UI_R,UI_G,UI_R,UI_GR44,UI_G,UI_R,UI_G,UI_R,UI_GR44,UI_G,UI_R,UI_G,UI_R,UI_GR44,UI_A,UI_A,
-                         UI_A,UI_A,UI_B,UI_G,UI_B,UI_G,UI_BG44,UI_B,UI_G,UI_B,UI_G,UI_BG44,UI_B,UI_G,UI_B,UI_G,UI_BG44,UI_B,UI_G,UI_B,UI_G,UI_BG44,UI_A,UI_A}},
+    {"BayerBG_RAW10",   {UI_A,UI_A,UI_B,UI_G,UI_B,UI_G,UI_BGBG2222,UI_B,UI_G,UI_B,UI_G,UI_BGBG2222,UI_B,UI_G,UI_B,UI_G,UI_BGBG2222,UI_B,UI_G,UI_B,UI_G,UI_BGBG2222,UI_A,UI_A,
+                         UI_A,UI_A,UI_G,UI_R,UI_G,UI_R,UI_GRGR2222,UI_G,UI_R,UI_G,UI_R,UI_GRGR2222,UI_G,UI_R,UI_G,UI_R,UI_GRGR2222,UI_G,UI_R,UI_G,UI_R,UI_GRGR2222,UI_A,UI_A}},
+    {"BayerGB_RAW10",   {UI_A,UI_A,UI_G,UI_B,UI_G,UI_B,UI_GBGB2222,UI_G,UI_B,UI_G,UI_B,UI_GBGB2222,UI_G,UI_B,UI_G,UI_B,UI_GBGB2222,UI_G,UI_B,UI_G,UI_B,UI_GBGB2222,UI_A,UI_A,
+                         UI_A,UI_A,UI_R,UI_G,UI_R,UI_G,UI_RGRG2222,UI_R,UI_G,UI_R,UI_G,UI_RGRG2222,UI_R,UI_G,UI_R,UI_G,UI_RGRG2222,UI_R,UI_G,UI_R,UI_G,UI_RGRG2222,UI_A,UI_A}},
+    {"BayerRG_RAW10",   {UI_A,UI_A,UI_R,UI_G,UI_R,UI_G,UI_RGRG2222,UI_R,UI_G,UI_R,UI_G,UI_RGRG2222,UI_R,UI_G,UI_R,UI_G,UI_RGRG2222,UI_R,UI_G,UI_R,UI_G,UI_RGRG2222,UI_A,UI_A,
+                         UI_A,UI_A,UI_G,UI_B,UI_G,UI_B,UI_GBGB2222,UI_G,UI_B,UI_G,UI_B,UI_GBGB2222,UI_G,UI_B,UI_G,UI_B,UI_GBGB2222,UI_G,UI_B,UI_G,UI_B,UI_GBGB2222,UI_A,UI_A}},
+    {"BayerGR_RAW10",   {UI_A,UI_A,UI_G,UI_R,UI_G,UI_R,UI_GRGR2222,UI_G,UI_R,UI_G,UI_R,UI_GRGR2222,UI_G,UI_R,UI_G,UI_R,UI_GRGR2222,UI_G,UI_R,UI_G,UI_R,UI_GRGR2222,UI_A,UI_A,
+                         UI_A,UI_A,UI_B,UI_G,UI_B,UI_G,UI_BGBG2222,UI_B,UI_G,UI_B,UI_G,UI_BGBG2222,UI_B,UI_G,UI_B,UI_G,UI_BGBG2222,UI_B,UI_G,UI_B,UI_G,UI_BGBG2222,UI_A,UI_A}},
     {"BayerBG_RAW12",   {UI_B,UI_G,UI_BG44,UI_B,UI_G,UI_BG44,UI_B,UI_G,UI_BG44,UI_B,UI_G,UI_BG44,UI_B,UI_G,UI_BG44,UI_B,UI_G,UI_BG44,UI_B,UI_G,UI_BG44,UI_B,UI_G,UI_BG44,
                          UI_G,UI_R,UI_GR44,UI_G,UI_R,UI_GR44,UI_G,UI_R,UI_GR44,UI_G,UI_R,UI_GR44,UI_G,UI_R,UI_GR44,UI_G,UI_R,UI_GR44,UI_G,UI_R,UI_GR44,UI_G,UI_R,UI_GR44}},
     {"BayerGB_RAW12",   {UI_G,UI_B,UI_GB44,UI_G,UI_B,UI_GB44,UI_G,UI_B,UI_GB44,UI_G,UI_B,UI_GB44,UI_G,UI_B,UI_GB44,UI_G,UI_B,UI_GB44,UI_G,UI_B,UI_GB44,UI_G,UI_B,UI_GB44,
@@ -190,9 +193,9 @@ YUVviewer::YUVviewer(QWidget *parent) :
 
 
     currentIndex = 0;
-    QList<uint64_t> color_list;
-    QList<QPair<QString, QList<uint64_t>>>::const_iterator yuvformat_it = YUVFormat_list.begin();
-    while (yuvformat_it != YUVFormat_list.end()) {
+    QList<YUVviewer::UICodePoint> color_list;
+    QList<QPair<QString, QList<YUVviewer::UICodePoint>>>::const_iterator yuvformat_it = YUVFormat_pattern.begin();
+    while (yuvformat_it != YUVFormat_pattern.end()) {
         if(yuvformat_it->first == YUVviewerConfigFile->config_dict.YUVFormat) {
             ui->YUVFormat_ComboBox->setCurrentIndex(currentIndex);
             color_list = yuvformat_it->second;
@@ -251,26 +254,50 @@ YUVviewer::~YUVviewer() {
     delete ui;
 }
 
-QString YUVviewer::svgBoxSrc(int x, int y, int w, uint64_t c) {
-    if((c&UI_SINGLE) == UI_SINGLE) {
-        uint64_t color = c & 0xffffffULL;
-        if(color == 0xffffff) return QString();
-        return QString("<line class=\"0\" x1=\"%1\" y1=\"%2\" x2=\"%3\" y2=\"%4\" stroke=\"#%5\" fill=\"none\" stroke-width=\"%6\" />\n")
-                    .arg(x).arg(y+w/2).arg(x+w).arg(y+w/2).arg(color,6,16,QLatin1Char('0')).arg(w);
-    } else {
-        uint64_t color0 = (c>>32) & 0xffffffULL;
-        uint64_t color1 = c & 0xffffffULL;
-        uint8_t fix_w = (w*(c>>56))/((c>>56)+((c & 0xff000000ULL)>>24));
-        QString ret = "";
-        ret += QString("<line class=\"0\" x1=\"%1\" y1=\"%2\" x2=\"%3\" y2=\"%4\" stroke=\"#%5\" fill=\"none\" stroke-width=\"%6\" />\n")
-                    .arg(x).arg(y+w/2).arg(x+fix_w).arg(y+w/2).arg(color0,6,16,QLatin1Char('0')).arg(w);
-        ret += QString("<line class=\"0\" x1=\"%1\" y1=\"%2\" x2=\"%3\" y2=\"%4\" stroke=\"#%5\" fill=\"none\" stroke-width=\"%6\" />\n")
-                    .arg(x+fix_w).arg(y+w/2).arg(x+w).arg(y+w/2).arg(color1,6,16,QLatin1Char('0')).arg(w);
-        return ret;
+QString YUVviewer::svgBoxSrc(int x, int y, int w, YUVviewer::UICodePoint c) {
+    switch(c.num) {
+        case 1:{
+            uint32_t color = c.color[0] & 0xffffff;
+            return QString("<line class=\"0\" x1=\"%1\" y1=\"%2\" x2=\"%3\" y2=\"%4\" stroke=\"#%5\" fill=\"none\" stroke-width=\"%6\" />\n")
+                .arg(x).arg(y+w/2).arg(x+w).arg(y+w/2).arg(color,6,16,QLatin1Char('0')).arg(w);
+        }
+        case 2:{
+            uint32_t color0 = c.color[0] & 0xffffff;
+            uint32_t color1 = c.color[1] & 0xffffff;
+            uint8_t fix_w = (w*(c.bit[0]))/(c.bit[1]+c.bit[0]);
+            QString ret = "";
+            ret += QString("<line class=\"0\" x1=\"%1\" y1=\"%2\" x2=\"%3\" y2=\"%4\" stroke=\"#%5\" fill=\"none\" stroke-width=\"%6\" />\n")
+                       .arg(x).arg(y+w/2).arg(x+fix_w).arg(y+w/2).arg(color0,6,16,QLatin1Char('0')).arg(w);
+            ret += QString("<line class=\"0\" x1=\"%1\" y1=\"%2\" x2=\"%3\" y2=\"%4\" stroke=\"#%5\" fill=\"none\" stroke-width=\"%6\" />\n")
+                       .arg(x+fix_w).arg(y+w/2).arg(x+w).arg(y+w/2).arg(color1,6,16,QLatin1Char('0')).arg(w);
+            return ret;
+        }
+        case 4:{
+            uint32_t color0 = c.color[0] & 0xffffff;
+            uint32_t color1 = c.color[1] & 0xffffff;
+            uint32_t color2 = c.color[2] & 0xffffff;
+            uint32_t color3 = c.color[3] & 0xffffff;
+            uint8_t fix_w1 = (w*(c.bit[0])                  ) / (c.bit[3]+c.bit[2]+c.bit[1]+c.bit[0]);
+            uint8_t fix_w2 = (w*(c.bit[0]+c.bit[1])         ) / (c.bit[3]+c.bit[2]+c.bit[1]+c.bit[0]);
+            uint8_t fix_w3 = (w*(c.bit[0]+c.bit[1]+c.bit[2])) / (c.bit[3]+c.bit[2]+c.bit[1]+c.bit[0]);
+            QString ret = "";
+            ret += QString("<line class=\"0\" x1=\"%1\" y1=\"%2\" x2=\"%3\" y2=\"%4\" stroke=\"#%5\" fill=\"none\" stroke-width=\"%6\" />\n")
+                       .arg(x).arg(y+w/2).arg(x+fix_w1).arg(y+w/2).arg(color0,6,16,QLatin1Char('0')).arg(w);
+            ret += QString("<line class=\"0\" x1=\"%1\" y1=\"%2\" x2=\"%3\" y2=\"%4\" stroke=\"#%5\" fill=\"none\" stroke-width=\"%6\" />\n")
+                       .arg(x+fix_w1).arg(y+w/2).arg(x+fix_w2).arg(y+w/2).arg(color1,6,16,QLatin1Char('0')).arg(w);
+            ret += QString("<line class=\"0\" x1=\"%1\" y1=\"%2\" x2=\"%3\" y2=\"%4\" stroke=\"#%5\" fill=\"none\" stroke-width=\"%6\" />\n")
+                       .arg(x+fix_w2).arg(y+w/2).arg(x+fix_w3).arg(y+w/2).arg(color2,6,16,QLatin1Char('0')).arg(w);
+            ret += QString("<line class=\"0\" x1=\"%1\" y1=\"%2\" x2=\"%3\" y2=\"%4\" stroke=\"#%5\" fill=\"none\" stroke-width=\"%6\" />\n")
+                       .arg(x+fix_w3).arg(y+w/2).arg(x+w).arg(y+w/2).arg(color3,6,16,QLatin1Char('0')).arg(w);
+            return ret;
+        }
+        case 0:
+        default:
+            return QString();
     }
 }
 
-QString YUVviewer::svgBoxArraySrc(int x, int y, int w, int od, int xn, int yn,QList<uint64_t> ca) {
+QString YUVviewer::svgBoxArraySrc(int x, int y, int w, int od, int xn, int yn,QList<YUVviewer::UICodePoint> ca) {
     QString ret = "";
     int num = ca.count();
     if(num == 0) return  ret;
@@ -282,7 +309,7 @@ QString YUVviewer::svgBoxArraySrc(int x, int y, int w, int od, int xn, int yn,QL
     return  ret;
 }
 
-void YUVviewer::updateUiSvg(QList<uint64_t> color_list) {
+void YUVviewer::updateUiSvg(QList<YUVviewer::UICodePoint> color_list) {
     QXmlStreamReader svgXmlStreamReader(
         "<svg xmlns=\"http://www.w3.org/2000/svg\" version=\"1.1\">\n" +
         svgBoxArraySrc(10,10,40,5,24,4,color_list) +
@@ -298,9 +325,9 @@ void YUVviewer::updateUiSvg(QList<uint64_t> color_list) {
 }
 
 void YUVviewer::changeFormat(const QString &text) {
-    QList<uint64_t> color_list;
-    QList<QPair<QString, QList<uint64_t>>>::const_iterator yuvformat_it = YUVFormat_list.begin();
-    while (yuvformat_it != YUVFormat_list.end()) {
+    QList<YUVviewer::UICodePoint> color_list;
+    QList<QPair<QString, QList<YUVviewer::UICodePoint>>>::const_iterator yuvformat_it = YUVFormat_pattern.begin();
+    while (yuvformat_it != YUVFormat_pattern.end()) {
         if(yuvformat_it->first == text) {
             color_list = yuvformat_it->second;
             break;

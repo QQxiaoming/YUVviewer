@@ -43,9 +43,15 @@ private slots:
     void aboutQt();
 
 private:
-    QString svgBoxSrc(int x, int y, int w, uint64_t c);
-    QString svgBoxArraySrc(int x, int y, int w, int od, int xn, int yn,QList<uint64_t> ca);
-    void updateUiSvg(QList<uint64_t> color_list);
+    struct UICodePoint
+    {
+        unsigned int num;
+        uint32_t color[4];
+        uint32_t bit[4];
+    };
+    QString svgBoxSrc(int x, int y, int w, UICodePoint c);
+    QString svgBoxArraySrc(int x, int y, int w, int od, int xn, int yn,QList<UICodePoint> ca);
+    void updateUiSvg(QList<UICodePoint> color_list);
     void showParaErrMessageBox(void);
     bool updateConfig(void);
     bool imgView(QStringList openfile_list);
@@ -53,7 +59,7 @@ private:
     ConfigFile *YUVviewerConfigFile;
     ImgViewer *imgViewer;
     static const QList<QPair<QString, QStringList>> frameSizeTypeDict;
-    static const QList<QPair<QString, QList<uint64_t>>> YUVFormat_list;
+    static const QList<QPair<QString, QList<UICodePoint>>> YUVFormat_pattern;
 };
 
 #endif // YUVVIEWER_H
