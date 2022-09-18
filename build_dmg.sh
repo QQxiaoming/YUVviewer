@@ -25,12 +25,14 @@ rm -rf .qmake.stash Makefile
 qmake -makefile
 make
 cp -R ./test ./build_release/out/YUVviewer.app/contents/resources/test
+cp ./tools/create-dmg/build-dmg.sh ./build_release/out/build-dmg.sh
+cp ./tools/create-dmg/installer_background.png ./build_release/out/installer_background.png
 cd ./build_release/out
 # 打包
 macdeployqt YUVviewer.app
 cp $OPENCV_DIR/lib/libopencv_imgproc.4.0.dylib ./YUVviewer.app/Contents/Frameworks/libopencv_imgproc.4.0.dylib
 cp $OPENCV_DIR/lib/libopencv_core.4.0.dylib ./YUVviewer.app/Contents/Frameworks/libopencv_core.4.0.dylib
 otool -L ./YUVviewer.app/Contents/MacOS/YUVviewer
-macdeployqt YUVviewer.app -dmg -verbose=2
+./build-dmg.sh YUVviewer
 echo build success!
 ###############################################################################
