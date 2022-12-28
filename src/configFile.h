@@ -9,21 +9,21 @@
 
 #include <QString>
 
-typedef struct {
-    QString lastPath;
-    QString frameSizeType;
-    QString YUVFormat;
-    QString frameSize_Width;
-    QString frameSize_Height;
-    QString frameRate;
-    QString startFrame;
-    QString endFrame;
-}config_dict_t;
-
 class ConfigFile {
 public:
-    ConfigFile(QString path);
+    ConfigFile(const QString &path = QString());
     ~ConfigFile();
+
+    typedef struct {
+        QString lastPath;
+        QString frameSizeType;
+        QString YUVFormat;
+        QString frameSize_Width;
+        QString frameSize_Height;
+        QString frameRate;
+        QString startFrame;
+        QString endFrame;
+    }config_dict_t;
     config_dict_t config_dict;
 
 private:

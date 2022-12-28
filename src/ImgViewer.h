@@ -28,7 +28,7 @@ class YUVDecodeThread : public QThread {
 
 public:
     explicit YUVDecodeThread(QWidget *parent = nullptr,
-                             QString yuvfilename = nullptr,
+                             const QString &yuvfilename = QString(),
                              QString YUVFormat = nullptr,
                              int W = 0, int H = 0,
                              int startframe = 0,
@@ -47,7 +47,7 @@ private:
     int H;
     int startframe;
     int totalframe;
-    yuvdecoder_t decoder;
+    ImageDecoder::yuvdecoder_t decoder;
     static void image_cleanup(cv::Mat* ptr);
 };
 

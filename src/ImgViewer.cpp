@@ -17,7 +17,7 @@
 #include "YUVdecoder.h"
 #include "ui_UI_ImgViewer.h"
 
-YUVDecodeThread::YUVDecodeThread(QWidget *parent,QString yuvfilename,QString YUVFormat,
+YUVDecodeThread::YUVDecodeThread(QWidget *parent,const QString &yuvfilename,QString YUVFormat,
                                  int W, int H, int startframe, int totalframe) :
     QThread(parent) {
     this->window = parent;
@@ -27,7 +27,7 @@ YUVDecodeThread::YUVDecodeThread(QWidget *parent,QString yuvfilename,QString YUV
     this->startframe = startframe;
     this->totalframe = totalframe;
     // 获取该格式的解码函数
-    this->decoder = YUV2RGB::yuvdecoder_map.find(YUVFormat).value();
+    this->decoder = ImageDecoder::yuvdecoder_map.find(YUVFormat).value();
 }
 
 void YUVDecodeThread::run() {
@@ -80,7 +80,7 @@ ImgViewer::~ImgViewer() {
 
 bool ImgViewer::setFileList(QStringList filenamelist,QString YUVFormat, int W, int H, int startframe, int totalframe) {
     // 获取该格式的解码函数
-    yuvdecoder_t decoder = YUV2RGB::yuvdecoder_map.find(YUVFormat).value();
+    ImageDecoder::yuvdecoder_t decoder = ImageDecoder::yuvdecoder_map.find(YUVFormat).value();
     if(decoder == nullptr) {
         // 未能成功获取则返回无法解码
         return false;
@@ -165,7 +165,7 @@ void ImgViewer::reciveimgdata(QList<QImage*> img_RGB_list,QString filename) {
 bool ImgViewer::setFileList_multithreading(QStringList filenamelist,QString YUVFormat,
                                             int W, int H, int startframe, int totalframe) {
     // 获取该格式的解码函数
-    yuvdecoder_t decoder = YUV2RGB::yuvdecoder_map.find(YUVFormat).value();
+    ImageDecoder::yuvdecoder_t decoder = ImageDecoder::yuvdecoder_map.find(YUVFormat).value();
     if(decoder == nullptr) {
         // 未能成功获取则返回无法解码
         return false;

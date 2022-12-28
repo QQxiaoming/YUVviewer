@@ -10,7 +10,8 @@
 #include <QXmlStreamWriter>
 #include "configFile.h"
 
-ConfigFile::ConfigFile(QString path) {
+ConfigFile::ConfigFile(const QString &path) :
+    configFilePath(path) {
     config_dict.lastPath = "";
     config_dict.frameSizeType = "Other";
     config_dict.YUVFormat = "YV12";
@@ -19,8 +20,6 @@ ConfigFile::ConfigFile(QString path) {
     config_dict.frameRate = "30";
     config_dict.startFrame = "0";
     config_dict.endFrame = "0";
-
-    configFilePath = path;
 
     QFileInfo fileInfo(configFilePath);
     if(!fileInfo.isFile()) {
