@@ -56,16 +56,10 @@ class ImgViewer : public QWidget {
     Q_OBJECT
 
 public:
-    explicit ImgViewer(QWidget *parent = nullptr,QWidget *parentWindow = nullptr);
+    explicit ImgViewer(const QString &folderpath,QWidget *parent = nullptr,QWidget *parentWindow = nullptr);
     ~ImgViewer();
     bool setFileList(QStringList filelist,QString YUVFormat, int W, int H, int startframe, int totalframe);
     bool setFileList_multithreading(QStringList filenamelist, QString YUVFormat, int W, int H, int startframe, int totalframe);
-
-    QImage *currentImg;
-    QList<QList<QImage*>> img_list;
-    QStringList filelist;
-    QList<QImage*> currentImg_RGB_list;
-    QString lastPath;
 
 private slots:
     void reciveimgdata(QList<QImage *> img_RGB_list, QString filename);
@@ -88,13 +82,13 @@ private:
     ImgExport *imgExportWindow;
     QWidget *parentWindow;
     bool left_click;
-
-
-
     QList<YUVDecodeThread*> decode_thread;
     QList<YUVDecodeThread*> decode_thread_finsh;
-
-
+    QString folderpath;
+    QList<QList<QImage*>> img_list;
+    QStringList filelist;
+    QList<QImage*> currentImg_RGB_list;
+    QImage *currentImg;
     QImage scaled_img;
     QPoint point;
     QPoint startPos;

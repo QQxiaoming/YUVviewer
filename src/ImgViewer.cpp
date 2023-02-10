@@ -60,12 +60,13 @@ void YUVDecodeThread::image_cleanup(cv::Mat* ptr) {
     delete ptr;
 }
 
-ImgViewer::ImgViewer(QWidget *parent,QWidget *parentWindow) :
+ImgViewer::ImgViewer(const QString &folderpath, QWidget *parent,QWidget *parentWindow) :
     QWidget(parent),
     ui(new Ui::ImgViewerWindow) {
     ui->setupUi(this);
     qRegisterMetaType<QList<QImage*>>("QList<QImage*>");
     this->parentWindow = parentWindow;
+    this->folderpath = folderpath;
     imgExportWindow = new ImgExport(this);
     setWindowTitle("loading file, please wait ....");
     ui->left_PushButton->setFlat(true);
@@ -256,6 +257,12 @@ void ImgViewer::mouseReleaseEvent(QMouseEvent *event) {
 void ImgViewer::mouseDoubleClickEvent(QMouseEvent *event) {
     if (!this->img_list.empty()) {
         if( event->button() == Qt::LeftButton) {
+            int list_index = img_list.indexOf(currentImg_RGB_list);
+            QList<QImage*> img_RGB_list = img_list[list_index];
+            int img_index = img_RGB_list.indexOf(currentImg);
+            QString name = folderpath + "/" + filelist[list_index].replace(".yuv","-").replace(".data","-").replace(".raw","-").replace(".png","-") + QString::number(img_index);
+            imgExportWindow->setSaveFileName(name);
+            imgExportWindow->setSaveImage(currentImg);
             imgExportWindow->show();
         } else if(event->button() == Qt::RightButton) {
             this->flipRGB = this->flipRGB ? false : true;

@@ -531,8 +531,7 @@ bool YUVviewer::imgView(QStringList openfile_list, const QString &folderpath) {
         delete imgViewer;
         imgViewer = nullptr;
     }
-    imgViewer = new ImgViewer(nullptr,this);
-    imgViewer->lastPath = folderpath;
+    imgViewer = new ImgViewer(folderpath,nullptr,this);
     int startFrame = ui->startFrame_LineEdit->text().toInt();
     int endFrame = ui->endFrame_LineEdit->text().toInt();
     int frameSize_Width = ui->frameSize_Width_LineEdit->text().toInt();

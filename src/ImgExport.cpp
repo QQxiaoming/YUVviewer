@@ -21,6 +21,16 @@ ImgExport::~ImgExport()
     delete ui;
 }
 
+void ImgExport::setSaveFileName(const QString &name)
+{
+    savefilename = name;
+}
+
+void ImgExport::setSaveImage(QImage *image)
+{
+    currentImg = image;
+}
+
 void ImgExport::showEvent(QShowEvent* event) {
     //"png"
     ui->f0RadioButton->setChecked(true);
@@ -29,15 +39,9 @@ void ImgExport::showEvent(QShowEvent* event) {
 
 void ImgExport::buttonBoxAccepted(void)
 {
-    ImgViewer *iw = static_cast<ImgViewer *>(this->parent());
-    int list_index = iw->img_list.indexOf(iw->currentImg_RGB_list);
-    QList<QImage*> img_RGB_list = iw->img_list[list_index];
-    int img_index = img_RGB_list.indexOf(iw->currentImg);
-    QString name = iw->lastPath + "/" + iw->filelist[list_index].replace(".yuv","-").replace(".data","-").replace(".raw","-") + QString::number(img_index);
-
     if(ui->f0RadioButton->isChecked()) {
         //"png";
-        export_png(iw->currentImg,name);
+        export_png(currentImg,savefilename);
     } else if(ui->f1RadioButton->isChecked()) {
         //"YV12";         
     } else if(ui->f2RadioButton->isChecked()) {
@@ -66,52 +70,52 @@ void ImgExport::buttonBoxAccepted(void)
         //"RGB888";       
     } else if(ui->f14RadioButton->isChecked()) {
         //"BayerBG";
-        export_bayer(iw->currentImg,"BGGR",8,name);
+        export_bayer(currentImg,"BGGR",8,savefilename);
     } else if(ui->f15RadioButton->isChecked()) { 
         //"BayerGB";
-        export_bayer(iw->currentImg,"GBRG",8,name);
+        export_bayer(currentImg,"GBRG",8,savefilename);
     } else if(ui->f16RadioButton->isChecked()) { 
         //"BayerRG";
-        export_bayer(iw->currentImg,"RGGB",8,name);
+        export_bayer(currentImg,"RGGB",8,savefilename);
     } else if(ui->f17RadioButton->isChecked()) { 
         //"BayerGR";
-        export_bayer(iw->currentImg,"GRBG",8,name);
+        export_bayer(currentImg,"GRBG",8,savefilename);
     } else if(ui->f18RadioButton->isChecked()) { 
         //"BayerBG_RAW10";
-        export_bayer(iw->currentImg,"BGGR",10,name);
+        export_bayer(currentImg,"BGGR",10,savefilename);
     } else if(ui->f19RadioButton->isChecked()) {
         //"BayerGB_RAW10";
-        export_bayer(iw->currentImg,"GBRG",10,name);
+        export_bayer(currentImg,"GBRG",10,savefilename);
     } else if(ui->f20RadioButton->isChecked()) {
         //"BayerRG_RAW10";
-        export_bayer(iw->currentImg,"RGGB",10,name);
+        export_bayer(currentImg,"RGGB",10,savefilename);
     } else if(ui->f21RadioButton->isChecked()) {
         //"BayerGR_RAW10";
-        export_bayer(iw->currentImg,"GRBG",10,name);
+        export_bayer(currentImg,"GRBG",10,savefilename);
     } else if(ui->f22RadioButton->isChecked()) {
         //"BayerBG_RAW12";
-        export_bayer(iw->currentImg,"BGGR",12,name);
+        export_bayer(currentImg,"BGGR",12,savefilename);
     } else if(ui->f23RadioButton->isChecked()) {
         //"BayerGB_RAW12";
-        export_bayer(iw->currentImg,"GBRG",12,name);
+        export_bayer(currentImg,"GBRG",12,savefilename);
     } else if(ui->f24RadioButton->isChecked()) {
         //"BayerRG_RAW12";
-        export_bayer(iw->currentImg,"RGGB",12,name);
+        export_bayer(currentImg,"RGGB",12,savefilename);
     } else if(ui->f25RadioButton->isChecked()) {
         //"BayerGR_RAW12";
-        export_bayer(iw->currentImg,"GRBG",12,name);
+        export_bayer(currentImg,"GRBG",12,savefilename);
     } else if(ui->f26RadioButton->isChecked()) {
         //"BayerBG_RAW16";
-        export_bayer(iw->currentImg,"BGGR",16,name);
+        export_bayer(currentImg,"BGGR",16,savefilename);
     } else if(ui->f27RadioButton->isChecked()) {
         //"BayerGB_RAW16";
-        export_bayer(iw->currentImg,"GBRG",16,name);
+        export_bayer(currentImg,"GBRG",16,savefilename);
     } else if(ui->f28RadioButton->isChecked()) {
         //"BayerRG_RAW16";
-        export_bayer(iw->currentImg,"RGGB",16,name);
+        export_bayer(currentImg,"RGGB",16,savefilename);
     } else if(ui->f29RadioButton->isChecked()) {
         //"BayerGR_RAW16";
-        export_bayer(iw->currentImg,"GRBG",16,name);
+        export_bayer(currentImg,"GRBG",16,savefilename);
     }
 
 

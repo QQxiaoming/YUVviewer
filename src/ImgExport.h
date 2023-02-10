@@ -2,6 +2,7 @@
 #define BOOTSELECTBOX_H
 
 #include <QDialog>
+#include <QImage>
 
 namespace Ui {
 class ImgExportWindow;
@@ -14,6 +15,10 @@ class ImgExport : public QDialog
 public:
     explicit ImgExport(QWidget *parent = nullptr);
     ~ImgExport();
+    void setSaveFileName(const QString &name);
+    void setSaveImage(QImage *image);
+
+private:
     void export_png(QImage *Img, const QString &name);
     void export_bayer(QImage *Img, const QString &sequence,int bit, const QString &fileName);
 
@@ -26,6 +31,8 @@ private slots:
 
 private:
     Ui::ImgExportWindow *ui;
+    QString savefilename;
+    QImage *currentImg;
 };
 
 #endif // BOOTSELECTBOX_H
