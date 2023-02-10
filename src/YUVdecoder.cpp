@@ -11,6 +11,7 @@
 #include <QtEndian>
 #include <opencv2/opencv.hpp>
 #include <opencv2/core/core.hpp>
+#include <opencv2/imgcodecs.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
 #include <opencv2/imgproc/types_c.h>
 #include "YUVdecoder.h"
@@ -48,6 +49,7 @@ QMap<QString, ImageDecoder::yuvdecoder_t> ImageDecoder::yuvdecoder_map = {
     {"BayerGB_RAW16",   BAYER_FUNC(cv::COLOR_BayerGB2RGB,16)},
     {"BayerRG_RAW16",   BAYER_FUNC(cv::COLOR_BayerRG2RGB,16)},
     {"BayerGR_RAW16",   BAYER_FUNC(cv::COLOR_BayerGR2RGB,16)},
+    {"PNG",             ImageDecoder::png},
 };
 
 QList<cv::Mat*> ImageDecoder::yv12(const QString &yuvfilename,int W, int H, int startframe, int totalframe) {
@@ -428,5 +430,19 @@ QList<cv::Mat*> ImageDecoder::bayer(const QString &yuvfilename,int W, int H, int
     delete[] temp;
     file.close();
 
+    return rgbImglist;
+}
+
+QList<cv::Mat*> ImageDecoder::png(const QString &yuvfilename,int W, int H, int startframe, int totalframe) {
+    QList<cv::Mat*> rgbImglist;
+
+    cv::Mat *rgbImg = new cv::Mat;
+    *rgbImg = cv::imread(yuvfilename.toStdString());
+    rgbImglist.insert(rgbImglist.constEnd(), rgbImg);
+
+    Q_UNUSED(W);
+    Q_UNUSED(H);
+    Q_UNUSED(startframe);
+    Q_UNUSED(totalframe);
     return rgbImglist;
 }

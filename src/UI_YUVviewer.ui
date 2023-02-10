@@ -229,6 +229,11 @@
                <string>BayerGR_RAW16</string>
               </property>
              </item>
+             <item>
+              <property name="text">
+               <string>PNG</string>
+              </property>
+             </item>
             </widget>
            </item>
            <item>

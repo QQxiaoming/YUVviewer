@@ -29,6 +29,7 @@ public:
     static QList<cv::Mat*> bgr565_big_endian(const QString &yuvfilename,int W, int H, int startframe, int totalframe);
     static QList<cv::Mat*> rgb888(const QString &yuvfilename,int W, int H, int startframe, int totalframe);
     static QList<cv::Mat*> bayer(const QString &yuvfilename,int W, int H, int startframe, int totalframe,int code,int bit);
+    static QList<cv::Mat*> png(const QString &yuvfilename,int W, int H, int startframe, int totalframe);
     static QMap<QString, yuvdecoder_t> yuvdecoder_map;
 };
 

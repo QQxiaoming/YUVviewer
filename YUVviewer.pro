@@ -93,6 +93,7 @@ unix:!macx:{
     DEPENDPATH +=$${OPENCV_DIR}/include
 
     LIBS += -L $${OPENCV_DIR}/lib/ -lopencv_imgproc
+    LIBS += -L $${OPENCV_DIR}/lib/ -lopencv_imgcodecs
     LIBS += -L $${OPENCV_DIR}/lib/ -lopencv_core
 
     git_tag.commands = $$quote("cd $$PWD && git describe --always --long --dirty --abbrev=10 --tags | awk \'{print \"\\\"\"\$$0\"\\\"\"}\' > git_tag.inc")
@@ -109,6 +110,7 @@ macx:{
     DEPENDPATH +=$${OPENCV_DIR}/include
 
     LIBS += -L $${OPENCV_DIR}/lib/ -lopencv_imgproc
+    LIBS += -L $${OPENCV_DIR}/lib/ -lopencv_imgcodecs
     LIBS += -L $${OPENCV_DIR}/lib/ -lopencv_core
 
     git_tag.commands = $$quote("cd $$PWD && git describe --always --long --dirty --abbrev=10 --tags | awk \'{print \"\\\"\"\$$0\"\\\"\"}\' > git_tag.inc")

@@ -31,6 +31,7 @@ cd ./build_release/out
 # 打包
 macdeployqt YUVviewer.app
 cp $OPENCV_DIR/lib/libopencv_imgproc.4.0.dylib ./YUVviewer.app/Contents/Frameworks/libopencv_imgproc.4.0.dylib
+cp $OPENCV_DIR/lib/libopencv_imgcodecs.4.0.dylib ./YUVviewer.app/Contents/Frameworks/libopencv_imgcodecs.4.0.dylib
 cp $OPENCV_DIR/lib/libopencv_core.4.0.dylib ./YUVviewer.app/Contents/Frameworks/libopencv_core.4.0.dylib
 otool -L ./YUVviewer.app/Contents/MacOS/YUVviewer
 ./build-dmg.sh YUVviewer

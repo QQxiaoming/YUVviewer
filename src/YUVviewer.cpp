@@ -133,6 +133,7 @@ const QList<QPair<QString, QList<YUVviewer::UICodePoint>>> YUVviewer::YUVFormat_
                          UI_G,UI_G,UI_B,UI_B,UI_G,UI_G,UI_B,UI_B,UI_G,UI_G,UI_B,UI_B,UI_G,UI_G,UI_B,UI_B,UI_G,UI_G,UI_B,UI_B,UI_G,UI_G,UI_B,UI_B}},
     {"BayerGR_RAW16",   {UI_G,UI_G,UI_R,UI_R,UI_G,UI_G,UI_R,UI_R,UI_G,UI_G,UI_R,UI_R,UI_G,UI_G,UI_R,UI_R,UI_G,UI_G,UI_R,UI_R,UI_G,UI_G,UI_R,UI_R,
                          UI_B,UI_B,UI_G,UI_G,UI_B,UI_B,UI_G,UI_G,UI_B,UI_B,UI_G,UI_G,UI_B,UI_B,UI_G,UI_G,UI_B,UI_B,UI_G,UI_G,UI_B,UI_B,UI_G,UI_G}},
+    {"PNG",             {UI_A}},
 };
 
 YUVviewer::YUVviewer(QWidget *parent) :
@@ -583,7 +584,7 @@ void YUVviewer::openFile() {
         if(lastPath.isDir()) {
             openDir = YUVviewerConfigFile->config_dict.lastPath;
         }
-        QStringList openfile_list = QFileDialog::getOpenFileNames(this, "选择文件", openDir, "YUV files(*.yuv *.data *.raw)");
+        QStringList openfile_list = QFileDialog::getOpenFileNames(this, "选择文件", openDir, "files(*.yuv *.data *.raw *.png)");
         if(openfile_list.size() != 0) {
             QFileInfo file(openfile_list[0]);
             YUVviewerConfigFile->config_dict.lastPath = file.absolutePath();
@@ -603,7 +604,7 @@ void YUVviewer::openFolder() {
         if (!openfolder_name.isEmpty()) {
             YUVviewerConfigFile->config_dict.lastPath = openfolder_name;
             QDir dir(openfolder_name);
-            QStringList nameFilters = {"*.yuv","*.data","*.raw"};
+            QStringList nameFilters = {"*.yuv","*.data","*.raw","*.png"};
             QStringList openfilename_list = dir.entryList(nameFilters, QDir::Files|QDir::Readable, QDir::Name);
             QStringList openfile_list;
             foreach (QString file_name, openfilename_list) {
