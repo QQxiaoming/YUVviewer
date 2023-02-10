@@ -1,5 +1,10 @@
 #include <QFileDialog>
 #include <QMessageBox>
+#include <opencv2/opencv.hpp>
+#include <opencv2/core/core.hpp>
+#include <opencv2/imgcodecs.hpp>
+#include <opencv2/imgproc/imgproc.hpp>
+#include <opencv2/imgproc/types_c.h>
 
 #include "ImgExport.h"
 #include "ImgViewer.h"
@@ -44,8 +49,10 @@ void ImgExport::buttonBoxAccepted(void)
         export_png(currentImg,savefilename);
     } else if(ui->f1RadioButton->isChecked()) {
         //"YV12";         
+        export_yuv(currentImg,"yv12",savefilename);
     } else if(ui->f2RadioButton->isChecked()) {
-        //"YU12/I420";     
+        //"YU12/I420";
+        export_yuv(currentImg,"i420",savefilename);
     } else if(ui->f3RadioButton->isChecked()) {
         //"NV21";         
     } else if(ui->f4RadioButton->isChecked()) {
@@ -57,17 +64,23 @@ void ImgExport::buttonBoxAccepted(void)
     } else if(ui->f7RadioButton->isChecked()) { 
         //"UYVY";         
     } else if(ui->f8RadioButton->isChecked()) { 
-        //"4:4:4";        
+        //"4:4:4";
+        export_yuv(currentImg,"4:4:4",savefilename);
     } else if(ui->f9RadioButton->isChecked()) { 
         //"RGB565_L";     
+        export_rgb(currentImg,"RGB565_L",savefilename);
     } else if(ui->f10RadioButton->isChecked()) { 
         //"RGB565_B";     
+        export_rgb(currentImg,"RGB565_B",savefilename);
     } else if(ui->f11RadioButton->isChecked()) { 
         //"BGR565_L";     
+        export_rgb(currentImg,"BGR565_L",savefilename);
     } else if(ui->f12RadioButton->isChecked()) { 
-        //"BGR565_B";     
-    } else if(ui->f13RadioButton->isChecked()) { 
-        //"RGB888";       
+        //"BGR565_B";
+        export_rgb(currentImg,"BGR565_B",savefilename);
+    } else if(ui->f13RadioButton->isChecked()) {
+        //"RGB888";
+        export_rgb(currentImg,"RGB888",savefilename);
     } else if(ui->f14RadioButton->isChecked()) {
         //"BayerBG";
         export_bayer(currentImg,"BGGR",8,savefilename);
@@ -132,6 +145,64 @@ void ImgExport::export_png(QImage *Img, const QString &name)
     QString savefile_name = QFileDialog::getSaveFileName(this, "保存文件", name + ".png", "Image files(*.png)");
     if(savefile_name != nullptr) {
         Img->save(savefile_name);
+    }
+}
+
+void ImgExport::export_yuv(QImage *Img, const QString &sequence, const QString &name)
+{
+    QString savefile_name = QFileDialog::getSaveFileName(this, "保存文件", name + ".yuv", "YUV files(*.yuv)");
+    if(savefile_name != nullptr) {
+        QFile save(savefile_name);
+        if (save.open(QIODevice::WriteOnly)) {
+            cv::Mat yuvImg;
+            cv::Mat rgbImg;
+            rgbImg.create(Img->height(), Img->width(), CV_8UC3);
+            uint8_t *dest = (uint8_t *)rgbImg.data;
+            for(int j = 0;j < Img->height();j++) {
+                for(int i = 0;i < Img->width()*3;i+=3) {
+                    dest[j*Img->width()*3+i+0] = (uint8_t)qBlue(Img->pixel(i/3,j));
+                    dest[j*Img->width()*3+i+1] = (uint8_t)qGreen(Img->pixel(i/3,j));
+                    dest[j*Img->width()*3+i+2] = (uint8_t)qRed(Img->pixel(i/3,j));
+                }
+            }
+            int size = Img->height()*Img->width();
+            int code = 0;
+            if(sequence == "yv12") {
+                size = size*3/2;
+                code = cv::COLOR_RGB2YUV_YV12;
+            } else if(sequence == "i420") {
+                size = size*3/2;
+                code = cv::COLOR_RGB2YUV_I420;
+            } else if(sequence == "4:4:4") {
+                size = size*3;
+                code = cv::COLOR_RGB2YUV;
+            }
+
+            cvtColor(rgbImg, yuvImg, code);
+            save.write((const char *)yuvImg.data,size);
+            save.close();
+        }
+    }
+}
+
+void ImgExport::export_rgb(QImage *Img, const QString &sequence, const QString &name)
+{
+    QString savefile_name = QFileDialog::getSaveFileName(this, "保存文件", name + ".yuv", "YUV files(*.yuv)");
+    if(savefile_name != nullptr) {
+        QFile save(savefile_name);
+        if (save.open(QIODevice::WriteOnly)) {
+            for(int j = 0;j < Img->height();j++) {
+                for(int i = 0;i < Img->width()*3;i+=3) {
+                    char r = (uint8_t)qRed(Img->pixel(i/3,j));
+                    char g = (uint8_t)qGreen(Img->pixel(i/3,j));
+                    char b = (uint8_t)qBlue(Img->pixel(i/3,j));
+                    save.write((const char *)&r,1);
+                    save.write((const char *)&g,1);
+                    save.write((const char *)&b,1);
+                }
+            }
+            save.close();
+        }
     }
 }
 

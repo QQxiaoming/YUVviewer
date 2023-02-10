@@ -20,7 +20,9 @@ public:
 
 private:
     void export_png(QImage *Img, const QString &name);
-    void export_bayer(QImage *Img, const QString &sequence,int bit, const QString &fileName);
+    void export_yuv(QImage *Img, const QString &sequence, const QString &name);
+    void export_rgb(QImage *Img, const QString &sequence, const QString &name);
+    void export_bayer(QImage *Img, const QString &sequence, int bit, const QString &fileName);
 
 protected:
     void showEvent(QShowEvent* event) override;

@@ -32,7 +32,7 @@
         <item>
          <widget class="QRadioButton" name="f1RadioButton">
           <property name="enabled">
-           <bool>false</bool>
+           <bool>true</bool>
           </property>
           <property name="text">
            <string>YV12</string>
@@ -42,7 +42,7 @@
         <item>
          <widget class="QRadioButton" name="f2RadioButton">
           <property name="enabled">
-           <bool>false</bool>
+           <bool>true</bool>
           </property>
           <property name="text">
            <string>YU12/I420</string>
@@ -102,7 +102,7 @@
         <item>
          <widget class="QRadioButton" name="f8RadioButton">
           <property name="enabled">
-           <bool>false</bool>
+           <bool>true</bool>
           </property>
           <property name="text">
            <string>4:4:4</string>
@@ -156,7 +156,7 @@
         <item>
          <widget class="QRadioButton" name="f13RadioButton">
           <property name="enabled">
-           <bool>false</bool>
+           <bool>true</bool>
           </property>
           <property name="text">
            <string>RGB888</string>
