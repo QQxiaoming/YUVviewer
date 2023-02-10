@@ -357,59 +357,62 @@ QList<cv::Mat*> ImageDecoder::bayer(const QString &yuvfilename,int W, int H, int
     file.open(QFile::ReadOnly);
     file.seek(startframe*W*H);
     QDataStream out(&file);
-    char *temp = nullptr;
+    uint8_t *temp = nullptr;
 
     switch (bit) {
     case 8:
+        temp = new uint8_t[W*H];
         break;
     case 10:
-        temp = new char[W*H*5/4];
+        temp = new uint8_t[W*H*5/4];
         break;
     case 12:
-        temp = new char[W*H*3/2];
+        temp = new uint8_t[W*H*3/2];
         break;
     case 16:
-        temp = new char[W*H*2];
-        break;
-    default:
+        temp = new uint8_t[W*H*2];
         break;
     }
 
     while((!out.atEnd()) && (totalframe != 0)) {
         cv::Mat *rgbImg = new cv::Mat;
-        yuvImg.create(H, W, CV_8UC1);
+        yuvImg.create(H, W, CV_8U);
+        uint8_t * dest = (uint8_t *)yuvImg.data;
         switch (bit) {
         case 8: {
-            out.readRawData((char *)yuvImg.data,W*H);
+            out.readRawData((char *)temp,W*H);
+            for(int i=0;i<W*H;i++) {
+                dest[i] = ((uint8_t)temp[i]);
+            }
             break;
         }
         case 10: {
-            out.readRawData(temp,W*H*5/4);
+            out.readRawData((char *)temp,W*H*5/4);
             for(int i=0,j=0;i<W*H*5/4;i+=5) {
                 uint16_t piex[5] = {(uint16_t)temp[i],(uint16_t)temp[i+1],(uint16_t)temp[i+2],(uint16_t)temp[i+3],(uint16_t)temp[i+4]};
-                yuvImg.data[j] = (uint8_t)(((piex[0]<<2) | (piex[4]&0x3))/4);
-                yuvImg.data[j+1] = (uint8_t)(((piex[1]<<2) | ((piex[4]>>2)&0x3))/4);
-                yuvImg.data[j+2] = (uint8_t)(((piex[2]<<2) | ((piex[4]>>2)&0x3))/4);
-                yuvImg.data[j+3] = (uint8_t)(((piex[3]<<2) | ((piex[4]>>2)&0x3))/4);
+                dest[j+0] = (uint8_t)(((piex[0]<<2) | ((piex[4]>>0)&0x3))/4);
+                dest[j+1] = (uint8_t)(((piex[1]<<2) | ((piex[4]>>2)&0x3))/4);
+                dest[j+2] = (uint8_t)(((piex[2]<<2) | ((piex[4]>>4)&0x3))/4);
+                dest[j+3] = (uint8_t)(((piex[3]<<2) | ((piex[4]>>6)&0x3))/4);
                 j+=4;
             }
             break;
         }
         case 12: {
-            out.readRawData(temp,W*H*3/2);
+            out.readRawData((char *)temp,W*H*3/2);
             for(int i=0,j=0;i<W*H*3/2;i+=3) {
                 uint16_t piex[3] = {(uint16_t)temp[i],(uint16_t)temp[i+1],(uint16_t)temp[i+2]};
-                yuvImg.data[j] = (uint8_t)(((piex[0]<<4) | (piex[2]&0xf))/16);
-                yuvImg.data[j+1] = (uint8_t)(((piex[1]<<4) | ((piex[2]>>4)&0xf))/16);
+                dest[j+0] = (uint8_t)(((piex[0]<<4) | ((piex[2]>>0)&0xf))/16);
+                dest[j+1] = (uint8_t)(((piex[1]<<4) | ((piex[2]>>4)&0xf))/16);
                 j+=2;
             }
             break;
         }
         case 16: {
-            out.readRawData(temp,W*H*2);
+            out.readRawData((char *)temp,W*H*2);
             for(int i=0,j=0;i<W*H*2;i+=2) {
                 uint16_t piex[2] = {(uint16_t)temp[i],(uint16_t)temp[i+1]};
-                yuvImg.data[j] = (uint8_t)(((piex[0]<<8) | (piex[1]&0xff))/256);
+                dest[j] = (uint8_t)(((piex[1]<<8) | (piex[0]&0xff))/256);
                 j++;
             }
             break;
@@ -422,18 +425,7 @@ QList<cv::Mat*> ImageDecoder::bayer(const QString &yuvfilename,int W, int H, int
         rgbImglist.insert(rgbImglist.constEnd(), rgbImg);
     }
 
-    switch (bit) {
-    case 8:
-        break;
-    case 10:
-    case 12:
-    case 16:
-        delete[] temp;
-        break;
-    default:
-        break;
-    }
-
+    delete[] temp;
     file.close();
 
     return rgbImglist;

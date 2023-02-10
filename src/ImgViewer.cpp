@@ -66,6 +66,7 @@ ImgViewer::ImgViewer(QWidget *parent,QWidget *parentWindow) :
     ui->setupUi(this);
     qRegisterMetaType<QList<QImage*>>("QList<QImage*>");
     this->parentWindow = parentWindow;
+    imgExportWindow = new ImgExport(this);
     setWindowTitle("loading file, please wait ....");
     ui->left_PushButton->setFlat(true);
     ui->right_PushButton->setFlat(true);
@@ -75,6 +76,7 @@ ImgViewer::ImgViewer(QWidget *parent,QWidget *parentWindow) :
 }
 
 ImgViewer::~ImgViewer() {
+    delete imgExportWindow;
     delete ui;
 }
 
@@ -254,13 +256,7 @@ void ImgViewer::mouseReleaseEvent(QMouseEvent *event) {
 void ImgViewer::mouseDoubleClickEvent(QMouseEvent *event) {
     if (!this->img_list.empty()) {
         if( event->button() == Qt::LeftButton) {
-            int list_index = this->img_list.indexOf(this->currentImg_RGB_list);
-            QList<QImage*> img_RGB_list = this->img_list[list_index];
-            int img_index = img_RGB_list.indexOf(this->currentImg);
-            QString savefile_name = QFileDialog::getSaveFileName(this, "保存文件", this->filelist[list_index].replace(".yuv","-") + QString::number(img_index) + ".png", "Image files(*.png)");
-            if(savefile_name != nullptr) {
-                this->currentImg->save(savefile_name);
-            }
+            imgExportWindow->show();
         } else if(event->button() == Qt::RightButton) {
             this->flipRGB = this->flipRGB ? false : true;
             this->point = QPoint(0, 0);

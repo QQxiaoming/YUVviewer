@@ -17,6 +17,7 @@
 #include <QMouseEvent> 
 #include <QWheelEvent> 
 #include <QResizeEvent>
+#include "ImgExport.h"
 #include "YUVdecoder.h"
 
 namespace Ui {
@@ -60,6 +61,12 @@ public:
     bool setFileList(QStringList filelist,QString YUVFormat, int W, int H, int startframe, int totalframe);
     bool setFileList_multithreading(QStringList filenamelist, QString YUVFormat, int W, int H, int startframe, int totalframe);
 
+    QImage *currentImg;
+    QList<QList<QImage*>> img_list;
+    QStringList filelist;
+    QList<QImage*> currentImg_RGB_list;
+    QString lastPath;
+
 private slots:
     void reciveimgdata(QList<QImage *> img_RGB_list, QString filename);
     void previousImg();
@@ -78,17 +85,16 @@ protected:
 private:
     void draw_img(QPainter *painter);
     Ui::ImgViewerWindow *ui;
+    ImgExport *imgExportWindow;
     QWidget *parentWindow;
     bool left_click;
 
-    QList<QList<QImage*>> img_list;
-    QStringList filelist;
+
 
     QList<YUVDecodeThread*> decode_thread;
     QList<YUVDecodeThread*> decode_thread_finsh;
 
-    QList<QImage*> currentImg_RGB_list;
-    QImage *currentImg;
+
     QImage scaled_img;
     QPoint point;
     QPoint startPos;

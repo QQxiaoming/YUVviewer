@@ -54,7 +54,7 @@ private:
     void updateUiSvg(QList<UICodePoint> color_list);
     void showParaErrMessageBox(void);
     bool updateConfig(void);
-    bool imgView(QStringList openfile_list);
+    bool imgView(QStringList openfile_list, const QString &folderpath);
     Ui::YUVviewer *ui;
     ConfigFile *YUVviewerConfigFile;
     ImgViewer *imgViewer;

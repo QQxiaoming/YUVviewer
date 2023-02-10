@@ -522,7 +522,7 @@ bool YUVviewer::updateConfig(void) {
     }
 }
 
-bool YUVviewer::imgView(QStringList openfile_list) {
+bool YUVviewer::imgView(QStringList openfile_list, const QString &folderpath) {
     if (openfile_list.empty()) {
         return false;
     }
@@ -531,6 +531,7 @@ bool YUVviewer::imgView(QStringList openfile_list) {
         imgViewer = nullptr;
     }
     imgViewer = new ImgViewer(nullptr,this);
+    imgViewer->lastPath = folderpath;
     int startFrame = ui->startFrame_LineEdit->text().toInt();
     int endFrame = ui->endFrame_LineEdit->text().toInt();
     int frameSize_Width = ui->frameSize_Width_LineEdit->text().toInt();
@@ -586,7 +587,7 @@ void YUVviewer::openFile() {
         if(openfile_list.size() != 0) {
             QFileInfo file(openfile_list[0]);
             YUVviewerConfigFile->config_dict.lastPath = file.absolutePath();
-            imgView(openfile_list);
+            imgView(openfile_list,file.absolutePath());
         }
     }
 }
@@ -609,7 +610,7 @@ void YUVviewer::openFolder() {
                 openfile_list.append(QDir::toNativeSeparators(openfolder_name + '/' +file_name));
             }
             if(openfile_list.size() != 0) {
-                imgView(openfile_list);
+                imgView(openfile_list,openfolder_name);
             }
         }
     }

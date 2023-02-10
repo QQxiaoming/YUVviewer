@@ -28,17 +28,20 @@ CONFIG += c++11
 SOURCES += \
         src/YUVviewer.cpp \
         src/ImgViewer.cpp \
+        src/ImgExport.cpp \
         src/YUVdecoder.cpp \
         src/configFile.cpp
 
 HEADERS += \
         src/YUVviewer.h \
         src/ImgViewer.h \
+        src/ImgExport.h \
         src/YUVdecoder.h \
         src/configFile.h
 
 FORMS += \
         src/UI_YUVviewer.ui \
+        src/UI_ImgExport.ui \
         src/UI_ImgViewer.ui
 
 RESOURCES += \
