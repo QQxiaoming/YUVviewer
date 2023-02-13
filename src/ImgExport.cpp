@@ -7,7 +7,6 @@
 #include <opencv2/imgproc/types_c.h>
 
 #include "ImgExport.h"
-#include "ImgViewer.h"
 
 #include "ui_UI_ImgExport.h"
 
@@ -54,15 +53,20 @@ void ImgExport::buttonBoxAccepted(void)
         //"YU12/I420";
         export_yuv(currentImg,"i420",savefilename);
     } else if(ui->f3RadioButton->isChecked()) {
-        //"NV21";         
+        //"NV21";
+        export_yuv(currentImg,"nv21",savefilename);
     } else if(ui->f4RadioButton->isChecked()) {
-        //"NV12";         
+        //"NV12";
+        export_yuv(currentImg,"nv12",savefilename);
     } else if(ui->f5RadioButton->isChecked()) { 
         //"YUY2/YUYV";    
+        export_yuv(currentImg,"yuyv",savefilename);
     } else if(ui->f6RadioButton->isChecked()) { 
         //"YVYU";         
+        export_yuv(currentImg,"yvyu",savefilename);
     } else if(ui->f7RadioButton->isChecked()) { 
         //"UYVY";         
+        export_yuv(currentImg,"uyvy",savefilename);
     } else if(ui->f8RadioButton->isChecked()) { 
         //"4:4:4";
         export_yuv(currentImg,"4:4:4",savefilename);
@@ -165,21 +169,89 @@ void ImgExport::export_yuv(QImage *Img, const QString &sequence, const QString &
                     dest[j*Img->width()*3+i+2] = (uint8_t)qRed(Img->pixel(i/3,j));
                 }
             }
-            int size = Img->height()*Img->width();
-            int code = 0;
+
             if(sequence == "yv12") {
-                size = size*3/2;
-                code = cv::COLOR_RGB2YUV_YV12;
+                cvtColor(rgbImg, yuvImg, cv::COLOR_RGB2YUV_YV12);
+                save.write((const char *)yuvImg.data,Img->height()*Img->width()*3/2);
             } else if(sequence == "i420") {
-                size = size*3/2;
-                code = cv::COLOR_RGB2YUV_I420;
+                cvtColor(rgbImg, yuvImg, cv::COLOR_RGB2YUV_I420);
+                save.write((const char *)yuvImg.data,Img->height()*Img->width()*3/2);
             } else if(sequence == "4:4:4") {
-                size = size*3;
-                code = cv::COLOR_RGB2YUV;
+                cvtColor(rgbImg, yuvImg, cv::COLOR_RGB2YUV);
+                save.write((const char *)yuvImg.data,Img->height()*Img->width()*3);
+            } else if(sequence == "nv21") {
+                cvtColor(rgbImg, yuvImg, cv::COLOR_RGB2YUV_YV12);
+                save.write((const char *)yuvImg.data,Img->height()*Img->width());
+                for(int i=0;i<Img->height()*Img->width()/2;i++) {
+                    save.write((const char *)&yuvImg.data[i+Img->height()*Img->width()],1);
+                    save.write((const char *)&yuvImg.data[i+Img->height()*Img->width()*5/4],1);
+                }
+            } else if(sequence == "nv12") {
+                cvtColor(rgbImg, yuvImg, cv::COLOR_RGB2YUV_I420);
+                save.write((const char *)yuvImg.data,Img->height()*Img->width());
+                for(int i=0;i<Img->height()*Img->width()/2;i++) {
+                    save.write((const char *)&yuvImg.data[i+Img->height()*Img->width()],1);
+                    save.write((const char *)&yuvImg.data[i+Img->height()*Img->width()*5/4],1);
+                }
+            } else if(sequence == "yuyv") {
+                cvtColor(rgbImg, yuvImg, cv::COLOR_RGB2YUV_I420);
+                for(int j=0;j<Img->height();j++) {
+                    if(j%2==0){
+                        for(int i=0;i<Img->width();i+=2) {
+                            save.write((const char *)&yuvImg.data[i+j*Img->width()],1);
+                            save.write((const char *)&yuvImg.data[i/2+Img->height()*Img->width()+j*Img->width()/4],1);
+                            save.write((const char *)&yuvImg.data[i+1+j*Img->width()],1);
+                            save.write((const char *)&yuvImg.data[i/2+Img->height()*Img->width()*5/4+j*Img->width()/4],1);
+                        }
+                    } else {
+                        for(int i=0;i<Img->width();i+=2) {
+                            save.write((const char *)&yuvImg.data[i+j*Img->width()],1);
+                            save.write((const char *)&yuvImg.data[i/2+Img->height()*Img->width()+(j-1)*Img->width()/4],1);
+                            save.write((const char *)&yuvImg.data[i+1+j*Img->width()],1);
+                            save.write((const char *)&yuvImg.data[i/2+Img->height()*Img->width()*5/4+(j-1)*Img->width()/4],1);
+                        }
+                    }
+                }
+            } else if(sequence == "yvyu") {
+                cvtColor(rgbImg, yuvImg, cv::COLOR_RGB2YUV_YV12);
+                for(int j=0;j<Img->height();j++) {
+                    if(j%2==0){
+                        for(int i=0;i<Img->width();i+=2) {
+                            save.write((const char *)&yuvImg.data[i+j*Img->width()],1);
+                            save.write((const char *)&yuvImg.data[i/2+Img->height()*Img->width()+j*Img->width()/4],1);
+                            save.write((const char *)&yuvImg.data[i+1+j*Img->width()],1);
+                            save.write((const char *)&yuvImg.data[i/2+Img->height()*Img->width()*5/4+j*Img->width()/4],1);
+                        }
+                    } else {
+                        for(int i=0;i<Img->width();i+=2) {
+                            save.write((const char *)&yuvImg.data[i+j*Img->width()],1);
+                            save.write((const char *)&yuvImg.data[i/2+Img->height()*Img->width()+(j-1)*Img->width()/4],1);
+                            save.write((const char *)&yuvImg.data[i+1+j*Img->width()],1);
+                            save.write((const char *)&yuvImg.data[i/2+Img->height()*Img->width()*5/4+(j-1)*Img->width()/4],1);
+                        }
+                    }
+                }
+            } else if(sequence == "uyvy") {
+                cvtColor(rgbImg, yuvImg, cv::COLOR_RGB2YUV_I420);
+                for(int j=0;j<Img->height();j++) {
+                    if(j%2==0){
+                        for(int i=0;i<Img->width();i+=2) {
+                            save.write((const char *)&yuvImg.data[i/2+Img->height()*Img->width()+j*Img->width()/4],1);
+                            save.write((const char *)&yuvImg.data[i+j*Img->width()],1);
+                            save.write((const char *)&yuvImg.data[i/2+Img->height()*Img->width()*5/4+j*Img->width()/4],1);
+                            save.write((const char *)&yuvImg.data[i+1+j*Img->width()],1);
+                        }
+                    } else {
+                        for(int i=0;i<Img->width();i+=2) {
+                            save.write((const char *)&yuvImg.data[i/2+Img->height()*Img->width()+(j-1)*Img->width()/4],1);
+                            save.write((const char *)&yuvImg.data[i+j*Img->width()],1);
+                            save.write((const char *)&yuvImg.data[i/2+Img->height()*Img->width()*5/4+(j-1)*Img->width()/4],1);
+                            save.write((const char *)&yuvImg.data[i+1+j*Img->width()],1);
+                        }
+                    }
+                }
             }
 
-            cvtColor(rgbImg, yuvImg, code);
-            save.write((const char *)yuvImg.data,size);
             save.close();
         }
     }
@@ -187,20 +259,45 @@ void ImgExport::export_yuv(QImage *Img, const QString &sequence, const QString &
 
 void ImgExport::export_rgb(QImage *Img, const QString &sequence, const QString &name)
 {
-    QString savefile_name = QFileDialog::getSaveFileName(this, "保存文件", name + ".yuv", "YUV files(*.yuv)");
+    QString savefile_name = QFileDialog::getSaveFileName(this, "保存文件", name + ".data", "Data files(*.data)");
     if(savefile_name != nullptr) {
         QFile save(savefile_name);
         if (save.open(QIODevice::WriteOnly)) {
+            cv::Mat yuvImg;
+            cv::Mat rgbImg;
+            rgbImg.create(Img->height(), Img->width(), CV_8UC3);
+            uint8_t *dest = (uint8_t *)rgbImg.data;
             for(int j = 0;j < Img->height();j++) {
                 for(int i = 0;i < Img->width()*3;i+=3) {
-                    char r = (uint8_t)qRed(Img->pixel(i/3,j));
-                    char g = (uint8_t)qGreen(Img->pixel(i/3,j));
-                    char b = (uint8_t)qBlue(Img->pixel(i/3,j));
-                    save.write((const char *)&r,1);
-                    save.write((const char *)&g,1);
-                    save.write((const char *)&b,1);
+                    dest[j*Img->width()*3+i+0] = (uint8_t)qBlue(Img->pixel(i/3,j));
+                    dest[j*Img->width()*3+i+1] = (uint8_t)qGreen(Img->pixel(i/3,j));
+                    dest[j*Img->width()*3+i+2] = (uint8_t)qRed(Img->pixel(i/3,j));
                 }
             }
+
+            if(sequence == "RGB888") {
+                cvtColor(rgbImg, yuvImg, cv::COLOR_RGB2BGR);
+                save.write((const char *)yuvImg.data,Img->height()*Img->width()*3);
+            } else if(sequence == "RGB565_L") {
+                cvtColor(rgbImg, yuvImg, cv::COLOR_BGR2BGR565);
+                save.write((const char *)yuvImg.data,Img->height()*Img->width()*2);
+            } else if(sequence == "RGB565_B") {
+                cvtColor(rgbImg, yuvImg, cv::COLOR_BGR2BGR565);
+                for(int i=0;i<Img->height()*Img->width()*2;i+=2) {
+                    save.write((const char *)&yuvImg.data[i+1],1);
+                    save.write((const char *)&yuvImg.data[i+0],1);
+                }
+            } else if(sequence == "BGR565_L") {
+                cvtColor(rgbImg, yuvImg, cv::COLOR_RGB2BGR565);
+                save.write((const char *)yuvImg.data,Img->height()*Img->width()*2);
+            } else if(sequence == "BGR565_B") {
+                cvtColor(rgbImg, yuvImg, cv::COLOR_RGB2BGR565);
+                for(int i=0;i<Img->height()*Img->width()*2;i+=2) {
+                    save.write((const char *)&yuvImg.data[i+1],1);
+                    save.write((const char *)&yuvImg.data[i+0],1);
+                }
+            }
+
             save.close();
         }
     }
