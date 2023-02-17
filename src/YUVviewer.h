@@ -51,6 +51,7 @@ private:
     };
     QString svgBoxSrc(int x, int y, int w, UICodePoint c);
     QString svgBoxArraySrc(int x, int y, int w, int od, int xn, int yn,QList<UICodePoint> ca);
+    QString getLegend(const QString &type);
     void updateUiSvg(QList<UICodePoint> color_list);
     void showParaErrMessageBox(void);
     bool updateConfig(void);

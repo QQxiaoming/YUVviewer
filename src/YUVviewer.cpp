@@ -310,6 +310,34 @@ QString YUVviewer::svgBoxArraySrc(int x, int y, int w, int od, int xn, int yn,QL
     return  ret;
 }
 
+QString YUVviewer::getLegend(const QString &type) {
+    if(type == "RGB") {
+        return 
+        "<svg xmlns=\"http://www.w3.org/2000/svg\" version=\"1.1\">\n"
+            "<line class=\"0\" x1=\"0\" y1=\"2\" x2=\"3\" y2=\"2\" stroke=\"#ff0000\" fill=\"none\" stroke-width=\"3\" />\n"
+            "<text x=\"5\" y=\"3\" fill=\"#000000\" font-size=\"3\">R</text>\n"
+            "<line class=\"0\" x1=\"0\" y1=\"7\" x2=\"3\" y2=\"7\" stroke=\"#00ff00\" fill=\"none\" stroke-width=\"3\" />\n"
+            "<text x=\"5\" y=\"8\" fill=\"#000000\" font-size=\"3\">G</text>\n"
+            "<line class=\"0\" x1=\"0\" y1=\"12\" x2=\"3\" y2=\"12\" stroke=\"#0000ff\" fill=\"none\" stroke-width=\"3\" />\n"
+            "<text x=\"5\" y=\"13\" fill=\"#000000\" font-size=\"3\">B</text>\n"
+        "</svg>\n";
+    } else if(type == "YUV") {
+        return 
+        "<svg xmlns=\"http://www.w3.org/2000/svg\" version=\"1.1\">\n"
+            "<line class=\"0\" x1=\"0\" y1=\"2\" x2=\"3\" y2=\"2\" stroke=\"#808080\" fill=\"none\" stroke-width=\"3\" />\n"
+            "<text x=\"5\" y=\"3\" fill=\"#000000\" font-size=\"3\">Y</text>\n"
+            "<line class=\"0\" x1=\"0\" y1=\"7\" x2=\"3\" y2=\"7\" stroke=\"#ff00ff\" fill=\"none\" stroke-width=\"3\" />\n"
+            "<text x=\"5\" y=\"8\" fill=\"#000000\" font-size=\"3\">U</text>\n"
+            "<line class=\"0\" x1=\"0\" y1=\"12\" x2=\"3\" y2=\"12\" stroke=\"#00ffff\" fill=\"none\" stroke-width=\"3\" />\n"
+            "<text x=\"5\" y=\"13\" fill=\"#000000\" font-size=\"3\">V</text>\n"
+        "</svg>\n";
+    } else {
+        return 
+        "<svg xmlns=\"http://www.w3.org/2000/svg\" version=\"1.1\">\n"
+        "</svg>\n";
+    }
+}
+
 void YUVviewer::updateUiSvg(QList<YUVviewer::UICodePoint> color_list) {
     QXmlStreamReader svgXmlStreamReader(
         "<svg xmlns=\"http://www.w3.org/2000/svg\" version=\"1.1\">\n" +
@@ -321,8 +349,32 @@ void YUVviewer::updateUiSvg(QList<YUVviewer::UICodePoint> color_list) {
     svgPixmap.fill(Qt::transparent);
     QPainter svgPainter(&svgPixmap);
     svgRender.render(&svgPainter);
-    ui->label_8->setPixmap(svgPixmap);
-    ui->label_8->setAlignment(Qt::AlignCenter);
+    ui->label_svgBox->setPixmap(svgPixmap);
+    ui->label_svgBox->setAlignment(Qt::AlignCenter);
+
+    QString legend = getLegend("");
+    switch (color_list.at(0).color[0]&0xffffff)
+    {
+        case 0xFF0000:
+        case 0x00FF00:
+        case 0x0000FF:
+            legend = getLegend("RGB");
+            break;
+        case 0x808080:
+        case 0xFF00FF:
+        case 0x00FFFF:
+            legend = getLegend("YUV");
+            break;
+    }
+    QXmlStreamReader svgXmlStreamReaderLegend(legend);
+    QSvgRenderer svgRenderLegend;
+    svgRenderLegend.load(&svgXmlStreamReaderLegend);
+    QPixmap svgPixmapLegend(50,80);
+    svgPixmapLegend.fill(Qt::transparent);
+    QPainter svgPainterLegend(&svgPixmapLegend);
+    svgRenderLegend.render(&svgPainterLegend);
+    ui->label_Legend->setPixmap(svgPixmapLegend);
+    ui->label_Legend->setAlignment(Qt::AlignVCenter);
 }
 
 void YUVviewer::changeFormat(const QString &text) {
@@ -336,7 +388,10 @@ void YUVviewer::changeFormat(const QString &text) {
         yuvformat_it++;
     }
     updateUiSvg(color_list);
-    ui->label_8->repaint();
+    if(text == "PNG") {
+        ui->label_svgBox->setPixmap(QPixmap::fromImage(QImage(":/img/img/ico.png").scaled(480,80,Qt::KeepAspectRatio,Qt::SmoothTransformation)));
+    }
+    ui->label_svgBox->repaint();
 }
 
 void YUVviewer::configComboBox() {
