@@ -43,98 +43,60 @@ void ImgExport::showEvent(QShowEvent* event) {
 
 void ImgExport::buttonBoxAccepted(void)
 {
-    if(ui->f0RadioButton->isChecked()) {
-        //"png";
-        export_png(currentImg,savefilename);
-    } else if(ui->f1RadioButton->isChecked()) {
-        //"YV12";         
-        export_yuv(currentImg,"yv12",savefilename);
-    } else if(ui->f2RadioButton->isChecked()) {
-        //"YU12/I420";
-        export_yuv(currentImg,"i420",savefilename);
-    } else if(ui->f3RadioButton->isChecked()) {
-        //"NV21";
-        export_yuv(currentImg,"nv21",savefilename);
-    } else if(ui->f4RadioButton->isChecked()) {
-        //"NV12";
-        export_yuv(currentImg,"nv12",savefilename);
-    } else if(ui->f5RadioButton->isChecked()) { 
-        //"YUY2/YUYV";    
-        export_yuv(currentImg,"yuyv",savefilename);
-    } else if(ui->f6RadioButton->isChecked()) { 
-        //"YVYU";         
-        export_yuv(currentImg,"yvyu",savefilename);
-    } else if(ui->f7RadioButton->isChecked()) { 
-        //"UYVY";         
-        export_yuv(currentImg,"uyvy",savefilename);
-    } else if(ui->f8RadioButton->isChecked()) { 
-        //"4:4:4";
-        export_yuv(currentImg,"4:4:4",savefilename);
-    } else if(ui->f9RadioButton->isChecked()) { 
-        //"RGB565_L";     
-        export_rgb(currentImg,"RGB565_L",savefilename);
-    } else if(ui->f10RadioButton->isChecked()) { 
-        //"RGB565_B";     
-        export_rgb(currentImg,"RGB565_B",savefilename);
-    } else if(ui->f11RadioButton->isChecked()) { 
-        //"BGR565_L";     
-        export_rgb(currentImg,"BGR565_L",savefilename);
-    } else if(ui->f12RadioButton->isChecked()) { 
-        //"BGR565_B";
-        export_rgb(currentImg,"BGR565_B",savefilename);
-    } else if(ui->f13RadioButton->isChecked()) {
-        //"RGB888";
-        export_rgb(currentImg,"RGB888",savefilename);
-    } else if(ui->f14RadioButton->isChecked()) {
-        //"BayerBG";
-        export_bayer(currentImg,"BGGR",8,savefilename);
-    } else if(ui->f15RadioButton->isChecked()) { 
-        //"BayerGB";
-        export_bayer(currentImg,"GBRG",8,savefilename);
-    } else if(ui->f16RadioButton->isChecked()) { 
-        //"BayerRG";
-        export_bayer(currentImg,"RGGB",8,savefilename);
-    } else if(ui->f17RadioButton->isChecked()) { 
-        //"BayerGR";
-        export_bayer(currentImg,"GRBG",8,savefilename);
-    } else if(ui->f18RadioButton->isChecked()) { 
-        //"BayerBG_RAW10";
-        export_bayer(currentImg,"BGGR",10,savefilename);
-    } else if(ui->f19RadioButton->isChecked()) {
-        //"BayerGB_RAW10";
-        export_bayer(currentImg,"GBRG",10,savefilename);
-    } else if(ui->f20RadioButton->isChecked()) {
-        //"BayerRG_RAW10";
-        export_bayer(currentImg,"RGGB",10,savefilename);
-    } else if(ui->f21RadioButton->isChecked()) {
-        //"BayerGR_RAW10";
-        export_bayer(currentImg,"GRBG",10,savefilename);
-    } else if(ui->f22RadioButton->isChecked()) {
-        //"BayerBG_RAW12";
-        export_bayer(currentImg,"BGGR",12,savefilename);
-    } else if(ui->f23RadioButton->isChecked()) {
-        //"BayerGB_RAW12";
-        export_bayer(currentImg,"GBRG",12,savefilename);
-    } else if(ui->f24RadioButton->isChecked()) {
-        //"BayerRG_RAW12";
-        export_bayer(currentImg,"RGGB",12,savefilename);
-    } else if(ui->f25RadioButton->isChecked()) {
-        //"BayerGR_RAW12";
-        export_bayer(currentImg,"GRBG",12,savefilename);
-    } else if(ui->f26RadioButton->isChecked()) {
-        //"BayerBG_RAW16";
-        export_bayer(currentImg,"BGGR",16,savefilename);
-    } else if(ui->f27RadioButton->isChecked()) {
-        //"BayerGB_RAW16";
-        export_bayer(currentImg,"GBRG",16,savefilename);
-    } else if(ui->f28RadioButton->isChecked()) {
-        //"BayerRG_RAW16";
-        export_bayer(currentImg,"RGGB",16,savefilename);
-    } else if(ui->f29RadioButton->isChecked()) {
-        //"BayerGR_RAW16";
-        export_bayer(currentImg,"GRBG",16,savefilename);
-    }
+    const static QMap<QString, QPair<QRadioButton *, int>> table = {
+        {"png"     , {ui->f0RadioButton  , 0} },
+        {"yv12"    , {ui->f1RadioButton  , 1} },
+        {"i420"    , {ui->f2RadioButton  , 1} },
+        {"nv21"    , {ui->f3RadioButton  , 1} },
+        {"nv12"    , {ui->f4RadioButton  , 1} },
+        {"yuyv"    , {ui->f5RadioButton  , 1} },
+        {"yvyu"    , {ui->f6RadioButton  , 1} },
+        {"uyvy"    , {ui->f7RadioButton  , 1} },
+        {"4:4:4"   , {ui->f8RadioButton  , 1} },
+        {"RGB565_L", {ui->f9RadioButton  , 2} },
+        {"RGB565_B", {ui->f10RadioButton , 2} },
+        {"BGR565_L", {ui->f11RadioButton , 2} },
+        {"BGR565_B", {ui->f12RadioButton , 2} },
+        {"RGB888"  , {ui->f13RadioButton , 2} },
+        {"BGGR_8"  , {ui->f14RadioButton , 3} },
+        {"GBRG_8"  , {ui->f15RadioButton , 3} },
+        {"RGGB_8"  , {ui->f16RadioButton , 3} },
+        {"GRBG_8"  , {ui->f17RadioButton , 3} },
+        {"BGGR_10" , {ui->f18RadioButton , 3} },
+        {"GBRG_10" , {ui->f19RadioButton , 3} },
+        {"RGGB_10" , {ui->f20RadioButton , 3} },
+        {"GRBG_10" , {ui->f21RadioButton , 3} },
+        {"BGGR_12" , {ui->f22RadioButton , 3} },
+        {"GBRG_12" , {ui->f23RadioButton , 3} },
+        {"RGGB_12" , {ui->f24RadioButton , 3} },
+        {"GRBG_12" , {ui->f25RadioButton , 3} },
+        {"BGGR_16" , {ui->f26RadioButton , 3} },
+        {"GBRG_16" , {ui->f27RadioButton , 3} },
+        {"RGGB_16" , {ui->f28RadioButton , 3} },
+        {"GRBG_16" , {ui->f29RadioButton , 3} },
+    };
 
+    foreach(QString key, table.keys()) {
+        if(table.value(key).first->isChecked()) {
+            switch (table.value(key).second)
+            {
+            case 0:
+                export_png(currentImg,savefilename);
+                break;
+            case 1:
+                export_yuv(currentImg,key,savefilename);
+                break;
+            case 2:
+                export_rgb(currentImg,key,savefilename);
+                break;
+            case 3:
+                export_bayer(currentImg,key.split("_").at(0),key.split("_").at(1).toInt(),savefilename);
+                break;
+            default:
+                break;
+            }
+        }
+    }
 
     emit this->accepted();
 }

@@ -440,7 +440,6 @@ void YUVviewer::changeFormat(const QString &text) {
             }
             ui->frameSize_Height_LineEdit->setFocusPolicy(Qt::StrongFocus);
         }
-        
     }
     ui->label_svgBox->repaint();
 }
@@ -568,13 +567,15 @@ void YUVviewer::endFrameValidator(const QString & currentText) {
 }
 
 void YUVviewer::exchaneSize() { 
-    ui->frameSizeType_Other_RadioButton->setChecked(true);
-    ui->frameSizeType_ComboBox->setEnabled(false);
-    QString width = ui->frameSize_Width_LineEdit->text();
-    ui->frameSize_Width_LineEdit->setText(ui->frameSize_Height_LineEdit->text());
-    ui->frameSize_Height_LineEdit->setText(width);
-    frameSizeWidthValidator(ui->frameSize_Width_LineEdit->text());
-    frameSizeHeightValidator(ui->frameSize_Height_LineEdit->text());
+    if(ui->YUVFormat_ComboBox->currentText() != "PNG") {
+        ui->frameSizeType_Other_RadioButton->setChecked(true);
+        ui->frameSizeType_ComboBox->setEnabled(false);
+        QString width = ui->frameSize_Width_LineEdit->text();
+        ui->frameSize_Width_LineEdit->setText(ui->frameSize_Height_LineEdit->text());
+        ui->frameSize_Height_LineEdit->setText(width);
+        frameSizeWidthValidator(ui->frameSize_Width_LineEdit->text());
+        frameSizeHeightValidator(ui->frameSize_Height_LineEdit->text());
+    }
 }
 
 void YUVviewer::showParaErrMessageBox(void) {
@@ -594,35 +595,38 @@ bool YUVviewer::updateConfig(void) {
         return false;
     }
     int temp_Width = ui->frameSize_Width_LineEdit->text().toInt(&isInt);
-    if(!isInt) {
+    if(!isInt && ui->YUVFormat_ComboBox->currentText() != "PNG") {
         showParaErrMessageBox();
         return false;
     }
     int temp_Height = ui->frameSize_Height_LineEdit->text().toInt(&isInt);
-    if(!isInt) {
+    if(!isInt && ui->YUVFormat_ComboBox->currentText() != "PNG") {
         showParaErrMessageBox();
         return false;
     }
 
     if(startFrame <= endFrame) {
-        if(((temp_Width % 2) == 0) && ((temp_Height % 2) == 0) && (temp_Width > 0) && (temp_Height > 0)) {
-            if(ui->frameSizeType_Combo_RadioButton->isChecked()) {
-                YUVviewerConfigFile->config_dict.frameSizeType = ui->frameSizeType_ComboBox->currentText();
-            } else if (ui->frameSizeType_Other_RadioButton->isChecked()) {
-                YUVviewerConfigFile->config_dict.frameSizeType = ui->frameSizeType_Other_RadioButton->text();
+        if(ui->YUVFormat_ComboBox->currentText() != "PNG") {
+            if(((temp_Width % 2) == 0) && ((temp_Height % 2) == 0) && (temp_Width > 0) && (temp_Height > 0)) {
+                YUVviewerConfigFile->config_dict.frameSize_Width = ui->frameSize_Width_LineEdit->text();
+                YUVviewerConfigFile->config_dict.frameSize_Height = ui->frameSize_Height_LineEdit->text();
+            } else {
+                QMessageBox::critical(this, "Error", "frameSize invalid!!", QMessageBox::Ok);
+                return false;
             }
-            YUVviewerConfigFile->config_dict.YUVFormat = ui->YUVFormat_ComboBox->currentText();
-            YUVviewerConfigFile->config_dict.frameSize_Width = ui->frameSize_Width_LineEdit->text();
-            YUVviewerConfigFile->config_dict.frameSize_Height = ui->frameSize_Height_LineEdit->text();
-            YUVviewerConfigFile->config_dict.frameRate = ui->frameRate_ComboBox->currentText();
-            YUVviewerConfigFile->config_dict.startFrame = ui->startFrame_LineEdit->text();
-            YUVviewerConfigFile->config_dict.endFrame = ui->endFrame_LineEdit->text();
-
-            return true;
-        } else {
-            QMessageBox::critical(this, "Error", "frameSize invalid!!", QMessageBox::Ok);
-            return false;
         }
+
+        if(ui->frameSizeType_Combo_RadioButton->isChecked()) {
+            YUVviewerConfigFile->config_dict.frameSizeType = ui->frameSizeType_ComboBox->currentText();
+        } else if (ui->frameSizeType_Other_RadioButton->isChecked()) {
+            YUVviewerConfigFile->config_dict.frameSizeType = ui->frameSizeType_Other_RadioButton->text();
+        }
+        YUVviewerConfigFile->config_dict.YUVFormat = ui->YUVFormat_ComboBox->currentText();
+        YUVviewerConfigFile->config_dict.frameRate = ui->frameRate_ComboBox->currentText();
+        YUVviewerConfigFile->config_dict.startFrame = ui->startFrame_LineEdit->text();
+        YUVviewerConfigFile->config_dict.endFrame = ui->endFrame_LineEdit->text();
+
+        return true;
     } else {
         QMessageBox::critical(this, "Error", "startFrame or endFrame invalid!!", QMessageBox::Ok);
         return false;
