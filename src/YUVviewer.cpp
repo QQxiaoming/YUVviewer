@@ -167,45 +167,62 @@ YUVviewer::YUVviewer(QWidget *parent) :
     }
 
     YUVviewerConfigFile = new ConfigFile(QDir::homePath()+"/.YUVViewer/YUVViewer.xml");
-    if(YUVviewerConfigFile->config_dict.frameSizeType == "Other") {
-        ui->frameSizeType_Other_RadioButton->setChecked(true);
-        ui->frameSizeType_ComboBox->setEnabled(false);
-        ui->frameSize_Width_LineEdit->setText(YUVviewerConfigFile->config_dict.frameSize_Width);
-        ui->frameSize_Height_LineEdit->setText(YUVviewerConfigFile->config_dict.frameSize_Height);
+    if(YUVviewerConfigFile->config_dict.YUVFormat == "PNG") {
+        if(YUVviewerConfigFile->config_dict.frameSizeType == "Other") {
+            ui->frameSizeType_Other_RadioButton->setChecked(true);
+            ui->frameSizeType_ComboBox->setEnabled(false);
+        } else {
+            ui->frameSizeType_Combo_RadioButton->setChecked(true);
+            ui->frameSizeType_ComboBox->setEnabled(true);
+            ui->frameSizeType_ComboBox->setCurrentText(YUVviewerConfigFile->config_dict.frameSizeType);
+        }
+        ui->label_svgBox->setPixmap(QPixmap::fromImage(QImage(":/img/img/ico.png").scaled(480,80,Qt::KeepAspectRatio,Qt::SmoothTransformation)));
+        ui->label_svgBox->setAlignment(Qt::AlignCenter);
+        ui->YUVFormat_ComboBox->setCurrentText("PNG");
+        ui->frameSize_Width_LineEdit->setText("\\");
+        ui->frameSize_Height_LineEdit->setText("\\");
+        ui->frameSize_Width_LineEdit->setFocusPolicy(Qt::NoFocus);
+        ui->frameSize_Height_LineEdit->setFocusPolicy(Qt::NoFocus);
     } else {
-        ui->frameSizeType_Combo_RadioButton->setChecked(true);
-        ui->frameSizeType_ComboBox->setEnabled(true);
-        QList<QPair<QString, QStringList>>::const_iterator config_it = frameSizeTypeDict.begin();
-        while (config_it != frameSizeTypeDict.end()) {
-            if(config_it->first == YUVviewerConfigFile->config_dict.frameSizeType) {
-                QStringList value = config_it->second;
-                ui->frameSizeType_ComboBox->setCurrentText(YUVviewerConfigFile->config_dict.frameSizeType);
-                ui->frameSize_Width_LineEdit->setText(value[0]);
-                ui->frameSize_Width_LineEdit->setFocusPolicy(Qt::NoFocus);
-                YUVviewerConfigFile->config_dict.frameSize_Width = value[0];
-                ui->frameSize_Height_LineEdit->setText(value[1]);
-                ui->frameSize_Height_LineEdit->setFocusPolicy(Qt::NoFocus);
-                YUVviewerConfigFile->config_dict.frameSize_Height = value[1];
+        if(YUVviewerConfigFile->config_dict.frameSizeType == "Other") {
+            ui->frameSizeType_Other_RadioButton->setChecked(true);
+            ui->frameSizeType_ComboBox->setEnabled(false);
+            ui->frameSize_Width_LineEdit->setText(YUVviewerConfigFile->config_dict.frameSize_Width);
+            ui->frameSize_Height_LineEdit->setText(YUVviewerConfigFile->config_dict.frameSize_Height);
+        } else {
+            ui->frameSizeType_Combo_RadioButton->setChecked(true);
+            ui->frameSizeType_ComboBox->setEnabled(true);
+            QList<QPair<QString, QStringList>>::const_iterator config_it = frameSizeTypeDict.begin();
+            while (config_it != frameSizeTypeDict.end()) {
+                if(config_it->first == YUVviewerConfigFile->config_dict.frameSizeType) {
+                    QStringList value = config_it->second;
+                    ui->frameSizeType_ComboBox->setCurrentText(YUVviewerConfigFile->config_dict.frameSizeType);
+                    ui->frameSize_Width_LineEdit->setText(value[0]);
+                    ui->frameSize_Width_LineEdit->setFocusPolicy(Qt::NoFocus);
+                    YUVviewerConfigFile->config_dict.frameSize_Width = value[0];
+                    ui->frameSize_Height_LineEdit->setText(value[1]);
+                    ui->frameSize_Height_LineEdit->setFocusPolicy(Qt::NoFocus);
+                    YUVviewerConfigFile->config_dict.frameSize_Height = value[1];
+                    break;
+                }
+                config_it++;
+            }
+        }
+
+        currentIndex = 0;
+        QList<YUVviewer::UICodePoint> color_list;
+        QList<QPair<QString, QList<YUVviewer::UICodePoint>>>::const_iterator yuvformat_it = YUVFormat_pattern.begin();
+        while (yuvformat_it != YUVFormat_pattern.end()) {
+            if(yuvformat_it->first == YUVviewerConfigFile->config_dict.YUVFormat) {
+                ui->YUVFormat_ComboBox->setCurrentIndex(currentIndex);
+                color_list = yuvformat_it->second;
                 break;
             }
-            config_it++;
+            currentIndex++;
+            yuvformat_it++;
         }
+        updateUiSvg(color_list);
     }
-
-
-    currentIndex = 0;
-    QList<YUVviewer::UICodePoint> color_list;
-    QList<QPair<QString, QList<YUVviewer::UICodePoint>>>::const_iterator yuvformat_it = YUVFormat_pattern.begin();
-    while (yuvformat_it != YUVFormat_pattern.end()) {
-        if(yuvformat_it->first == YUVviewerConfigFile->config_dict.YUVFormat) {
-            ui->YUVFormat_ComboBox->setCurrentIndex(currentIndex);
-            color_list = yuvformat_it->second;
-            break;
-        }
-        currentIndex++;
-        yuvformat_it++;
-    }
-    updateUiSvg(color_list);
 
     QStringList frameRate_list = {"30", "60", "120"};
     currentIndex = 0;
@@ -390,6 +407,40 @@ void YUVviewer::changeFormat(const QString &text) {
     updateUiSvg(color_list);
     if(text == "PNG") {
         ui->label_svgBox->setPixmap(QPixmap::fromImage(QImage(":/img/img/ico.png").scaled(480,80,Qt::KeepAspectRatio,Qt::SmoothTransformation)));
+        ui->frameSize_Width_LineEdit->setText("\\");
+        ui->frameSize_Height_LineEdit->setText("\\");
+        ui->frameSize_Width_LineEdit->setFocusPolicy(Qt::NoFocus);
+        ui->frameSize_Height_LineEdit->setFocusPolicy(Qt::NoFocus);
+    } else {
+        if(ui->frameSizeType_Combo_RadioButton->isChecked()) {
+            QList<QPair<QString, QStringList>>::const_iterator config_it = frameSizeTypeDict.begin();
+            while (config_it != frameSizeTypeDict.end()) {
+                if(config_it->first == ui->frameSizeType_ComboBox->currentText()) {
+                    QStringList value = config_it->second;
+                    ui->frameSize_Width_LineEdit->setText(value[0]);
+                    ui->frameSize_Width_LineEdit->setFocusPolicy(Qt::NoFocus);
+                    ui->frameSize_Height_LineEdit->setText(value[1]);
+                    ui->frameSize_Height_LineEdit->setFocusPolicy(Qt::NoFocus);
+                    break;
+                }
+                config_it++;
+            }
+        } else if(ui->frameSizeType_Other_RadioButton->isChecked()) {
+            if(YUVviewerConfigFile->config_dict.frameSize_Width != "\\") {
+                ui->frameSize_Width_LineEdit->setText(YUVviewerConfigFile->config_dict.frameSize_Width);
+            } else {
+                ui->frameSize_Width_LineEdit->setText("640");
+            }
+            ui->frameSize_Width_LineEdit->setText(YUVviewerConfigFile->config_dict.frameSize_Width);
+            ui->frameSize_Width_LineEdit->setFocusPolicy(Qt::StrongFocus);
+            if(YUVviewerConfigFile->config_dict.frameSize_Height != "\\") {
+                ui->frameSize_Height_LineEdit->setText(YUVviewerConfigFile->config_dict.frameSize_Height);
+            } else {
+                ui->frameSize_Height_LineEdit->setText("480");
+            }
+            ui->frameSize_Height_LineEdit->setFocusPolicy(Qt::StrongFocus);
+        }
+        
     }
     ui->label_svgBox->repaint();
 }
