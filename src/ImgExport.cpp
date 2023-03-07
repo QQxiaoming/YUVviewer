@@ -108,7 +108,7 @@ void ImgExport::buttonBoxRejected(void)
 
 void ImgExport::export_png(QImage *Img, const QString &name)
 {
-    QString savefile_name = QFileDialog::getSaveFileName(this, "保存文件", name + ".png", "Image files(*.png)");
+    QString savefile_name = QFileDialog::getSaveFileName(this, "保存文件", name + "-png" + ".png", "Image files(*.png)");
     if(savefile_name != nullptr) {
         Img->save(savefile_name);
     }
@@ -116,7 +116,7 @@ void ImgExport::export_png(QImage *Img, const QString &name)
 
 void ImgExport::export_yuv(QImage *Img, const QString &sequence, const QString &name)
 {
-    QString savefile_name = QFileDialog::getSaveFileName(this, "保存文件", name + ".yuv", "YUV files(*.yuv)");
+    QString savefile_name = QFileDialog::getSaveFileName(this, "保存文件", name + "-" + sequence + ".yuv", "YUV files(*.yuv)");
     if(savefile_name != nullptr) {
         QFile save(savefile_name);
         if (save.open(QIODevice::WriteOnly)) {
@@ -221,7 +221,7 @@ void ImgExport::export_yuv(QImage *Img, const QString &sequence, const QString &
 
 void ImgExport::export_rgb(QImage *Img, const QString &sequence, const QString &name)
 {
-    QString savefile_name = QFileDialog::getSaveFileName(this, "保存文件", name + ".data", "Data files(*.data)");
+    QString savefile_name = QFileDialog::getSaveFileName(this, "保存文件", name + "-" + sequence + ".data", "Data files(*.data)");
     if(savefile_name != nullptr) {
         QFile save(savefile_name);
         if (save.open(QIODevice::WriteOnly)) {
