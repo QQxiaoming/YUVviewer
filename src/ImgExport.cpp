@@ -341,9 +341,9 @@ void ImgExport::export_bayer(QImage *Img, const QString &sequence,int bit, const
                 }
 
                 if(odd)
-                    return {P0_0,P1_0,P2_0,P3_0};
-                else 
                     return {P0_1,P1_1,P2_1,P3_1};
+                else
+                    return {P0_0,P1_0,P2_0,P3_0};
             };
             auto func_write_pixes = [&save,&bit](QList<unsigned char> P) -> void
             {
