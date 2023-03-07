@@ -274,182 +274,129 @@ void ImgExport::export_bayer(QImage *Img, const QString &sequence,int bit, const
     if(savefile_name != nullptr) {
         QFile save(savefile_name);
         if (save.open(QIODevice::WriteOnly)) {
+            auto func_get_pixes = [&Img,&sequence](int i,int j,int odd) -> QList<unsigned char>
+            {
+                QRgb p0 = Img->pixel(i,j);
+                QRgb p1 = Img->pixel(i+1,j);
+                QRgb p2 = Img->pixel(i+2,j);
+                QRgb p3 = Img->pixel(i+3,j);
+
+                unsigned char B0 = qBlue(p0);
+                unsigned char G0 = qGreen(p0);
+                unsigned char R0 = qRed(p0);
+                unsigned char B1 = qBlue(p1);
+                unsigned char G1 = qGreen(p1);
+                unsigned char R1 = qRed(p1);
+                unsigned char B2 = qBlue(p2);
+                unsigned char G2 = qGreen(p2);
+                unsigned char R2 = qRed(p2);
+                unsigned char B3 = qBlue(p3);
+                unsigned char G3 = qGreen(p3);
+                unsigned char R3 = qRed(p3);
+
+                unsigned char P0_0 = 0;
+                unsigned char P1_0 = 0;
+                unsigned char P2_0 = 0;
+                unsigned char P3_0 = 0;
+                unsigned char P0_1 = 0;
+                unsigned char P1_1 = 0;
+                unsigned char P2_1 = 0;
+                unsigned char P3_1 = 0;
+                if(sequence == "BGGR") {
+                    P0_0 = B0;
+                    P1_0 = G1;
+                    P2_0 = B2;
+                    P3_0 = G3;
+                    P0_1 = G0;
+                    P1_1 = R1;
+                    P2_1 = G2;
+                    P3_1 = R3;
+                } else if(sequence == "RGGB"){
+                    P0_0 = R0;
+                    P1_0 = G1;
+                    P2_0 = R2;
+                    P3_0 = G3;
+                    P0_1 = G0;
+                    P1_1 = B1;
+                    P2_1 = G2;
+                    P3_1 = B3;
+                } else if(sequence == "GBRG"){
+                    P0_0 = G0;
+                    P1_0 = B1;
+                    P2_0 = G2;
+                    P3_0 = B3;
+                    P0_1 = R0;
+                    P1_1 = G1;
+                    P2_1 = R2;
+                    P3_1 = G3;
+                } else if(sequence == "GRBG"){
+                    P0_0 = G0;
+                    P1_0 = R1;
+                    P2_0 = G2;
+                    P3_0 = R3;
+                    P0_1 = B0;
+                    P1_1 = G1;
+                    P2_1 = B2;
+                    P3_1 = G3;
+                }
+
+                if(odd)
+                    return {P0_0,P1_0,P2_0,P3_0};
+                else 
+                    return {P0_1,P1_1,P2_1,P3_1};
+            };
+            auto func_write_pixes = [&save,&bit](QList<unsigned char> P) -> void
+            {
+                if(bit == 8) {
+                    save.write((const char *)&P[0],1);
+                    save.write((const char *)&P[1],1);
+                    save.write((const char *)&P[2],1);
+                    save.write((const char *)&P[3],1);
+                } else if(bit == 10) {
+                    unsigned short P0_10 = P[0]*4;
+                    unsigned short P1_10 = P[1]*4;
+                    unsigned short P2_10 = P[2]*4;
+                    unsigned short P3_10 = P[3]*4;
+                    unsigned char piexl[5] = {
+                        (unsigned char)(P0_10>>2),
+                        (unsigned char)(P1_10>>2),
+                        (unsigned char)(P2_10>>2),
+                        (unsigned char)(P3_10>>2),
+                        (unsigned char)(((P3_10&0x03)<<6)|((P2_10&0x03)<<4)|((P1_10&0x03)<<2)|(P0_10&0x03)) };
+                    save.write((const char *)piexl,5);
+                } else if(bit == 12) {
+                    unsigned short P0_12 = P[0]*16;
+                    unsigned short P1_12 = P[1]*16;
+                    unsigned short P2_12 = P[2]*16;
+                    unsigned short P3_12 = P[3]*16;
+                    unsigned char piexl[6] = {
+                        (unsigned char)(P0_12>>4),
+                        (unsigned char)(P1_12>>4),
+                        (unsigned char)(((P1_12&0x0f)<<4)|(P0_12&0x0f)),
+                        (unsigned char)(P2_12>>4),
+                        (unsigned char)(P3_12>>4),
+                        (unsigned char)(((P3_12&0x0f)<<4)|(P2_12&0x0f)) 
+                        };
+                    save.write((const char *)piexl,6);
+                } else if(bit == 16) {
+                    unsigned short P0_16 = P[0]*256;
+                    unsigned short P1_16 = P[1]*256;
+                    unsigned short P2_16 = P[2]*256;
+                    unsigned short P3_16 = P[3]*256;
+                    save.write((const char *)&P0_16,2);
+                    save.write((const char *)&P1_16,2);
+                    save.write((const char *)&P2_16,2);
+                    save.write((const char *)&P3_16,2);
+                }
+            };
             for(int j = 0;j < Img->height();j++) {
                 if(j%2 == 0) {
                     for(int i = 0;i < Img->width();i+=4) {
-                        QRgb p0 = Img->pixel(i,j);
-                        QRgb p1 = Img->pixel(i+1,j);
-                        QRgb p2 = Img->pixel(i+2,j);
-                        QRgb p3 = Img->pixel(i+3,j);
-
-                        unsigned char B0 = qBlue(p0);
-                        unsigned char G0 = qGreen(p0);
-                        unsigned char R0 = qRed(p0);
-                        unsigned char B1 = qBlue(p1);
-                        unsigned char G1 = qGreen(p1);
-                        unsigned char R1 = qRed(p1);
-                        unsigned char B2 = qBlue(p2);
-                        unsigned char G2 = qGreen(p2);
-                        unsigned char R2 = qRed(p2);
-                        unsigned char B3 = qBlue(p3);
-                        unsigned char G3 = qGreen(p3);
-                        unsigned char R3 = qRed(p3);
-
-                        unsigned char P0 = 0;
-                        unsigned char P1 = 0;
-                        unsigned char P2 = 0;
-                        unsigned char P3 = 0;
-                        if(sequence == "BGGR") {
-                            P0 = B0;
-                            P1 = G1;
-                            P2 = B2;
-                            P3 = G3;
-                        } else if(sequence == "RGGB"){
-                            P0 = R0;
-                            P1 = G1;
-                            P2 = R2;
-                            P3 = G3;
-                        } else if(sequence == "GBRG"){
-                            P0 = G0;
-                            P1 = B1;
-                            P2 = G2;
-                            P3 = B3;
-                        } else if(sequence == "GRBG"){
-                            P0 = G0;
-                            P1 = R1;
-                            P2 = G2;
-                            P3 = R3;
-                        }
-
-                        if(bit == 8) {
-                            save.write((const char *)&P0,1);
-                            save.write((const char *)&P1,1);
-                            save.write((const char *)&P2,1);
-                            save.write((const char *)&P3,1);
-                        } else if(bit == 10) {
-                            unsigned short P0_10 = P0*4;
-                            unsigned short P1_10 = P1*4;
-                            unsigned short P2_10 = P2*4;
-                            unsigned short P3_10 = P3*4;
-                            unsigned char piexl[5] = {
-                                (unsigned char)(P0_10>>2),
-                                (unsigned char)(P1_10>>2),
-                                (unsigned char)(P2_10>>2),
-                                (unsigned char)(P3_10>>2),
-                                (unsigned char)(((P3_10&0x03)<<6)|((P2_10&0x03)<<4)|((P1_10&0x03)<<2)|(P0_10&0x03)) };
-                            save.write((const char *)piexl,5);
-                        } else if(bit == 12) {
-                            unsigned short P0_12 = P0*16;
-                            unsigned short P1_12 = P1*16;
-                            unsigned short P2_12 = P2*16;
-                            unsigned short P3_12 = P3*16;
-                            unsigned char piexl[6] = {
-                                (unsigned char)(P0_12>>4),
-                                (unsigned char)(P1_12>>4),
-                                (unsigned char)(((P1_12&0x0f)<<4)|(P0_12&0x0f)),
-                                (unsigned char)(P2_12>>4),
-                                (unsigned char)(P3_12>>4),
-                                (unsigned char)(((P3_12&0x0f)<<4)|(P2_12&0x0f)) 
-                                };
-                            save.write((const char *)piexl,6);
-                        } else if(bit == 16) {
-                            unsigned short P0_16 = P0*256;
-                            unsigned short P1_16 = P1*256;
-                            unsigned short P2_16 = P2*256;
-                            unsigned short P3_16 = P3*256;
-                            save.write((const char *)&P0_16,2);
-                            save.write((const char *)&P1_16,2);
-                            save.write((const char *)&P2_16,2);
-                            save.write((const char *)&P3_16,2);
-                        }
+                        func_write_pixes(func_get_pixes(i,j,0));
                     }
                 } else {
                     for(int i = 0;i < Img->width();i+=4) {
-                        QRgb p0 = Img->pixel(i,j);
-                        QRgb p1 = Img->pixel(i+1,j);
-                        QRgb p2 = Img->pixel(i+2,j);
-                        QRgb p3 = Img->pixel(i+3,j);
-
-                        unsigned char B0 = qBlue(p0);
-                        unsigned char G0 = qGreen(p0);
-                        unsigned char R0 = qRed(p0);
-                        unsigned char B1 = qBlue(p1);
-                        unsigned char G1 = qGreen(p1);
-                        unsigned char R1 = qRed(p1);
-                        unsigned char B2 = qBlue(p2);
-                        unsigned char G2 = qGreen(p2);
-                        unsigned char R2 = qRed(p2);
-                        unsigned char B3 = qBlue(p3);
-                        unsigned char G3 = qGreen(p3);
-                        unsigned char R3 = qRed(p3);
-
-                        unsigned char P0 = 0;
-                        unsigned char P1 = 0;
-                        unsigned char P2 = 0;
-                        unsigned char P3 = 0;
-                        if(sequence == "BGGR") {
-                            P0 = G0;
-                            P1 = R1;
-                            P2 = G2;
-                            P3 = R3;
-                        } else if(sequence == "RGGB"){
-                            P0 = G0;
-                            P1 = B1;
-                            P2 = G2;
-                            P3 = B3;
-                        } else if(sequence == "GBRG"){
-                            P0 = R0;
-                            P1 = G1;
-                            P2 = R2;
-                            P3 = G3;
-                        } else if(sequence == "GRBG"){
-                            P0 = B0;
-                            P1 = G1;
-                            P2 = B2;
-                            P3 = G3;
-                        }
-
-                        if(bit == 8) {
-                            save.write((const char *)&P0,1);
-                            save.write((const char *)&P1,1);
-                            save.write((const char *)&P2,1);
-                            save.write((const char *)&P3,1);
-                        } else if(bit == 10) {
-                            unsigned short P0_10 = P0*4;
-                            unsigned short P1_10 = P1*4;
-                            unsigned short P2_10 = P2*4;
-                            unsigned short P3_10 = P3*4;
-                            unsigned char piexl[5] = {
-                                (unsigned char)(P0_10>>2),
-                                (unsigned char)(P1_10>>2),
-                                (unsigned char)(P2_10>>2),
-                                (unsigned char)(P3_10>>2),
-                                (unsigned char)(((P3_10&0x03)<<6)|((P2_10&0x03)<<4)|((P1_10&0x03)<<2)|(P0_10&0x03)) };
-                            save.write((const char *)piexl,5);
-                        } else if(bit == 12) {
-                            unsigned short P0_12 = P0*16;
-                            unsigned short P1_12 = P1*16;
-                            unsigned short P2_12 = P2*16;
-                            unsigned short P3_12 = P3*16;
-                            unsigned char piexl[6] = {
-                                (unsigned char)(P0_12>>4),
-                                (unsigned char)(P1_12>>4),
-                                (unsigned char)(((P1_12&0x0f)<<4)|(P0_12&0x0f)),
-                                (unsigned char)(P2_12>>4),
-                                (unsigned char)(P3_12>>4),
-                                (unsigned char)(((P3_12&0x0f)<<4)|(P2_12&0x0f)) 
-                                };
-                            save.write((const char *)piexl,6);
-                        } else if(bit == 16) {
-                            unsigned short P0_16 = P0*256;
-                            unsigned short P1_16 = P1*256;
-                            unsigned short P2_16 = P2*256;
-                            unsigned short P3_16 = P3*256;
-                            save.write((const char *)&P0_16,2);
-                            save.write((const char *)&P1_16,2);
-                            save.write((const char *)&P2_16,2);
-                            save.write((const char *)&P3_16,2);
-                        }
+                        func_write_pixes(func_get_pixes(i,j,1));
                     }
                 }
             }
