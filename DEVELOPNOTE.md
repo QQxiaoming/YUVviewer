@@ -32,7 +32,7 @@ set "OPENCV_DIR=D:/Qt/opencv4.2.0/x64/mingw/bin"
 
 ## linux
 
-- 安装Qt、patchelf工具，编译opencv lib以及linuxdeployqt工具(tools中已编译好适用于ubuntu20.04的linuxdeployqt工具)
+- 安装Qt、patchelf工具，编译zlib以及linuxdeploy工具(tools中已编译好适用于ubuntu20.04的linuxdeploy工具)
 
 - 修改partform_unix.pri文件以下内容
 
@@ -74,14 +74,10 @@ OPENCV_DIR=/home/xiaoming/Desktop/opencv
 ```sh
 ###############################################################################
 # 定义Qt目录
-QT_DIR=/opt/Qt6.2.0/6.2.0/gcc_64
+QT_DIR=/opt/Qt6.2.0/6.2.0/macos
 # 定义opencv目录
 OPENCV_DIR=/home/xiaoming/Desktop/opencv
 ###############################################################################
 ```
 
 - 执行build_dmg.sh脚本等待编译打包完成。
-
-## python版本(停止维护)
-
-运行 python ./src/old_code/YUVviewer.py

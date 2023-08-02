@@ -32,7 +32,7 @@ jobs:
           version: '6.2.0'
 
       - name: Setup OpenCV
-        uses: Dovyski/setup-opencv-action@v1
+        uses: Dovyski/setup-opencv-action@v1.1
         with:
           opencv-version: 4.0.0
           opencv-extra-modules: false
