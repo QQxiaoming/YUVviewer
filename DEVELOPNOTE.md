@@ -32,7 +32,7 @@ set "OPENCV_DIR=D:/Qt/opencv4.2.0/x64/mingw/bin"
 
 ## linux
 
-- 安装Qt、patchelf工具，编译zlib以及linuxdeploy工具(tools中已编译好适用于ubuntu20.04的linuxdeploy工具)
+- 安装Qt、patchelf工具，编译opencv lib以及linuxdeploy工具(tools中已编译好适用于ubuntu20.04的linuxdeploy工具)
 
 - 修改partform_unix.pri文件以下内容
 
