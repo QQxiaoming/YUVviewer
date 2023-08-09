@@ -22,6 +22,7 @@ export QML2_IMPORT_PATH=$QT_DIR/qml
 YUVVIEWER_VERSION="V"$YUVVIEWER_MAJARVERSION$YUVVIEWER_SUBVERSION$YUVVIEWER_REVISION
 # 编译
 rm -rf .qmake.stash Makefile
+lrelease ./YUVviewer.pro
 qmake ./YUVviewer.pro -spec linux-g++ CONFIG+=qtquickcompiler
 make clean
 make -j8 

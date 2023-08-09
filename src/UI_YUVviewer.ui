@@ -29,7 +29,7 @@
    </size>
   </property>
   <property name="windowTitle">
-   <string>YUVviewer</string>
+   <string notr="true">YUVviewer</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QVBoxLayout" name="verticalLayout_2">
@@ -86,152 +86,152 @@
             <widget class="QComboBox" name="YUVFormat_ComboBox">
              <item>
               <property name="text">
-               <string>YV12</string>
+               <string notr="true">YV12</string>
               </property>
              </item>
              <item>
               <property name="text">
-               <string>YU12/I420</string>
+               <string notr="true">YU12/I420</string>
               </property>
              </item>
              <item>
               <property name="text">
-               <string>NV21</string>
+               <string notr="true">NV21</string>
               </property>
              </item>
              <item>
               <property name="text">
-               <string>NV12</string>
+               <string notr="true">NV12</string>
               </property>
              </item>
              <item>
               <property name="text">
-               <string>YUY2/YUYV</string>
+               <string notr="true">YUY2/YUYV</string>
               </property>
              </item>
              <item>
               <property name="text">
-               <string>YVYU</string>
+               <string notr="true">YVYU</string>
               </property>
              </item>
              <item>
               <property name="text">
-               <string>UYVY</string>
+               <string notr="true">UYVY</string>
               </property>
              </item>
              <item>
               <property name="text">
-               <string>4:4:4</string>
+               <string notr="true">4:4:4</string>
               </property>
              </item>
              <item>
               <property name="text">
-               <string>RGB565_L</string>
+               <string notr="true">RGB565_L</string>
               </property>
              </item>
              <item>
               <property name="text">
-               <string>RGB565_B</string>
+               <string notr="true">RGB565_B</string>
               </property>
              </item>
              <item>
               <property name="text">
-               <string>BGR565_L</string>
+               <string notr="true">BGR565_L</string>
               </property>
              </item>
              <item>
               <property name="text">
-               <string>BGR565_B</string>
+               <string notr="true">BGR565_B</string>
               </property>
              </item>
              <item>
               <property name="text">
-               <string>RGB888</string>
+               <string notr="true">RGB888</string>
               </property>
              </item>
              <item>
               <property name="text">
-               <string>BayerBG</string>
+               <string notr="true">BayerBG</string>
               </property>
              </item>
              <item>
               <property name="text">
-               <string>BayerGB</string>
+               <string notr="true">BayerGB</string>
               </property>
              </item>
              <item>
               <property name="text">
-               <string>BayerRG</string>
+               <string notr="true">BayerRG</string>
               </property>
              </item>
              <item>
               <property name="text">
-               <string>BayerGR</string>
+               <string notr="true">BayerGR</string>
               </property>
              </item>
              <item>
               <property name="text">
-               <string>BayerBG_RAW10</string>
+               <string notr="true">BayerBG_RAW10</string>
               </property>
              </item>
              <item>
               <property name="text">
-               <string>BayerGB_RAW10</string>
+               <string notr="true">BayerGB_RAW10</string>
               </property>
              </item>
              <item>
               <property name="text">
-               <string>BayerRG_RAW10</string>
+               <string notr="true">BayerRG_RAW10</string>
               </property>
              </item>
              <item>
               <property name="text">
-               <string>BayerGR_RAW10</string>
+               <string notr="true">BayerGR_RAW10</string>
               </property>
              </item>
              <item>
               <property name="text">
-               <string>BayerBG_RAW12</string>
+               <string notr="true">BayerBG_RAW12</string>
               </property>
              </item>
              <item>
               <property name="text">
-               <string>BayerGB_RAW12</string>
+               <string notr="true">BayerGB_RAW12</string>
               </property>
              </item>
              <item>
               <property name="text">
-               <string>BayerRG_RAW12</string>
+               <string notr="true">BayerRG_RAW12</string>
               </property>
              </item>
              <item>
               <property name="text">
-               <string>BayerGR_RAW12</string>
+               <string notr="true">BayerGR_RAW12</string>
               </property>
              </item>
              <item>
               <property name="text">
-               <string>BayerBG_RAW16</string>
+               <string notr="true">BayerBG_RAW16</string>
               </property>
              </item>
              <item>
               <property name="text">
-               <string>BayerGB_RAW16</string>
+               <string notr="true">BayerGB_RAW16</string>
               </property>
              </item>
              <item>
               <property name="text">
-               <string>BayerRG_RAW16</string>
+               <string notr="true">BayerRG_RAW16</string>
               </property>
              </item>
              <item>
               <property name="text">
-               <string>BayerGR_RAW16</string>
+               <string notr="true">BayerGR_RAW16</string>
               </property>
              </item>
              <item>
               <property name="text">
-               <string>PNG</string>
+               <string notr="true">PNG</string>
               </property>
              </item>
             </widget>
@@ -330,7 +330,7 @@
                 </size>
                </property>
                <property name="text">
-                <string>↔</string>
+                <string notr="true">↔</string>
                </property>
               </widget>
              </item>
@@ -378,17 +378,17 @@
               <widget class="QComboBox" name="frameRate_ComboBox">
                <item>
                 <property name="text">
-                 <string>30</string>
+                 <string notr="true">30</string>
                 </property>
                </item>
                <item>
                 <property name="text">
-                 <string>60</string>
+                 <string notr="true">60</string>
                 </property>
                </item>
                <item>
                 <property name="text">
-                 <string>120</string>
+                 <string notr="true">120</string>
                 </property>
                </item>
               </widget>

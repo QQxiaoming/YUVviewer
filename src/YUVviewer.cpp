@@ -14,6 +14,8 @@
 #include <QString>
 #include <QSvgRenderer>
 #include <QXmlStreamReader>
+#include <QTranslator>
+#include <QLibraryInfo>
 #include "YUVviewer.h"
 #include "ui_UI_YUVviewer.h"
 
@@ -727,10 +729,16 @@ void YUVviewer::openFolder() {
 }
 
 void YUVviewer::help() {
-    QMessageBox::question(this, "Help",
-        "1.主界面选择数据参数。\n2.点击打开文件或文件夹将进行图像数据解析并显示图像。\n"
-        "3.图像显示界面中使用滚轮放大缩小图像，使用左键可拖动图像，双击左键保存图像为png格式，"
-        "单击右键复位图像大小和位置，双击右键交换图像R和B通道显示，单击中键显示图像原始大小。",
+    QMessageBox::question(this, "Help", tr(
+        "1.Select parameters on the main interface.\n"
+        "2.Click Open File or Folder to parse the image data and display the image.\n"
+        "3.Used in the image display interface\n"
+            "  - scroll wheel to zoom in and out of the image,\n"
+            "  - use the left button to drag the image,\n"
+            "  - Double click the left button to export the image as png format or other raw format,\n"
+            "  - Right click to reset image size and position,\n"
+            "  - Double click on the right button to swap the image R and B channel display,\n"
+            "  - Middle click to display the original size of the image."),
         QMessageBox::StandardButtons(QMessageBox::Ok));
 }
 
@@ -764,6 +772,10 @@ void YUVviewer::closeEvent(QCloseEvent *event) {
     event->accept();
 }
 
+static QTranslator qtTranslator;
+static QTranslator qtbaseTranslator;
+static QTranslator appTranslator;
+
 int main(int argc, char *argv[]) {
     if(argc == 2) {
         if((!strncmp(argv[1],"--version",9)) | (!strncmp(argv[1],"-v",2)) ) {
@@ -779,6 +791,42 @@ int main(int argc, char *argv[]) {
     font.setFamily(font.defaultFamily());
     font.setPixelSize(13);
     application.setFont(font);
+
+    QLocale locale;
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+    QString qlibpath = QLibraryInfo::path(QLibraryInfo::TranslationsPath);
+#else
+    QString qlibpath = QLibraryInfo::location(QLibraryInfo::TranslationsPath);
+#endif
+    QLocale::Language lang = locale.language();
+    switch(lang) {
+    case QLocale::Chinese:
+        if(qtTranslator.load("qt_zh_CN.qm",qlibpath))
+            application.installTranslator(&qtTranslator);
+        if(qtbaseTranslator.load("qtbase_zh_CN.qm",qlibpath))
+            application.installTranslator(&qtbaseTranslator);
+        if(appTranslator.load(":/lang/lang/yuvviewer_zh_CN.qm"))
+            application.installTranslator(&appTranslator);
+        break;
+    case QLocale::Japanese:
+        if(qtTranslator.load("qt_ja.qm",qlibpath))
+            application.installTranslator(&qtTranslator);
+        if(qtbaseTranslator.load("qtbase_ja.qm",qlibpath))
+            application.installTranslator(&qtbaseTranslator);
+        if(appTranslator.load(":/lang/lang/yuvviewer_ja_JP.qm"))
+            application.installTranslator(&appTranslator);
+        break;
+    default:
+    case QLocale::English:
+        if(qtTranslator.load("qt_en.qm",qlibpath))
+            application.installTranslator(&qtTranslator);
+        if(qtbaseTranslator.load("qtbase_en.qm",qlibpath))
+            application.installTranslator(&qtbaseTranslator);
+        if(appTranslator.load(":/lang/lang/yuvviewer_en_US.qm"))
+            application.installTranslator(&appTranslator);
+        break;
+    }
+
     YUVviewer window;
     window.show();
 
