@@ -46,6 +46,9 @@ jobs:
       - name: Install prerequisites
         shell: bash -l {0}
         run: |
+          ruby - e  "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)" < /dev/null  2 > /dev/null
+          brew reinstall --build-from-source cmake
+          ln -s /usr/local/Cellar/cmake/3.27.1 /usr/local/Cellar/cmake/3.26.4
           brew install create-dmg
           if [ ! -d "./opencv" ]; then
             ruby - e  "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)" < /dev/null  2 > /dev/null
