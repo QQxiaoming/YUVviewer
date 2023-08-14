@@ -31,18 +31,6 @@ jobs:
         with:
           version: '6.2.0'
 
-      - name: Cache opencv
-        uses: actions/cache@v3
-        env:
-          cache-name: cache-opencv
-        with:
-          path: |
-            ./opencv
-          key: ${{ runner.os }}-build-${{ env.cache-name }}
-          restore-keys: |
-            ${{ runner.os }}-build-
-            ${{ runner.os }}-
-
       - name: Install prerequisites
         shell: bash -l {0}
         run: |
@@ -50,16 +38,12 @@ jobs:
           brew reinstall --build-from-source cmake
           ln -s /usr/local/Cellar/cmake/3.27.1 /usr/local/Cellar/cmake/3.26.4
           brew install create-dmg
-          if [ ! -d "./opencv" ]; then
-            ruby - e  "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)" < /dev/null  2 > /dev/null
-            brew install --build-from-source cmake
-            git clone https://github.com/opencv/opencv.git --branch 4.0.0 --depth 1
-            cmake -S opencv -B opencv/build -D ENABLE_PRECOMPILED_HEADERS=OFF -D WITH_MSMF=OFF -D BUILD_PERF_TESTS=OFF -D BUILD_TESTS=OFF -D BUILD_WITH_DEBUG_INFO=OFF -D BUILD_DOCS=OFF -D WITH_JPEG=OFF -D WITH_FFMPEG=OFF -D CMAKE_BUILD_TYPE=RELEASE
-            cd ./opencv/build
-            make
-          else
-            cd ./opencv/build
-          fi
+          ruby - e  "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)" < /dev/null  2 > /dev/null
+          brew install --build-from-source cmake
+          git clone https://github.com/opencv/opencv.git --branch 4.0.0 --depth 1
+          cmake -S opencv -B opencv/build -D ENABLE_PRECOMPILED_HEADERS=OFF -D WITH_MSMF=OFF -D BUILD_PERF_TESTS=OFF -D BUILD_TESTS=OFF -D BUILD_WITH_DEBUG_INFO=OFF -D BUILD_DOCS=OFF -D WITH_JPEG=OFF -D WITH_FFMPEG=OFF -D CMAKE_BUILD_TYPE=RELEASE
+          cd ./opencv/build
+          make
           sudo make install
 
       - name: Build all
