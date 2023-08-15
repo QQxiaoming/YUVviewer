@@ -36,6 +36,8 @@ jobs:
         with:
           opencv-version: 4.0.0
           opencv-extra-modules: false
+          WITH_TBB: OFF
+          WITH_IPP: OFF
 
       - name: Install prerequisites
         run: |
