@@ -801,10 +801,6 @@ int main(int argc, char *argv[]) {
     QApplication::setAttribute(Qt::AA_DontUseNativeMenuBar);
     QApplication::setAttribute(Qt::AA_DontCreateNativeWidgetSiblings);
     QApplication application(argc, argv);
-    QFont font = application.font();
-    font.setFamily(font.defaultFamily());
-    font.setPixelSize(13);
-    application.setFont(font);
 
     QLocale locale;
 #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
