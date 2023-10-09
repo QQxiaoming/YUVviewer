@@ -9,7 +9,7 @@ OPENCV_DIR=/home/xiaoming/Desktop/opencv
 # 定义版本号
 YUVVIEWER_MAJARVERSION="0"
 YUVVIEWER_SUBVERSION="5"
-YUVVIEWER_REVISION="3"
+YUVVIEWER_REVISION="4"
 ###############################################################################
 
 
@@ -47,7 +47,9 @@ mkdir -p ./dpkg/YUVviewer_Linux_"$YUVVIEWER_VERSION"_x86_64/opt/YUVviewer
 cp -r ./test ./dpkg/YUVviewer_Linux_"$YUVVIEWER_VERSION"_x86_64/opt/YUVviewer/test
 # 配置打包信息
 sed -i "s/#VERSION#/$YUVVIEWER_MAJARVERSION.$YUVVIEWER_SUBVERSION$YUVVIEWER_REVISION/g" ./dpkg/YUVviewer_Linux_"$YUVVIEWER_VERSION"_x86_64/DEBIAN/control
-SIZE=$(du -sh -B 1024 ./dpkg/YUVviewer_Linux_"$YUVVIEWER_VERSION"_x86_64 | sed "s/.\///g")
+cd ./dpkg/YUVviewer_Linux_"$YUVVIEWER_VERSION"_x86_64
+SIZE=$(du -sh -B 1024 ./ | sed "s/.\///g")
+cd -
 InstalledSize=$SIZE
 sed -i "s/#SIZE#/$InstalledSize/g" ./dpkg/YUVviewer_Linux_"$YUVVIEWER_VERSION"_x86_64/DEBIAN/control
 chmod 755 ./dpkg/YUVviewer_Linux_"$YUVVIEWER_VERSION"_x86_64/* -R

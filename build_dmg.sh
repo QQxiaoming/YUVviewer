@@ -9,7 +9,7 @@ OPENCV_DIR=/home/xiaoming/Desktop/opencv
 # 定义版本号
 YUVVIEWER_MAJARVERSION="0"
 YUVVIEWER_SUBVERSION="5"
-YUVVIEWER_REVISION="3"
+YUVVIEWER_REVISION="4"
 ###############################################################################
 
 
