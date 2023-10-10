@@ -635,7 +635,7 @@ bool YUVviewer::updateConfig(void) {
         if(ui->frameSizeType_Combo_RadioButton->isChecked()) {
             YUVviewerConfigFile->config_dict.frameSizeType = ui->frameSizeType_ComboBox->currentText();
         } else if (ui->frameSizeType_Other_RadioButton->isChecked()) {
-            YUVviewerConfigFile->config_dict.frameSizeType = ui->frameSizeType_Other_RadioButton->text();
+            YUVviewerConfigFile->config_dict.frameSizeType = "Other";
         }
         YUVviewerConfigFile->config_dict.YUVFormat = ui->YUVFormat_ComboBox->currentText();
         YUVviewerConfigFile->config_dict.frameRate = ui->frameRate_ComboBox->currentText();
