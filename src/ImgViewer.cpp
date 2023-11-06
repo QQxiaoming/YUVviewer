@@ -23,9 +23,9 @@
 #include <QString>
 #include <QPoint>
 #include <QPainter>
-#include <QFileDialog>
 #include <QMessageBox>
 #include <QDebug>
+#include "filedialog.h"
 #include "ImgViewer.h"
 #include "YUVdecoder.h"
 #include "ui_UI_ImgViewer.h"

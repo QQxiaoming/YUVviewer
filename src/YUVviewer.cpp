@@ -21,7 +21,6 @@
 #include <QApplication>
 #include <QScreen>
 #include <QMessageBox>
-#include <QFileDialog>
 #include <QToolTip>
 #include <QPoint>
 #include <QDebug>
@@ -30,6 +29,7 @@
 #include <QXmlStreamReader>
 #include <QTranslator>
 #include <QLibraryInfo>
+#include "filedialog.h"
 #include "YUVviewer.h"
 #include "ui_UI_YUVviewer.h"
 
@@ -709,7 +709,7 @@ void YUVviewer::openFile() {
         if(lastPath.isDir()) {
             openDir = YUVviewerConfigFile->config_dict.lastPath;
         }
-        QStringList openfile_list = QFileDialog::getOpenFileNames(this, "选择文件", openDir, "files(*.yuv *.data *.raw *.png)");
+        QStringList openfile_list = FileDialog::getOpenFileNames(this, "选择文件", openDir, "files(*.yuv *.data *.raw *.png)");
         if(openfile_list.size() != 0) {
             QFileInfo file(openfile_list[0]);
             YUVviewerConfigFile->config_dict.lastPath = file.absolutePath();
@@ -725,7 +725,7 @@ void YUVviewer::openFolder() {
         if(lastPath.isDir()) {
             openDir = YUVviewerConfigFile->config_dict.lastPath;
         }
-        QString openfolder_name = QFileDialog::getExistingDirectory(this, "选择文件夹", openDir);
+        QString openfolder_name = FileDialog::getExistingDirectory(this, "选择文件夹", openDir);
         if (!openfolder_name.isEmpty()) {
             YUVviewerConfigFile->config_dict.lastPath = openfolder_name;
             QDir dir(openfolder_name);

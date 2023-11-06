@@ -37,6 +37,7 @@ HEADERS += \
         src/ImgViewer.h \
         src/ImgExport.h \
         src/YUVdecoder.h \
+        src/filedialog.h \
         src/configFile.h
 
 FORMS += \

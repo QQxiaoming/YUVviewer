@@ -17,7 +17,6 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, see <http://www.gnu.org/licenses/>.
  */
-#include <QFileDialog>
 #include <QMessageBox>
 #include <opencv2/opencv.hpp>
 #include <opencv2/core/core.hpp>
@@ -25,6 +24,7 @@
 #include <opencv2/imgproc/imgproc.hpp>
 #include <opencv2/imgproc/types_c.h>
 
+#include "filedialog.h"
 #include "ImgExport.h"
 
 #include "ui_UI_ImgExport.h"
@@ -127,7 +127,7 @@ void ImgExport::buttonBoxRejected(void)
 
 void ImgExport::export_png(QImage *Img, const QString &name)
 {
-    QString savefile_name = QFileDialog::getSaveFileName(this, "保存文件", name + "-png" + ".png", "Image files(*.png)");
+    QString savefile_name = FileDialog::getSaveFileName(this, "保存文件", name + "-png" + ".png", "Image files(*.png)");
     if(savefile_name != nullptr) {
         Img->save(savefile_name);
     }
@@ -135,7 +135,7 @@ void ImgExport::export_png(QImage *Img, const QString &name)
 
 void ImgExport::export_yuv(QImage *Img, const QString &sequence, const QString &name)
 {
-    QString savefile_name = QFileDialog::getSaveFileName(this, "保存文件", name + "-" + sequence + ".yuv", "YUV files(*.yuv)");
+    QString savefile_name = FileDialog::getSaveFileName(this, "保存文件", name + "-" + sequence + ".yuv", "YUV files(*.yuv)");
     if(savefile_name != nullptr) {
         QFile save(savefile_name);
         if (save.open(QIODevice::WriteOnly)) {
@@ -240,7 +240,7 @@ void ImgExport::export_yuv(QImage *Img, const QString &sequence, const QString &
 
 void ImgExport::export_rgb(QImage *Img, const QString &sequence, const QString &name)
 {
-    QString savefile_name = QFileDialog::getSaveFileName(this, "保存文件", name + "-" + sequence + ".data", "Data files(*.data)");
+    QString savefile_name = FileDialog::getSaveFileName(this, "保存文件", name + "-" + sequence + ".data", "Data files(*.data)");
     if(savefile_name != nullptr) {
         QFile save(savefile_name);
         if (save.open(QIODevice::WriteOnly)) {
@@ -289,7 +289,7 @@ void ImgExport::export_bayer(QImage *Img, const QString &sequence,int bit, const
     QMessageBox::warning(this, "Warning",
                              "导出此格式将通过模拟抽样的方式，图像信息将会出现损失！",
                              QMessageBox::StandardButtons(QMessageBox::Ok));
-    QString savefile_name = QFileDialog::getSaveFileName(this, "保存文件", name + "-bayer" + sequence + QString::number(bit) +".raw", "RAW files(*.raw)");
+    QString savefile_name = FileDialog::getSaveFileName(this, "保存文件", name + "-bayer" + sequence + QString::number(bit) +".raw", "RAW files(*.raw)");
     if(savefile_name != nullptr) {
         QFile save(savefile_name);
         if (save.open(QIODevice::WriteOnly)) {
