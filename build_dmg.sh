@@ -5,15 +5,14 @@
 QT_DIR=/opt/Qt6.2.0/6.2.0/gcc_64
 # 定义opencv目录
 OPENCV_DIR=/home/xiaoming/Desktop/opencv
+###############################################################################
 
+
+###############################################################################
 # 定义版本号
-YUVVIEWER_MAJARVERSION="0"
-YUVVIEWER_SUBVERSION="5"
-YUVVIEWER_REVISION="5"
-###############################################################################
-
-
-###############################################################################
+YUVVIEWER_MAJARVERSION=$(< ./version.txt cut -d '.' -f 1)
+YUVVIEWER_SUBVERSION=$(< ./version.txt cut -d '.' -f 2)
+YUVVIEWER_REVISION=$(< ./version.txt cut -d '.' -f 3)
 export PATH=$QT_DIR/bin:$PATH
 export LD_LIBRARY_PATH=$OPENCV_DIR/lib:$QT_DIR/lib:$LD_LIBRARY_PATH
 export QT_PLUGIN_PATH=$QT_DIR/plugins

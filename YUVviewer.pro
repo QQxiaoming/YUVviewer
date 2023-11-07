@@ -11,6 +11,9 @@ unix:{
     include(partform_unix.pri)
 }
 
+# 定义版本号路径
+YUVVIEWER_VERSION="$$cat(./version.txt)"
+
 ###############################################################################
 # 定义需要的Qt组件
 QT       += core gui
