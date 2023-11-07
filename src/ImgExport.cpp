@@ -62,7 +62,7 @@ void ImgExport::showEvent(QShowEvent* event) {
 
 void ImgExport::buttonBoxAccepted(void)
 {
-    const static QMap<QString, QPair<QRadioButton *, int>> table = {
+    QMap<QString, QPair<QRadioButton *, int>> table = {
         {"png"     , {ui->f0RadioButton  , 0} },
         {"yv12"    , {ui->f1RadioButton  , 1} },
         {"i420"    , {ui->f2RadioButton  , 1} },
