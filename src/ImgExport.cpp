@@ -160,14 +160,14 @@ void ImgExport::export_yuv(QImage *Img, const QString &sequence, const QString &
             } else if(sequence == "4:4:4") {
                 cvtColor(rgbImg, yuvImg, cv::COLOR_RGB2YUV);
                 save.write((const char *)yuvImg.data,Img->height()*Img->width()*3);
-            } else if(sequence == "nv21") {
+            } else if(sequence == "nv12") {
                 cvtColor(rgbImg, yuvImg, cv::COLOR_RGB2YUV_YV12);
                 save.write((const char *)yuvImg.data,Img->height()*Img->width());
                 for(int i=0;i<Img->height()*Img->width()/2;i++) {
                     save.write((const char *)&yuvImg.data[i+Img->height()*Img->width()],1);
                     save.write((const char *)&yuvImg.data[i+Img->height()*Img->width()*5/4],1);
                 }
-            } else if(sequence == "nv12") {
+            } else if(sequence == "nv21") {
                 cvtColor(rgbImg, yuvImg, cv::COLOR_RGB2YUV_I420);
                 save.write((const char *)yuvImg.data,Img->height()*Img->width());
                 for(int i=0;i<Img->height()*Img->width()/2;i++) {
