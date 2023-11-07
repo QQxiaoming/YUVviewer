@@ -86,7 +86,7 @@
     </message>
     <message>
         <location filename="../src/UI_YUVviewer.ui" line="467"/>
-        <location filename="../src/YUVviewer.cpp" line="746"/>
+        <location filename="../src/YUVviewer.cpp" line="760"/>
         <source>About</source>
         <translation></translation>
     </message>
@@ -96,7 +96,17 @@
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/YUVviewer.cpp" line="732"/>
+        <location filename="../src/YUVviewer.cpp" line="712"/>
+        <source>Open File</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../src/YUVviewer.cpp" line="728"/>
+        <source>Open Folder</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../src/YUVviewer.cpp" line="746"/>
         <source>1.Select parameters on the main interface.
 2.Click Open File or Folder to parse the image data and display the image.
 3.Used in the image display interface
@@ -109,7 +119,7 @@
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/YUVviewer.cpp" line="747"/>
+        <location filename="../src/YUVviewer.cpp" line="761"/>
         <source>&lt;p&gt;Version&lt;/p&gt;&lt;p&gt;&amp;nbsp;%1&lt;/p&gt;&lt;p&gt;Commit&lt;/p&gt;&lt;p&gt;&amp;nbsp;%2&lt;/p&gt;&lt;p&gt;Author&lt;/p&gt;&lt;p&gt;&amp;nbsp;qiaoqm@aliyun.com&lt;/p&gt;&lt;p&gt;&amp;nbsp;wenqing.li@aliyun.com&lt;/p&gt;&lt;p&gt;Website&lt;/p&gt;&lt;p&gt;&amp;nbsp;&lt;a href=&apos;https://github.com/QQxiaoming/YUVviewer&apos;&gt;https://github.com/QQxiaoming&lt;/p&gt;&lt;p&gt;&amp;nbsp;&lt;a href=&apos;https://gitee.com/QQxiaoming/YUVviewer&apos;&gt;https://gitee.com/QQxiaoming&lt;/a&gt;&lt;/p&gt;</source>
         <translation></translation>
     </message>

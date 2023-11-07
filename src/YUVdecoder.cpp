@@ -121,7 +121,7 @@ QList<cv::Mat*> ImageDecoder::nv21(const QString &yuvfilename,int W, int H, int 
         cv::Mat *rgbImg = new cv::Mat;
         yuvImg.create(H*3/2, W, CV_8UC1);
         out.readRawData((char *)yuvImg.data,W*H*3/2);
-        cvtColor(yuvImg, *rgbImg, cv::COLOR_YUV2RGB_NV21);
+        cvtColor(yuvImg, *rgbImg, cv::COLOR_YUV2RGB_NV12); // NV21
         totalframe--;
         rgbImglist.insert(rgbImglist.constEnd(), rgbImg);
     }
@@ -143,7 +143,7 @@ QList<cv::Mat*> ImageDecoder::nv12(const QString &yuvfilename,int W, int H, int 
         cv::Mat *rgbImg = new cv::Mat;
         yuvImg.create(H*3/2, W, CV_8UC1);
         out.readRawData((char *)yuvImg.data,W*H*3/2);
-        cvtColor(yuvImg, *rgbImg, cv::COLOR_YUV2RGB_NV12);
+        cvtColor(yuvImg, *rgbImg, cv::COLOR_YUV2RGB_NV21); // NV12
         totalframe--;
         rgbImglist.insert(rgbImglist.constEnd(), rgbImg);
     }

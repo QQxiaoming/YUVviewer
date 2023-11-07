@@ -709,7 +709,7 @@ void YUVviewer::openFile() {
         if(lastPath.isDir()) {
             openDir = YUVviewerConfigFile->config_dict.lastPath;
         }
-        QStringList openfile_list = FileDialog::getOpenFileNames(this, "选择文件", openDir, "files(*.yuv *.data *.raw *.png)");
+        QStringList openfile_list = FileDialog::getOpenFileNames(this, tr("Open File"), openDir, "files(*.yuv *.data *.raw *.png)");
         if(openfile_list.size() != 0) {
             QFileInfo file(openfile_list[0]);
             YUVviewerConfigFile->config_dict.lastPath = file.absolutePath();
@@ -725,7 +725,7 @@ void YUVviewer::openFolder() {
         if(lastPath.isDir()) {
             openDir = YUVviewerConfigFile->config_dict.lastPath;
         }
-        QString openfolder_name = FileDialog::getExistingDirectory(this, "选择文件夹", openDir);
+        QString openfolder_name = FileDialog::getExistingDirectory(this, tr("Open Folder"), openDir);
         if (!openfolder_name.isEmpty()) {
             YUVviewerConfigFile->config_dict.lastPath = openfolder_name;
             QDir dir(openfolder_name);
