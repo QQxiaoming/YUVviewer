@@ -2,6 +2,17 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="ja_JP">
 <context>
+    <name>ImgExport</name>
+    <message>
+        <location filename="../src/ImgExport.cpp" line="130"/>
+        <location filename="../src/ImgExport.cpp" line="138"/>
+        <location filename="../src/ImgExport.cpp" line="243"/>
+        <location filename="../src/ImgExport.cpp" line="292"/>
+        <source>Save File</source>
+        <translation>ファイルを保存する</translation>
+    </message>
+</context>
+<context>
     <name>ImgExportWindow</name>
     <message>
         <location filename="../src/UI_ImgExport.ui" line="14"/>
