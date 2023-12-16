@@ -44,10 +44,18 @@ jobs:
             ${{ runner.os }}-build-
             ${{ runner.os }}-
 
+      - name: Install cmake
+        uses: crazy-max/ghaction-chocolatey@v3
+        with:
+          args: install cmake --no-progress
+
+      - name: Install innosetup
+        uses: crazy-max/ghaction-chocolatey@v3
+        with:
+          args: install innosetup --no-progress
+
       - name: Install prerequisites
         run: |
-          Choco-Install -PackageName innosetup --force
-          Choco-Install -PackageName cmake --force
           $c="C:\opencv4.0.0"
           if(-not (Test-Path $c))
           {
