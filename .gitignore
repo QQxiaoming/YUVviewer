@@ -58,8 +58,7 @@ CMakeLists.txt.user*
 # rust
 /target
 
-git_tag.inc
-git_tag.ci.inc
+build_info.inc
 .DS_Store
 lang/yuvviewer_en_US.qm
 lang/yuvviewer_ja_JP.qm

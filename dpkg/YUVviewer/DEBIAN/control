@@ -4,7 +4,7 @@ Architecture: amd64
 Section: utils
 Depends: 
 Recommends: 
-Source: YUVviewer
+Source: yuvviewer
 Installed-Size: #SIZE#
 Priority: extra
 Maintainer: QQxiaoming <2014500726@smail.xtu.edu.cn> zhiliao007 <wenqing.li@aliyun.com>

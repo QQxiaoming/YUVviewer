@@ -84,6 +84,7 @@ ImgViewer::ImgViewer(const QString &folderpath, QWidget *parent,QWidget *parentW
     setWindowTitle("loading file, please wait ....");
     ui->left_PushButton->setFlat(true);
     ui->right_PushButton->setFlat(true);
+    setMouseTracking(true);
     QObject::connect(ui->left_PushButton, SIGNAL(clicked()), this, SLOT(previousImg()));
     QObject::connect(ui->right_PushButton, SIGNAL(clicked()), this, SLOT(nextImg()));
     left_click = false;
@@ -214,23 +215,52 @@ void ImgViewer::draw_img(QPainter *painter) {
     painter->drawPixmap(this->point, QPixmap::fromImage(this->scaled_img));
 }
 
+void ImgViewer::draw_info(QPainter *painter) {
+    if (isMouseInImg) {
+        int r = qRed(currentMousePosColor);
+        int g = qGreen(currentMousePosColor);
+        int b = qBlue(currentMousePosColor);
+        int x = currentMousePos.x();
+        int y = currentMousePos.y();
+        QString info = QString("x:%1 y:%2 R:%3 G:%4 B:%5").arg(x).arg(y).arg(r).arg(g).arg(b);
+        QPen pen;
+        pen.setColor(Qt::black);
+        painter->setPen(pen);
+        painter->drawText(20, this->height() - 20, info);
+    }
+}
+
 void ImgViewer::paintEvent(QPaintEvent *event) {
     if (!this->img_list.empty()) {
         QPainter painter;
         painter.begin(this);
         draw_img(&painter);
+        draw_info(&painter);
         painter.end();
     }
-    (void)event;
+    Q_UNUSED(event);
 }
 
 void ImgViewer::mouseMoveEvent(QMouseEvent *event) {
     if (!this->img_list.empty()) {
+        QRgb current_color = currentMousePosColor;
+        bool current_isMouseInImg = isMouseInImg;
+        if (this->scaled_img.rect().contains(event->pos()-this->point)) {
+            isMouseInImg = true;
+            currentMousePosColor = this->scaled_img.pixel(event->pos()-this->point);
+            currentMousePos = event->pos()-this->point;
+        } else {
+            isMouseInImg = false;
+        }
         if( this->left_click) {
             this->endPos = event->pos() - this->startPos;
             this->point = this->point + this->endPos;
             this->startPos = event->pos();
-            this->repaint();
+            this->update();
+        } else {
+            if(current_color != currentMousePosColor || current_isMouseInImg != isMouseInImg) {
+                this->update();
+            }
         }
     }
     (void)event;

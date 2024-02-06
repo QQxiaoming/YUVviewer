@@ -9,6 +9,8 @@ on:
       - 'README_zh_CN.md'
       - 'DEVELOPNOTE.md'
       - '.readthedocs.yaml'
+    tags:
+      - V**
   pull_request:
     branches: [ main ]
     paths-ignore:
@@ -69,8 +71,7 @@ jobs:
       - name: Build all
         run: |
           git fetch --tags --force
-          git describe --always --long --dirty --abbrev=10 --tags | ./tools/awk/awk.exe '{print \"\\\"\"$0\"\\\"\"}'  > git_tag.inc
-          ./tools/sed/sed.exe -i "s/git_tag.inc/git_tag.ci.inc/g" YUVviewer.pro
+          ./tools/sed/sed.exe -i 's/--long --dirty/--long/g' ./tools/generate_info.ps1
           ./tools/sed/sed.exe -i "s/QT_DIR=C:\/Qt\/Qt6.2.0\/6.2.0\/mingw81_32\/bin/QT_DIR=%Qt5_Dir%/g" ./build_setup.bat
           ./tools/sed/sed.exe -i "s/QT_TOOLS_DIR=C:\/Qt\/Qt6.2.0\/Tools\/mingw810_32\/bin/QT_TOOLS_DIR=C:\/ProgramData\/Chocolatey\/lib\/mingw\/tools\/install\/mingw64\/bin/g" ./build_setup.bat
           ./tools/sed/sed.exe -i "s/OPENCV_DIR=D:\/Qt\/opencv4.2.0\/x64\/mingw\/bin/OPENCV_DIR=C:\/opencv4.0.0\/x64\/mingw\/bin/g" ./build_setup.bat

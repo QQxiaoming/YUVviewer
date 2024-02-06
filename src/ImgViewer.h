@@ -91,6 +91,7 @@ protected:
 
 private:
     void draw_img(QPainter *painter);
+    void draw_info(QPainter *painter);
     Ui::ImgViewerWindow *ui;
     ImgExport *imgExportWindow;
     QWidget *parentWindow;
@@ -108,6 +109,9 @@ private:
     QPoint endPos;
     bool flipRGB = false;
     static void image_cleanup(cv::Mat* ptr);
+    QRgb currentMousePosColor;
+    QPoint currentMousePos;
+    bool isMouseInImg = false;
 };
 
 #endif // IMGVIEWER_H

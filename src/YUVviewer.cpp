@@ -33,10 +33,13 @@
 #include "YUVviewer.h"
 #include "ui_UI_YUVviewer.h"
 
+#include "build_info.inc"
+
 const QString VERSION = APP_VERSION;
-const QString GIT_TAG =
-#include <git_tag.inc>
-;
+const QString GIT_TAG = BUILD_INFO;
+const QString DATE_TAG = BUILD_DATE;
+const QString HASH_TAG = BUILD_HASH;
+const QString SHORT_HASH_TAG = BUILD_SHORT_HASH;
 
 const QList<QPair<QString, QStringList>> YUVviewer::frameSizeTypeDict = {
     {"QQCIF",   {"88","72"}},

@@ -12,7 +12,7 @@
 
 # YUVviewer
 
-[English](./README.md) | 简体中文
+[🇺🇸 English](./README.md) | 🇨🇳 简体中文
 
 YUVviewer一款用于开发人员查看预览各种原始图像格式的小工具，其基于Qt和opencv的框架，支持windows/linux/macos，界面简单清晰，操作便携，主界面如下：
 

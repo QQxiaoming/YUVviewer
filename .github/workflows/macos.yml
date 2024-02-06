@@ -9,6 +9,8 @@ on:
       - 'README_zh_CN.md'
       - 'DEVELOPNOTE.md'
       - '.readthedocs.yaml'
+    tags:
+      - V**
   pull_request:
     branches: [ main ]
     paths-ignore:
@@ -49,8 +51,7 @@ jobs:
       - name: Build all
         run: |
           git fetch --tags --force
-          git describe --always --long --dirty --abbrev=10 --tags | awk '{print "\""$0"\""}' > git_tag.inc
-          sed -i'.original' -e 's/git_tag.inc/git_tag.ci.inc/g' YUVviewer.pro
+          sed -i'.original' -e 's/--long --dirty/--long/g' ./tools/generate_info.sh
           sed -i'.original' -e 's/QT_DIR=\/opt\/Qt6.2.0\/6.2.0\/gcc_64/QT_DIR=$(cd "$(dirname "$0")";pwd)\/..\/Qt\/6.2.0\/macos/g' build_dmg.sh
           sed -i'.original' -e 's/\/home\/xiaoming\/Desktop\/opencv/\/usr\/local/g' build_dmg.sh
           sed -i'.original' -e 's/\/home\/xiaoming\/Desktop\/opencv/\/usr\/local/g' partform_unix.pri
@@ -67,3 +68,51 @@ jobs:
         run: |
           sudo hdiutil attach ./build_release/out/YUVviewer.dmg
           /Volumes/YUVviewer/YUVviewer.app/Contents/MacOS/YUVviewer --version
+
+  macos_arm64:
+    runs-on: macos-14
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Qt
+        uses: jurplel/install-qt-action@v3.3.0
+        with:
+          version: '6.2.0'
+
+      - name: Install prerequisites
+        shell: bash -l {0}
+        run: |
+          ruby - e  "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)" < /dev/null  2 > /dev/null
+          brew reinstall --build-from-source cmake
+          ln -s /usr/local/Cellar/cmake/3.27.1 /usr/local/Cellar/cmake/3.26.4
+          brew install create-dmg
+          ruby - e  "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)" < /dev/null  2 > /dev/null
+          brew install --build-from-source cmake
+          git clone https://github.com/opencv/opencv.git --branch 4.0.0 --depth 1
+          cmake -S opencv -B opencv/build -D ENABLE_PRECOMPILED_HEADERS=OFF -D WITH_MSMF=OFF -D BUILD_PERF_TESTS=OFF -D BUILD_TESTS=OFF -D BUILD_WITH_DEBUG_INFO=OFF -D BUILD_DOCS=OFF -D WITH_JPEG=OFF -D WITH_FFMPEG=OFF -D CMAKE_BUILD_TYPE=RELEASE
+          cd ./opencv/build
+          make
+          sudo make install
+
+      - name: Build all
+        run: |
+          git fetch --tags --force
+          sed -i'.original' -e 's/--long --dirty/--long/g' ./tools/generate_info.sh
+          sed -i'.original' -e 's/QT_DIR=\/opt\/Qt6.2.0\/6.2.0\/gcc_64/QT_DIR=$(cd "$(dirname "$0")";pwd)\/..\/Qt\/6.2.0\/macos/g' build_dmg.sh
+          sed -i'.original' -e 's/\/home\/xiaoming\/Desktop\/opencv/\/usr\/local/g' build_dmg.sh
+          sed -i'.original' -e 's/\/home\/xiaoming\/Desktop\/opencv/\/usr\/local/g' partform_unix.pri
+          ./build_dmg.sh
+
+      - name: Upload build asserts
+        uses: actions/upload-artifact@v4.3.0
+        with:
+          name: YUVviewer_macos
+          path: |
+            ./build_release/out/YUVviewer.dmg
+
+      - name: Run tests
+        run: |
+          sudo hdiutil attach ./build_release/out/YUVviewer.dmg
+          /Volumes/YUVviewer/YUVviewer.app/Contents/MacOS/YUVviewer --version
+        

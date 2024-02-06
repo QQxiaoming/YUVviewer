@@ -12,7 +12,7 @@
 
 # YUVviewer
 
-English | [简体中文](./README_zh_CN.md)
+🇺🇸 English | [🇨🇳 简体中文](./README_zh_CN.md)
 
 YUVviewer is a small tool for developers to view and preview various original image formats. It is based on the framework of Qt and opencv and supports windows/linux/macos. The interface is simple and clear, and the operation is portable. The main interface is as follows:
 
