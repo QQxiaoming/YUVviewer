@@ -15,6 +15,12 @@ unix:{
 YUVVIEWER_VERSION="$$cat(./version.txt)"
 
 ###############################################################################
+
+!versionAtLeast(QT_VERSION, 6.5.0) {
+    message("Cannot use Qt $$QT_VERSION")
+    error("Use Qt 6.5.0 or newer")
+}
+
 # 定义需要的Qt组件
 QT       += core gui
 QT       += xml svg
@@ -28,6 +34,10 @@ DEFINES += APP_VERSION="\\\"V$${YUVVIEWER_VERSION}\\\""
 CONFIG += c++11
 
 # 源文件配置
+INCLUDEPATH += \
+        $$PWD \
+        $$PWD/src 
+
 SOURCES += \
         src/YUVviewer.cpp \
         src/ImgViewer.cpp \

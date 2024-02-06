@@ -13,8 +13,8 @@ git_info=$(git describe --always --long --dirty --abbrev=10 --tags)
 git_short_hash=$(git rev-parse --short HEAD)
 git_hash=$(git rev-parse HEAD)
 
-echo "#ifndef __BUILD_INFO_H__"
-echo "#define __BUILD_INFO_H__"
+echo "#ifndef __BUILD_INFO_INC__"
+echo "#define __BUILD_INFO_INC__"
 echo
 echo "#define BUILD_INFO \"${git_info}\""
 echo "#define BUILD_INFO_LEN ${#git_info}"
@@ -25,4 +25,4 @@ echo "#define BUILD_SHORT_HASH_LEN ${#git_short_hash}"
 echo "#define BUILD_DATE \"${date_info}\""
 echo "#define BUILD_DATE_LEN ${#date_info}"
 echo
-echo "#endif /* __BUILD_INFO_H__ */"
+echo "#endif /* __BUILD_INFO_INC__ */"
