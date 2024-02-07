@@ -17,4 +17,5 @@ Write-Output "#define BUILD_DATE ""$date_info"""
 Write-Output "#define BUILD_DATE_LEN $($date_info.Length)"
 Write-Output ""
 Write-Output "#endif // __BUILD_INFO_INC__"
+Write-Output ""
 

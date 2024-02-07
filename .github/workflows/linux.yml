@@ -51,7 +51,7 @@ jobs:
         run: |
           git fetch --tags --force
           sed -i 's/--long --dirty/--long/g' ./tools/generate_info.sh
-          sed -i 's/QT_DIR=\/opt\/Qt6.2.0\/6.2.0\/gcc_64/QT_DIR=$(cd "$(dirname "$0")";pwd)\/..\/Qt\/6.2.0\/gcc_64/g' build_deb.sh
+          sed -i 's/QT_DIR=\/opt\/Qt6.2.0\/6.2.0\/gcc_64/QT_DIR=$(cd "$(dirname "$0")";pwd)\/..\/Qt\/6.5.3\/gcc_64/g' build_deb.sh
           sed -i 's/\/home\/xiaoming\/Desktop\/opencv/\/usr\/local/g' build_deb.sh
           sed -i 's/\/home\/xiaoming\/Desktop\/opencv/\/usr\/local/g' partform_unix.pri
           ./build_deb.sh
