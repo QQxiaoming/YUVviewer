@@ -50,5 +50,12 @@ xcopy /y "%QT_TOOLS_DIR%\*.dll" ".\InnoSetup\build\"
 echo "wait inno build setup..."
 iscc /q ".\InnoSetup\build_temp_setup.iss"
 del .\InnoSetup\build_temp_setup.iss
+FOR /F "delims=. tokens=1-3" %%x IN ("%YUVVIEWER_VERSION%") DO (
+    set "YUVVIEWER_MAJARVERSION=%%x"
+    set "YUVVIEWER_SUBVERSION=%%y"
+    set "YUVVIEWER_REVISION=%%z"
+)
+mkdir ".\output"
+echo F|xcopy /S /Q /Y /F ".\InnoSetup\YUVviewer_setup.exe" ".\output\YUVviewer_windows_V%YUVVIEWER_MAJARVERSION%%YUVVIEWER_SUBVERSION%%YUVVIEWER_REVISION%_x86_64_setup.exe"
 echo "build success!"
 :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::

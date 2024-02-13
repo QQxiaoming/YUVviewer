@@ -63,7 +63,7 @@ jobs:
         with:
           name: YUVviewer_macos
           path: |
-            ./build_release/out/YUVviewer.dmg
+            ./dmgOut/*.dmg
 
       - name: Run tests
         run: |
@@ -111,7 +111,7 @@ jobs:
         with:
           name: YUVviewer_macos_arm64
           path: |
-            ./build_release/out/YUVviewer.dmg
+            ./dmgOut/*.dmg
 
       - name: Run tests
         run: |

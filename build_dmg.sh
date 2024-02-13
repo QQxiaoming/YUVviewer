@@ -35,5 +35,14 @@ cp $OPENCV_DIR/lib/libopencv_imgcodecs.4.0.dylib ./YUVviewer.app/Contents/Framew
 cp $OPENCV_DIR/lib/libopencv_core.4.0.dylib ./YUVviewer.app/Contents/Frameworks/libopencv_core.4.0.dylib
 otool -L ./YUVviewer.app/Contents/MacOS/YUVviewer
 ./build-dmg.sh YUVviewer
+cd ../../
+mkdir dmgOut
+cpu=$(sysctl -n machdep.cpu.brand_string)
+ARCH="x86_64"
+case $cpu in
+  *Intel*) ARCH="x86_64" ;;
+  *Apple*) ARCH="arm64" ;;
+esac
+cp ./build_release/out/YUVviewer.dmg ./dmgOut/YUVviewer_macos_"$YUVVIEWER_VERSION"_"$ARCH".dmg
 echo build success!
 ###############################################################################
