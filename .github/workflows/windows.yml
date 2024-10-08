@@ -87,7 +87,7 @@ jobs:
           ./build_setup.bat
 
       - name: Upload build asserts
-        uses: actions/upload-artifact@v4.4.0
+        uses: actions/upload-artifact@v4.4.1
         with:
           name: YUVviewer_windows
           path: |
