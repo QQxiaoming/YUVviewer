@@ -284,7 +284,7 @@ YUVviewer::YUVviewer(QWidget *parent) :
             currentIndex++;
             yuvformat_it++;
         }
-        updateUiSvg(color_list->first,color_list->second);
+        updateUiSvg(color_list.first,color_list.second);
     }
 
     QStringList frameRate_list = {"30", "60", "120"};
@@ -418,7 +418,7 @@ QString YUVviewer::getLegend(const QString &type) {
     }
 }
 
-void YUVviewer::updateUiSvg(QString legend, QList<YUVviewer::UICodePoint> color_list) {
+void YUVviewer::updateUiSvg(QString type, QList<YUVviewer::UICodePoint> color_list) {
     QXmlStreamReader svgXmlStreamReader(
         "<svg xmlns=\"http://www.w3.org/2000/svg\" version=\"1.1\">\n" +
         svgBoxArraySrc(10,10,40,5,24,4,color_list) +
@@ -431,7 +431,7 @@ void YUVviewer::updateUiSvg(QString legend, QList<YUVviewer::UICodePoint> color_
     svgRender.render(&svgPainter);
     ui->label_svgBox->setPixmap(svgPixmap);
     ui->label_svgBox->setAlignment(Qt::AlignCenter);
-
+    QString legend = getLegend(type);
     QXmlStreamReader svgXmlStreamReaderLegend(legend);
     QSvgRenderer svgRenderLegend;
     svgRenderLegend.load(&svgXmlStreamReaderLegend);
@@ -453,7 +453,7 @@ void YUVviewer::changeFormat(const QString &text) {
         }
         yuvformat_it++;
     }
-    updateUiSvg(color_list->first,color_list->second);
+    updateUiSvg(color_list.first,color_list.second);
     if(text == "PNG") {
         ui->label_svgBox->setPixmap(QPixmap::fromImage(QImage(":/img/img/ico.png").scaled(480,80,Qt::KeepAspectRatio,Qt::SmoothTransformation)));
         ui->frameSize_Width_LineEdit->setText("\\");

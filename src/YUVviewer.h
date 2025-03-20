@@ -65,7 +65,7 @@ private:
     QString svgBoxSrc(int x, int y, int w, UICodePoint c);
     QString svgBoxArraySrc(int x, int y, int w, int od, int xn, int yn,QList<UICodePoint> ca);
     QString getLegend(const QString &type);
-    void updateUiSvg(QString legend, QList<UICodePoint> color_list);
+    void updateUiSvg(QString type, QList<UICodePoint> color_list);
     void showParaErrMessageBox(void);
     bool updateConfig(void);
     bool imgView(QStringList openfile_list, const QString &folderpath);
