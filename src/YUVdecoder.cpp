@@ -44,25 +44,41 @@ QMap<QString, ImageDecoder::yuvdecoder_t> ImageDecoder::yuvdecoder_map = {
     {"BGR565_L",        ImageDecoder::bgr565_little_endian},
     {"BGR565_B",        ImageDecoder::bgr565_big_endian},
     {"RGB888",          ImageDecoder::rgb888},
-    #define BAYER_FUNC(code,bit) [](const QString &yuvfilename,int W, int H, int startframe, int totalframe) -> QList<cv::Mat*> { \
-                                    return ImageDecoder::bayer(yuvfilename,W,H,startframe,totalframe,code,bit);}
-    {"BayerBG",         BAYER_FUNC(cv::COLOR_BayerBG2RGB,8)},
-    {"BayerGB",         BAYER_FUNC(cv::COLOR_BayerGB2RGB,8)},
-    {"BayerRG",         BAYER_FUNC(cv::COLOR_BayerRG2RGB,8)},
-    {"BayerGR",         BAYER_FUNC(cv::COLOR_BayerGR2RGB,8)},
-    {"BayerBG_RAW10",   BAYER_FUNC(cv::COLOR_BayerBG2RGB,10)},
-    {"BayerGB_RAW10",   BAYER_FUNC(cv::COLOR_BayerGB2RGB,10)},
-    {"BayerRG_RAW10",   BAYER_FUNC(cv::COLOR_BayerRG2RGB,10)},
-    {"BayerGR_RAW10",   BAYER_FUNC(cv::COLOR_BayerGR2RGB,10)},
-    {"BayerBG_RAW12",   BAYER_FUNC(cv::COLOR_BayerBG2RGB,12)},
-    {"BayerGB_RAW12",   BAYER_FUNC(cv::COLOR_BayerGB2RGB,12)},
-    {"BayerRG_RAW12",   BAYER_FUNC(cv::COLOR_BayerRG2RGB,12)},
-    {"BayerGR_RAW12",   BAYER_FUNC(cv::COLOR_BayerGR2RGB,12)},
-    {"BayerBG_RAW16",   BAYER_FUNC(cv::COLOR_BayerBG2RGB,16)},
-    {"BayerGB_RAW16",   BAYER_FUNC(cv::COLOR_BayerGB2RGB,16)},
-    {"BayerRG_RAW16",   BAYER_FUNC(cv::COLOR_BayerRG2RGB,16)},
-    {"BayerGR_RAW16",   BAYER_FUNC(cv::COLOR_BayerGR2RGB,16)},
-    {"PNG",             ImageDecoder::png},
+    #define BAYER_FUNC(code,bit,type) [](const QString &yuvfilename,int W, int H, int startframe, int totalframe) -> QList<cv::Mat*> { \
+                                    return ImageDecoder::bayer(yuvfilename,W,H,startframe,totalframe,code,bit,type);}
+    {"BayerBG",                 BAYER_FUNC(cv::COLOR_BayerBG2RGB,8,ImageDecoder::CSI)},
+    {"BayerGB",                 BAYER_FUNC(cv::COLOR_BayerGB2RGB,8,ImageDecoder::CSI)},
+    {"BayerRG",                 BAYER_FUNC(cv::COLOR_BayerRG2RGB,8,ImageDecoder::CSI)},
+    {"BayerGR",                 BAYER_FUNC(cv::COLOR_BayerGR2RGB,8,ImageDecoder::CSI)},
+    {"BayerBG_RAW10_CSI",       BAYER_FUNC(cv::COLOR_BayerBG2RGB,10,ImageDecoder::CSI)},
+    {"BayerGB_RAW10_CSI",       BAYER_FUNC(cv::COLOR_BayerGB2RGB,10,ImageDecoder::CSI)},
+    {"BayerRG_RAW10_CSI",       BAYER_FUNC(cv::COLOR_BayerRG2RGB,10,ImageDecoder::CSI)},
+    {"BayerGR_RAW10_CSI",       BAYER_FUNC(cv::COLOR_BayerGR2RGB,10,ImageDecoder::CSI)},
+    {"BayerBG_RAW10_COMPACT",   BAYER_FUNC(cv::COLOR_BayerBG2RGB,10,ImageDecoder::compact)},
+    {"BayerGB_RAW10_COMPACT",   BAYER_FUNC(cv::COLOR_BayerGB2RGB,10,ImageDecoder::compact)},
+    {"BayerRG_RAW10_COMPACT",   BAYER_FUNC(cv::COLOR_BayerRG2RGB,10,ImageDecoder::compact)},
+    {"BayerGR_RAW10_COMPACT",   BAYER_FUNC(cv::COLOR_BayerGR2RGB,10,ImageDecoder::compact)},
+    {"BayerBG_RAW10_ALIGN16",   BAYER_FUNC(cv::COLOR_BayerBG2RGB,10,ImageDecoder::align16)},
+    {"BayerGB_RAW10_ALIGN16",   BAYER_FUNC(cv::COLOR_BayerGB2RGB,10,ImageDecoder::align16)},
+    {"BayerRG_RAW10_ALIGN16",   BAYER_FUNC(cv::COLOR_BayerRG2RGB,10,ImageDecoder::align16)},
+    {"BayerGR_RAW10_ALIGN16",   BAYER_FUNC(cv::COLOR_BayerGR2RGB,10,ImageDecoder::align16)},
+    {"BayerBG_RAW12_CSI",       BAYER_FUNC(cv::COLOR_BayerBG2RGB,12,ImageDecoder::CSI)},
+    {"BayerGB_RAW12_CSI",       BAYER_FUNC(cv::COLOR_BayerGB2RGB,12,ImageDecoder::CSI)},
+    {"BayerRG_RAW12_CSI",       BAYER_FUNC(cv::COLOR_BayerRG2RGB,12,ImageDecoder::CSI)},
+    {"BayerGR_RAW12_CSI",       BAYER_FUNC(cv::COLOR_BayerGR2RGB,12,ImageDecoder::CSI)},
+    {"BayerBG_RAW12_COMPACT",   BAYER_FUNC(cv::COLOR_BayerBG2RGB,12,ImageDecoder::compact)},
+    {"BayerGB_RAW12_COMPACT",   BAYER_FUNC(cv::COLOR_BayerGB2RGB,12,ImageDecoder::compact)},
+    {"BayerRG_RAW12_COMPACT",   BAYER_FUNC(cv::COLOR_BayerRG2RGB,12,ImageDecoder::compact)},
+    {"BayerGR_RAW12_COMPACT",   BAYER_FUNC(cv::COLOR_BayerGR2RGB,12,ImageDecoder::compact)},
+    {"BayerBG_RAW12_ALIGN16",   BAYER_FUNC(cv::COLOR_BayerBG2RGB,10,ImageDecoder::align16)},
+    {"BayerGB_RAW12_ALIGN16",   BAYER_FUNC(cv::COLOR_BayerGB2RGB,10,ImageDecoder::align16)},
+    {"BayerRG_RAW12_ALIGN16",   BAYER_FUNC(cv::COLOR_BayerRG2RGB,10,ImageDecoder::align16)},
+    {"BayerGR_RAW12_ALIGN16",   BAYER_FUNC(cv::COLOR_BayerGR2RGB,10,ImageDecoder::align16)},
+    {"BayerBG_RAW16",           BAYER_FUNC(cv::COLOR_BayerBG2RGB,16,ImageDecoder::CSI)},
+    {"BayerGB_RAW16",           BAYER_FUNC(cv::COLOR_BayerGB2RGB,16,ImageDecoder::CSI)},
+    {"BayerRG_RAW16",           BAYER_FUNC(cv::COLOR_BayerRG2RGB,16,ImageDecoder::CSI)},
+    {"BayerGR_RAW16",           BAYER_FUNC(cv::COLOR_BayerGR2RGB,16,ImageDecoder::CSI)},
+    {"PNG",                     ImageDecoder::png},
 };
 
 QList<cv::Mat*> ImageDecoder::yv12(const QString &yuvfilename,int W, int H, int startframe, int totalframe) {
@@ -365,29 +381,38 @@ QList<cv::Mat*> ImageDecoder::rgb888(const QString &yuvfilename,int W, int H, in
     return rgbImglist;
 }
 
-QList<cv::Mat*> ImageDecoder::bayer(const QString &yuvfilename,int W, int H, int startframe, int totalframe,int code,int bit) {
+QList<cv::Mat*> ImageDecoder::bayer(const QString &yuvfilename,int W, int H, int startframe, int totalframe,int code,int bit, BayerFormat type) {
     QList<cv::Mat*> rgbImglist;
     cv::Mat yuvImg;
-    QFile file(yuvfilename);
-    file.open(QFile::ReadOnly);
-    file.seek(startframe*W*H);
-    QDataStream out(&file);
-    uint8_t *temp = nullptr;
-
+    uint32_t fsize = 0;
     switch (bit) {
     case 8:
-        temp = new uint8_t[W*H];
+        fsize = W*H;
         break;
     case 10:
-        temp = new uint8_t[W*H*5/4];
+        if(type == align16) {
+            fsize = W*H*2;
+        } else {
+            fsize = W*H*5/4;
+        }
         break;
     case 12:
-        temp = new uint8_t[W*H*3/2];
+        if(type == align16) {
+            fsize = W*H*2;
+        } else {
+            fsize = W*H*3/2;
+        }
         break;
     case 16:
-        temp = new uint8_t[W*H*2];
+        fsize = W*H*2;
         break;
     }
+
+    QFile file(yuvfilename);
+    file.open(QFile::ReadOnly);
+    file.seek(startframe*fsize);
+    QDataStream out(&file);
+    uint8_t *temp = new uint8_t[fsize];
 
     while((!out.atEnd()) && (totalframe != 0)) {
         cv::Mat *rgbImg = new cv::Mat;
@@ -395,36 +420,68 @@ QList<cv::Mat*> ImageDecoder::bayer(const QString &yuvfilename,int W, int H, int
         uint8_t * dest = (uint8_t *)yuvImg.data;
         switch (bit) {
         case 8: {
-            out.readRawData((char *)temp,W*H);
+            out.readRawData((char *)temp,fsize);
             for(int i=0;i<W*H;i++) {
                 dest[i] = ((uint8_t)temp[i]);
             }
             break;
         }
         case 10: {
-            out.readRawData((char *)temp,W*H*5/4);
-            for(int i=0,j=0;i<W*H*5/4;i+=5) {
-                uint16_t piex[5] = {(uint16_t)temp[i],(uint16_t)temp[i+1],(uint16_t)temp[i+2],(uint16_t)temp[i+3],(uint16_t)temp[i+4]};
-                dest[j+0] = (uint8_t)(((piex[0]<<2) | ((piex[4]>>0)&0x3))/4);
-                dest[j+1] = (uint8_t)(((piex[1]<<2) | ((piex[4]>>2)&0x3))/4);
-                dest[j+2] = (uint8_t)(((piex[2]<<2) | ((piex[4]>>4)&0x3))/4);
-                dest[j+3] = (uint8_t)(((piex[3]<<2) | ((piex[4]>>6)&0x3))/4);
-                j+=4;
+            out.readRawData((char *)temp,fsize);
+            if(type == compact) {
+                for(int i=0,j=0;i<W*H*5/4;i+=5) {
+                    uint16_t piex[5] = {(uint16_t)temp[i],(uint16_t)temp[i+1],(uint16_t)temp[i+2],(uint16_t)temp[i+3],(uint16_t)temp[i+4]};
+                    dest[j+0] = (uint8_t)((((piex[0]>>0)&0xff) | ((piex[1]<<8)&0x300))/4);
+                    dest[j+1] = (uint8_t)((((piex[1]>>2)&0x3f) | ((piex[2]<<6)&0x3c0))/4);
+                    dest[j+2] = (uint8_t)((((piex[2]>>4)&0xf) | ((piex[3]<<4)&0x3f0))/4);
+                    dest[j+3] = (uint8_t)((((piex[3]>>6)&0x3) | ((piex[4]<<2)&0x3fc))/4);
+                    j+=4;
+                }
+            } else if(type == CSI) {
+                for(int i=0,j=0;i<W*H*5/4;i+=5) {
+                    uint16_t piex[5] = {(uint16_t)temp[i],(uint16_t)temp[i+1],(uint16_t)temp[i+2],(uint16_t)temp[i+3],(uint16_t)temp[i+4]};
+                    dest[j+0] = (uint8_t)(((piex[0]<<2) | ((piex[4]>>0)&0x3))/4);
+                    dest[j+1] = (uint8_t)(((piex[1]<<2) | ((piex[4]>>2)&0x3))/4);
+                    dest[j+2] = (uint8_t)(((piex[2]<<2) | ((piex[4]>>4)&0x3))/4);
+                    dest[j+3] = (uint8_t)(((piex[3]<<2) | ((piex[4]>>6)&0x3))/4);
+                    j+=4;
+                }
+            } else if(type == align16) {
+                for(int i=0,j=0;i<W*H*2;i+=2) {
+                    uint16_t piex[2] = {(uint16_t)temp[i],(uint16_t)temp[i+1]};
+                    dest[j] = (uint8_t)(((piex[1]<<8) | (piex[0]&0xff))/4);
+                    j++;
+                }
             }
             break;
         }
         case 12: {
-            out.readRawData((char *)temp,W*H*3/2);
-            for(int i=0,j=0;i<W*H*3/2;i+=3) {
-                uint16_t piex[3] = {(uint16_t)temp[i],(uint16_t)temp[i+1],(uint16_t)temp[i+2]};
-                dest[j+0] = (uint8_t)(((piex[0]<<4) | ((piex[2]>>0)&0xf))/16);
-                dest[j+1] = (uint8_t)(((piex[1]<<4) | ((piex[2]>>4)&0xf))/16);
-                j+=2;
+            out.readRawData((char *)temp,fsize);
+            if(compact) {
+                for(int i=0,j=0;i<W*H*3/2;i+=3) {
+                    uint16_t piex[3] = {(uint16_t)temp[i],(uint16_t)temp[i+1],(uint16_t)temp[i+2]};
+                    dest[j+0] = (uint8_t)((((piex[0]>>0)&0xff) | ((piex[1]<<8)&0xf00))/16);
+                    dest[j+1] = (uint8_t)((((piex[1]>>4)&0xf) | ((piex[2]<<4)&0xff0))/16);
+                    j+=2;
+                }
+            } else if(type == CSI) {
+                for(int i=0,j=0;i<W*H*3/2;i+=3) {
+                    uint16_t piex[3] = {(uint16_t)temp[i],(uint16_t)temp[i+1],(uint16_t)temp[i+2]};
+                    dest[j+0] = (uint8_t)(((piex[0]<<4) | ((piex[2]>>0)&0xf))/16);
+                    dest[j+1] = (uint8_t)(((piex[1]<<4) | ((piex[2]>>4)&0xf))/16);
+                    j+=2;
+                }
+            } else if(type == align16) {
+                for(int i=0,j=0;i<W*H*2;i+=2) {
+                    uint16_t piex[2] = {(uint16_t)temp[i],(uint16_t)temp[i+1]};
+                    dest[j] = (uint8_t)(((piex[1]<<8) | (piex[0]&0xff))/16);
+                    j++;
+                }
             }
             break;
         }
         case 16: {
-            out.readRawData((char *)temp,W*H*2);
+            out.readRawData((char *)temp,fsize);
             for(int i=0,j=0;i<W*H*2;i+=2) {
                 uint16_t piex[2] = {(uint16_t)temp[i],(uint16_t)temp[i+1]};
                 dest[j] = (uint8_t)(((piex[1]<<8) | (piex[0]&0xff))/256);

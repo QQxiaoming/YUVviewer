@@ -171,42 +171,42 @@
              </item>
              <item>
               <property name="text">
-               <string notr="true">BayerBG_RAW10</string>
+               <string notr="true">BayerBG_RAW10_CSI</string>
               </property>
              </item>
              <item>
               <property name="text">
-               <string notr="true">BayerGB_RAW10</string>
+               <string notr="true">BayerGB_RAW10_CSI</string>
               </property>
              </item>
              <item>
               <property name="text">
-               <string notr="true">BayerRG_RAW10</string>
+               <string notr="true">BayerRG_RAW10_CSI</string>
               </property>
              </item>
              <item>
               <property name="text">
-               <string notr="true">BayerGR_RAW10</string>
+               <string notr="true">BayerGR_RAW10_CSI</string>
               </property>
              </item>
              <item>
               <property name="text">
-               <string notr="true">BayerBG_RAW12</string>
+               <string notr="true">BayerBG_RAW12_CSI</string>
               </property>
              </item>
              <item>
               <property name="text">
-               <string notr="true">BayerGB_RAW12</string>
+               <string notr="true">BayerGB_RAW12_CSI</string>
               </property>
              </item>
              <item>
               <property name="text">
-               <string notr="true">BayerRG_RAW12</string>
+               <string notr="true">BayerRG_RAW12_CSI</string>
               </property>
              </item>
              <item>
               <property name="text">
-               <string notr="true">BayerGR_RAW12</string>
+               <string notr="true">BayerGR_RAW12_CSI</string>
               </property>
              </item>
              <item>
@@ -227,6 +227,86 @@
              <item>
               <property name="text">
                <string notr="true">BayerGR_RAW16</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string notr="true">BayerBG_RAW10_COMPACT</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string notr="true">BayerGB_RAW10_COMPACT</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string notr="true">BayerRG_RAW10_COMPACT</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string notr="true">BayerGR_RAW10_COMPACT</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string notr="true">BayerBG_RAW12_COMPACT</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string notr="true">BayerGB_RAW12_COMPACT</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string notr="true">BayerRG_RAW12_COMPACT</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string notr="true">BayerGR_RAW12_COMPACT</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string notr="true">BayerBG_RAW10_ALIGN16</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string notr="true">BayerGB_RAW10_ALIGN16</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string notr="true">BayerRG_RAW10_ALIGN16</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string notr="true">BayerGR_RAW10_ALIGN16</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string notr="true">BayerBG_RAW12_ALIGN16</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string notr="true">BayerGB_RAW12_ALIGN16</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string notr="true">BayerRG_RAW12_ALIGN16</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string notr="true">BayerGR_RAW12_ALIGN16</string>
               </property>
              </item>
              <item>

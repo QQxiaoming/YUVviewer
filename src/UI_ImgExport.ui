@@ -209,7 +209,7 @@
            <bool>true</bool>
           </property>
           <property name="text">
-           <string notr="true">BayerBG_RAW10</string>
+           <string notr="true">BayerBG_RAW10_CSI</string>
           </property>
          </widget>
         </item>
@@ -219,7 +219,7 @@
            <bool>true</bool>
           </property>
           <property name="text">
-           <string notr="true">BayerGB_RAW10</string>
+           <string notr="true">BayerGB_RAW10_CSI</string>
           </property>
          </widget>
         </item>
@@ -233,7 +233,7 @@
            <bool>true</bool>
           </property>
           <property name="text">
-           <string notr="true">BayerRG_RAW10</string>
+           <string notr="true">BayerRG_RAW10_CSI</string>
           </property>
          </widget>
         </item>
@@ -243,35 +243,35 @@
            <bool>true</bool>
           </property>
           <property name="text">
-           <string notr="true">BayerGR_RAW10</string>
+           <string notr="true">BayerGR_RAW10_CSI</string>
           </property>
          </widget>
         </item>
         <item>
          <widget class="QRadioButton" name="f22RadioButton">
           <property name="text">
-           <string notr="true">BayerBG_RAW12</string>
+           <string notr="true">BayerBG_RAW12_CSI</string>
           </property>
          </widget>
         </item>
         <item>
          <widget class="QRadioButton" name="f23RadioButton">
           <property name="text">
-           <string notr="true">BayerGB_RAW12</string>
+           <string notr="true">BayerGB_RAW12_CSI</string>
           </property>
          </widget>
         </item>
         <item>
          <widget class="QRadioButton" name="f24RadioButton">
           <property name="text">
-           <string notr="true">BayerRG_RAW12</string>
+           <string notr="true">BayerRG_RAW12_CSI</string>
           </property>
          </widget>
         </item>
         <item>
          <widget class="QRadioButton" name="f25RadioButton">
           <property name="text">
-           <string notr="true">BayerGR_RAW12</string>
+           <string notr="true">BayerGR_RAW12_CSI</string>
           </property>
          </widget>
         </item>

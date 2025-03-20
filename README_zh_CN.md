@@ -1,5 +1,5 @@
-[![Windows ci](https://img.shields.io/github/actions/workflow/status/qqxiaoming/yuvviewer/windows.yml?branch=main&logo=windows)](https://github.com/QQxiaoming/yuvviewer/actions/workflows/windows.yml)
-[![Linux ci](https://img.shields.io/github/actions/workflow/status/qqxiaoming/yuvviewer/linux.yml?branch=main&logo=linux)](https://github.com/QQxiaoming/yuvviewer/actions/workflows/linux.yml)
+[![Windows ci](https://img.shields.io/github/actions/workflow/status/qqxiaoming/yuvviewer/windows.yml?branch=main&logo=data:image/svg+xml;base64,PHN2ZyByb2xlPSJpbWciIHZpZXdCb3g9IjAgMCAyNCAyNCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48dGl0bGU+V2luZG93czwvdGl0bGU+PHBhdGggZD0iTTAsMEgxMS4zNzdWMTEuMzcySDBaTTEyLjYyMywwSDI0VjExLjM3MkgxMi42MjNaTTAsMTIuNjIzSDExLjM3N1YyNEgwWm0xMi42MjMsMEgyNFYyNEgxMi42MjMiIGZpbGw9IiNmZmZmZmYiLz48L3N2Zz4=)](https://github.com/QQxiaoming/yuvviewer/actions/workflows/windows.yml)
+[![Linux ci](https://img.shields.io/github/actions/workflow/status/qqxiaoming/yuvviewer/linux.yml?branch=main&logo=linux&logoColor=white)](https://github.com/QQxiaoming/yuvviewer/actions/workflows/linux.yml)
 [![Macos ci](https://img.shields.io/github/actions/workflow/status/qqxiaoming/yuvviewer/macos.yml?branch=main&logo=apple)](https://github.com/QQxiaoming/yuvviewer/actions/workflows/macos.yml)
 [![CodeFactor](https://img.shields.io/codefactor/grade/github/qqxiaoming/yuvviewer.svg?logo=codefactor)](https://www.codefactor.io/repository/github/qqxiaoming/yuvviewer)
 [![License](https://img.shields.io/github/license/qqxiaoming/yuvviewer.svg?colorB=f48041&logo=gnu)](https://github.com/QQxiaoming/yuvviewer)
@@ -34,7 +34,7 @@ YUVviewer一款用于开发人员查看预览各种原始图像格式的小工�
 
 目前支持格式包括：
 
-YV12、YU12/I420、NV21、NV12、YUY2/YUYV、YVYU、UYVY、YUV444、RGB565_L、RGB565_B、BGR565_L、BGR565_B、RGB888、BayerBG、BayerGB、BayerRG、BayerGR、BayerBG_RAW12、BayerGB_RAW12、BayerRG_RAW12、BayerGR_RAW12、PNG
+YV12、YU12/I420、NV21、NV12、YUY2/YUYV、YVYU、UYVY、YUV444、RGB565_L、RGB565_B、BGR565_L、BGR565_B、RGB888、Bayer(BG\GB\RG\GR、RAW8\RAW10_COMPACT\RAW10_CSI\RAW12_COMPACT\RAW12_CSI\RAW16)、PNG
 
 ## 编译说明
 
