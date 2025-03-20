@@ -65,7 +65,7 @@ private:
     QString svgBoxSrc(int x, int y, int w, UICodePoint c);
     QString svgBoxArraySrc(int x, int y, int w, int od, int xn, int yn,QList<UICodePoint> ca);
     QString getLegend(const QString &type);
-    void updateUiSvg(QList<UICodePoint> color_list);
+    void updateUiSvg(QString legend, QList<UICodePoint> color_list);
     void showParaErrMessageBox(void);
     bool updateConfig(void);
     bool imgView(QStringList openfile_list, const QString &folderpath);
@@ -73,7 +73,7 @@ private:
     ConfigFile *YUVviewerConfigFile;
     ImgViewer *imgViewer;
     static const QList<QPair<QString, QStringList>> frameSizeTypeDict;
-    static const QList<QPair<QString, QList<UICodePoint>>> YUVFormat_pattern;
+    static const QList<QPair<QString, QPair<QString, QList<YUVviewer::UICodePoint>>>> YUVFormat_pattern;
 };
 
 #endif // YUVVIEWER_H

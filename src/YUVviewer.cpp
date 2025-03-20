@@ -106,97 +106,97 @@ const QList<QPair<QString, QStringList>> YUVviewer::frameSizeTypeDict = {
 #define UI_GGGR2222 { .num = 4, .color = {0xff00ff00UL,0xff00ff00UL,0xff00ff00UL,0xffff0000UL}, .bit = {2,2,2,2} }
 #define UI_RRGG2222 { .num = 4, .color = {0xffff0000UL,0xffff0000UL,0xff00ff00UL,0xff00ff00UL}, .bit = {2,2,2,2} }
 #define UI_GRRR2222 { .num = 4, .color = {0xff00ff00UL,0xffff0000UL,0xffff0000UL,0xffff0000UL}, .bit = {2,2,2,2} }
-const QList<QPair<QString, QList<YUVviewer::UICodePoint>>> YUVviewer::YUVFormat_pattern = {
-    {"YV12",                    {UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,
-                                 UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,
-                                 UI_U,UI_U,UI_U,UI_U,UI_U,UI_U,UI_U,UI_U,UI_U,UI_U,UI_U,UI_U,UI_U,UI_U,UI_U,UI_U,UI_U,UI_U,UI_U,UI_U,UI_U,UI_U,UI_U,UI_U,
-                                 UI_V,UI_V,UI_V,UI_V,UI_V,UI_V,UI_V,UI_V,UI_V,UI_V,UI_V,UI_V,UI_V,UI_V,UI_V,UI_V,UI_V,UI_V,UI_V,UI_V,UI_V,UI_V,UI_V,UI_V}},
-    {"YU12/I420",               {UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,
-                                 UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,
-                                 UI_V,UI_V,UI_V,UI_V,UI_V,UI_V,UI_V,UI_V,UI_V,UI_V,UI_V,UI_V,UI_V,UI_V,UI_V,UI_V,UI_V,UI_V,UI_V,UI_V,UI_V,UI_V,UI_V,UI_V,
-                                 UI_U,UI_U,UI_U,UI_U,UI_U,UI_U,UI_U,UI_U,UI_U,UI_U,UI_U,UI_U,UI_U,UI_U,UI_U,UI_U,UI_U,UI_U,UI_U,UI_U,UI_U,UI_U,UI_U,UI_U}},
-    {"NV21",                    {UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,
-                                 UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,
-                                 UI_V,UI_U,UI_V,UI_U,UI_V,UI_U,UI_V,UI_U,UI_V,UI_U,UI_V,UI_U,UI_V,UI_U,UI_V,UI_U,UI_V,UI_U,UI_V,UI_U,UI_V,UI_U,UI_V,UI_U,
-                                 UI_V,UI_U,UI_V,UI_U,UI_V,UI_U,UI_V,UI_U,UI_V,UI_U,UI_V,UI_U,UI_V,UI_U,UI_V,UI_U,UI_V,UI_U,UI_V,UI_U,UI_V,UI_U,UI_V,UI_U}},
-    {"NV12",                    {UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,
-                                 UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,
-                                 UI_U,UI_V,UI_U,UI_V,UI_U,UI_V,UI_U,UI_V,UI_U,UI_V,UI_U,UI_V,UI_U,UI_V,UI_U,UI_V,UI_U,UI_V,UI_U,UI_V,UI_U,UI_V,UI_U,UI_V,
-                                 UI_U,UI_V,UI_U,UI_V,UI_U,UI_V,UI_U,UI_V,UI_U,UI_V,UI_U,UI_V,UI_U,UI_V,UI_U,UI_V,UI_U,UI_V,UI_U,UI_V,UI_U,UI_V,UI_U,UI_V}},
-    {"YUY2/YUYV",               {UI_Y,UI_U,UI_Y,UI_V}},
-    {"YVYU",                    {UI_Y,UI_V,UI_Y,UI_U}},
-    {"UYVY",                    {UI_U,UI_Y,UI_V,UI_Y}},
-    {"4:4:4",                   {UI_Y,UI_U,UI_V}},
-    {"RGB565_L",                {UI_GB35,UI_RG53}},
-    {"RGB565_B",                {UI_RG53,UI_GB35}},
-    {"BGR565_L",                {UI_GR35,UI_BG53}},
-    {"BGR565_B",                {UI_BG53,UI_GR35}},
-    {"RGB888",                  {UI_R,UI_G,UI_B}},
-    {"BayerBG",                 {UI_B,UI_G,UI_B,UI_G,UI_B,UI_G,UI_B,UI_G,UI_B,UI_G,UI_B,UI_G,UI_B,UI_G,UI_B,UI_G,UI_B,UI_G,UI_B,UI_G,UI_B,UI_G,UI_B,UI_G,
-                                 UI_G,UI_R,UI_G,UI_R,UI_G,UI_R,UI_G,UI_R,UI_G,UI_R,UI_G,UI_R,UI_G,UI_R,UI_G,UI_R,UI_G,UI_R,UI_G,UI_R,UI_G,UI_R,UI_G,UI_R}},
-    {"BayerGB",                 {UI_G,UI_B,UI_G,UI_B,UI_G,UI_B,UI_G,UI_B,UI_G,UI_B,UI_G,UI_B,UI_G,UI_B,UI_G,UI_B,UI_G,UI_B,UI_G,UI_B,UI_G,UI_B,UI_G,UI_B,
-                                 UI_R,UI_G,UI_R,UI_G,UI_R,UI_G,UI_R,UI_G,UI_R,UI_G,UI_R,UI_G,UI_R,UI_G,UI_R,UI_G,UI_R,UI_G,UI_R,UI_G,UI_R,UI_G,UI_R,UI_G}},
-    {"BayerRG",                 {UI_R,UI_G,UI_R,UI_G,UI_R,UI_G,UI_R,UI_G,UI_R,UI_G,UI_R,UI_G,UI_R,UI_G,UI_R,UI_G,UI_R,UI_G,UI_R,UI_G,UI_R,UI_G,UI_R,UI_G,
-                                 UI_G,UI_B,UI_G,UI_B,UI_G,UI_B,UI_G,UI_B,UI_G,UI_B,UI_G,UI_B,UI_G,UI_B,UI_G,UI_B,UI_G,UI_B,UI_G,UI_B,UI_G,UI_B,UI_G,UI_B}},
-    {"BayerGR",                 {UI_G,UI_R,UI_G,UI_R,UI_G,UI_R,UI_G,UI_R,UI_G,UI_R,UI_G,UI_R,UI_G,UI_R,UI_G,UI_R,UI_G,UI_R,UI_G,UI_R,UI_G,UI_R,UI_G,UI_R,
-                                 UI_B,UI_G,UI_B,UI_G,UI_B,UI_G,UI_B,UI_G,UI_B,UI_G,UI_B,UI_G,UI_B,UI_G,UI_B,UI_G,UI_B,UI_G,UI_B,UI_G,UI_B,UI_G,UI_B,UI_G}},
-    {"BayerBG_RAW10_CSI",       {UI_A,UI_A,UI_B,UI_G,UI_B,UI_G,UI_BGBG2222,UI_B,UI_G,UI_B,UI_G,UI_BGBG2222,UI_B,UI_G,UI_B,UI_G,UI_BGBG2222,UI_B,UI_G,UI_B,UI_G,UI_BGBG2222,UI_A,UI_A,
-                                 UI_A,UI_A,UI_G,UI_R,UI_G,UI_R,UI_GRGR2222,UI_G,UI_R,UI_G,UI_R,UI_GRGR2222,UI_G,UI_R,UI_G,UI_R,UI_GRGR2222,UI_G,UI_R,UI_G,UI_R,UI_GRGR2222,UI_A,UI_A}},
-    {"BayerGB_RAW10_CSI",       {UI_A,UI_A,UI_G,UI_B,UI_G,UI_B,UI_GBGB2222,UI_G,UI_B,UI_G,UI_B,UI_GBGB2222,UI_G,UI_B,UI_G,UI_B,UI_GBGB2222,UI_G,UI_B,UI_G,UI_B,UI_GBGB2222,UI_A,UI_A,
-                                 UI_A,UI_A,UI_R,UI_G,UI_R,UI_G,UI_RGRG2222,UI_R,UI_G,UI_R,UI_G,UI_RGRG2222,UI_R,UI_G,UI_R,UI_G,UI_RGRG2222,UI_R,UI_G,UI_R,UI_G,UI_RGRG2222,UI_A,UI_A}},
-    {"BayerRG_RAW10_CSI",       {UI_A,UI_A,UI_R,UI_G,UI_R,UI_G,UI_RGRG2222,UI_R,UI_G,UI_R,UI_G,UI_RGRG2222,UI_R,UI_G,UI_R,UI_G,UI_RGRG2222,UI_R,UI_G,UI_R,UI_G,UI_RGRG2222,UI_A,UI_A,
-                                 UI_A,UI_A,UI_G,UI_B,UI_G,UI_B,UI_GBGB2222,UI_G,UI_B,UI_G,UI_B,UI_GBGB2222,UI_G,UI_B,UI_G,UI_B,UI_GBGB2222,UI_G,UI_B,UI_G,UI_B,UI_GBGB2222,UI_A,UI_A}},
-    {"BayerGR_RAW10_CSI",       {UI_A,UI_A,UI_G,UI_R,UI_G,UI_R,UI_GRGR2222,UI_G,UI_R,UI_G,UI_R,UI_GRGR2222,UI_G,UI_R,UI_G,UI_R,UI_GRGR2222,UI_G,UI_R,UI_G,UI_R,UI_GRGR2222,UI_A,UI_A,
-                                 UI_A,UI_A,UI_B,UI_G,UI_B,UI_G,UI_BGBG2222,UI_B,UI_G,UI_B,UI_G,UI_BGBG2222,UI_B,UI_G,UI_B,UI_G,UI_BGBG2222,UI_B,UI_G,UI_B,UI_G,UI_BGBG2222,UI_A,UI_A}},
-    {"BayerBG_RAW12_CSI",       {UI_B,UI_G,UI_BG44,UI_B,UI_G,UI_BG44,UI_B,UI_G,UI_BG44,UI_B,UI_G,UI_BG44,UI_B,UI_G,UI_BG44,UI_B,UI_G,UI_BG44,UI_B,UI_G,UI_BG44,UI_B,UI_G,UI_BG44,
-                                 UI_G,UI_R,UI_GR44,UI_G,UI_R,UI_GR44,UI_G,UI_R,UI_GR44,UI_G,UI_R,UI_GR44,UI_G,UI_R,UI_GR44,UI_G,UI_R,UI_GR44,UI_G,UI_R,UI_GR44,UI_G,UI_R,UI_GR44}},
-    {"BayerGB_RAW12_CSI",       {UI_G,UI_B,UI_GB44,UI_G,UI_B,UI_GB44,UI_G,UI_B,UI_GB44,UI_G,UI_B,UI_GB44,UI_G,UI_B,UI_GB44,UI_G,UI_B,UI_GB44,UI_G,UI_B,UI_GB44,UI_G,UI_B,UI_GB44,
-                                 UI_R,UI_G,UI_RG44,UI_R,UI_G,UI_RG44,UI_R,UI_G,UI_RG44,UI_R,UI_G,UI_RG44,UI_R,UI_G,UI_RG44,UI_R,UI_G,UI_RG44,UI_R,UI_G,UI_RG44,UI_R,UI_G,UI_RG44}},
-    {"BayerRG_RAW12_CSI",       {UI_R,UI_G,UI_RG44,UI_R,UI_G,UI_RG44,UI_R,UI_G,UI_RG44,UI_R,UI_G,UI_RG44,UI_R,UI_G,UI_RG44,UI_R,UI_G,UI_RG44,UI_R,UI_G,UI_RG44,UI_R,UI_G,UI_RG44,
-                                 UI_G,UI_B,UI_GB44,UI_G,UI_B,UI_GB44,UI_G,UI_B,UI_GB44,UI_G,UI_B,UI_GB44,UI_G,UI_B,UI_GB44,UI_G,UI_B,UI_GB44,UI_G,UI_B,UI_GB44,UI_G,UI_B,UI_GB44}},
-    {"BayerGR_RAW12_CSI",       {UI_G,UI_R,UI_GR44,UI_G,UI_R,UI_GR44,UI_G,UI_R,UI_GR44,UI_G,UI_R,UI_GR44,UI_G,UI_R,UI_GR44,UI_G,UI_R,UI_GR44,UI_G,UI_R,UI_GR44,UI_G,UI_R,UI_GR44,
-                                 UI_B,UI_G,UI_BG44,UI_B,UI_G,UI_BG44,UI_B,UI_G,UI_BG44,UI_B,UI_G,UI_BG44,UI_B,UI_G,UI_BG44,UI_B,UI_G,UI_BG44,UI_B,UI_G,UI_BG44,UI_B,UI_G,UI_BG44}},
-    {"BayerBG_RAW16",           {UI_B,UI_B,UI_G,UI_G,UI_B,UI_B,UI_G,UI_G,UI_B,UI_B,UI_G,UI_G,UI_B,UI_B,UI_G,UI_G,UI_B,UI_B,UI_G,UI_G,UI_B,UI_B,UI_G,UI_G,
-                                 UI_G,UI_G,UI_R,UI_R,UI_G,UI_G,UI_R,UI_R,UI_G,UI_G,UI_R,UI_R,UI_G,UI_G,UI_R,UI_R,UI_G,UI_G,UI_R,UI_R,UI_G,UI_G,UI_R,UI_R}},
-    {"BayerGB_RAW16",           {UI_G,UI_G,UI_B,UI_B,UI_G,UI_G,UI_B,UI_B,UI_G,UI_G,UI_B,UI_B,UI_G,UI_G,UI_B,UI_B,UI_G,UI_G,UI_B,UI_B,UI_G,UI_G,UI_B,UI_B,
-                                 UI_R,UI_R,UI_G,UI_G,UI_R,UI_R,UI_G,UI_G,UI_R,UI_R,UI_G,UI_G,UI_R,UI_R,UI_G,UI_G,UI_R,UI_R,UI_G,UI_G,UI_R,UI_R,UI_G,UI_G}},
-    {"BayerRG_RAW16",           {UI_R,UI_R,UI_G,UI_G,UI_R,UI_R,UI_G,UI_G,UI_R,UI_R,UI_G,UI_G,UI_R,UI_R,UI_G,UI_G,UI_R,UI_R,UI_G,UI_G,UI_R,UI_R,UI_G,UI_G,
-                                 UI_G,UI_G,UI_B,UI_B,UI_G,UI_G,UI_B,UI_B,UI_G,UI_G,UI_B,UI_B,UI_G,UI_G,UI_B,UI_B,UI_G,UI_G,UI_B,UI_B,UI_G,UI_G,UI_B,UI_B}},
-    {"BayerGR_RAW16",           {UI_G,UI_G,UI_R,UI_R,UI_G,UI_G,UI_R,UI_R,UI_G,UI_G,UI_R,UI_R,UI_G,UI_G,UI_R,UI_R,UI_G,UI_G,UI_R,UI_R,UI_G,UI_G,UI_R,UI_R,
-                                 UI_B,UI_B,UI_G,UI_G,UI_B,UI_B,UI_G,UI_G,UI_B,UI_B,UI_G,UI_G,UI_B,UI_B,UI_G,UI_G,UI_B,UI_B,UI_G,UI_G,UI_B,UI_B,UI_G,UI_G}},
-    {"BayerBG_RAW10_COMPACT",   {UI_A,UI_A,UI_B,UI_GGGB2222,UI_BBGG2222,UI_GBBB2222,UI_G,UI_B,UI_GGGB2222,UI_BBGG2222,UI_GBBB2222,UI_G,UI_B,UI_GGGB2222,UI_BBGG2222,UI_GBBB2222,UI_G,UI_B,UI_GGGB2222,UI_BBGG2222,UI_GBBB2222,UI_G,UI_A,UI_A,
-                                 UI_A,UI_A,UI_G,UI_RRRG2222,UI_GGRR2222,UI_RGGG2222,UI_R,UI_G,UI_RRRG2222,UI_GGRR2222,UI_RGGG2222,UI_R,UI_G,UI_RRRG2222,UI_GGRR2222,UI_RGGG2222,UI_R,UI_G,UI_RRRG2222,UI_GGRR2222,UI_RGGG2222,UI_R,UI_A,UI_A}},
-    {"BayerGB_RAW10_COMPACT",   {UI_A,UI_A,UI_G,UI_BBBG2222,UI_GGBB2222,UI_BGGG2222,UI_B,UI_G,UI_BBBG2222,UI_GGBB2222,UI_BGGG2222,UI_B,UI_G,UI_BBBG2222,UI_GGBB2222,UI_BGGG2222,UI_B,UI_G,UI_BBBG2222,UI_GGBB2222,UI_BGGG2222,UI_B,UI_A,UI_A,
-                                 UI_A,UI_A,UI_R,UI_GGGR2222,UI_RRGG2222,UI_GRRR2222,UI_G,UI_R,UI_GGGR2222,UI_RRGG2222,UI_GRRR2222,UI_G,UI_R,UI_GGGR2222,UI_RRGG2222,UI_GRRR2222,UI_G,UI_R,UI_GGGR2222,UI_RRGG2222,UI_GRRR2222,UI_G,UI_A,UI_A}},
-    {"BayerRG_RAW10_COMPACT",   {UI_A,UI_A,UI_R,UI_GGGR2222,UI_RRGG2222,UI_GRRR2222,UI_G,UI_R,UI_GGGR2222,UI_RRGG2222,UI_GRRR2222,UI_G,UI_R,UI_GGGR2222,UI_RRGG2222,UI_GRRR2222,UI_G,UI_R,UI_GGGR2222,UI_RRGG2222,UI_GRRR2222,UI_G,UI_A,UI_A,
-                                 UI_A,UI_A,UI_G,UI_BBBG2222,UI_GGBB2222,UI_BGGG2222,UI_B,UI_G,UI_BBBG2222,UI_GGBB2222,UI_BGGG2222,UI_B,UI_G,UI_BBBG2222,UI_GGBB2222,UI_BGGG2222,UI_B,UI_G,UI_BBBG2222,UI_GGBB2222,UI_BGGG2222,UI_B,UI_A,UI_A}},
-    {"BayerGR_RAW10_COMPACT",   {UI_A,UI_A,UI_G,UI_RRRG2222,UI_GGRR2222,UI_RGGG2222,UI_R,UI_G,UI_RRRG2222,UI_GGRR2222,UI_RGGG2222,UI_R,UI_G,UI_RRRG2222,UI_GGRR2222,UI_RGGG2222,UI_R,UI_G,UI_RRRG2222,UI_GGRR2222,UI_RGGG2222,UI_R,UI_A,UI_A,
-                                 UI_A,UI_A,UI_B,UI_GGGB2222,UI_BBGG2222,UI_GBBB2222,UI_G,UI_B,UI_GGGB2222,UI_BBGG2222,UI_GBBB2222,UI_G,UI_B,UI_GGGB2222,UI_BBGG2222,UI_GBBB2222,UI_G,UI_B,UI_GGGB2222,UI_BBGG2222,UI_GBBB2222,UI_G,UI_A,UI_A}},
-    {"BayerBG_RAW12_COMPACT",   {UI_B,UI_GB44,UI_G,UI_B,UI_GB44,UI_G,UI_B,UI_GB44,UI_G,UI_B,UI_GB44,UI_G,UI_B,UI_GB44,UI_G,UI_B,UI_GB44,UI_G,UI_B,UI_GB44,UI_G,UI_B,UI_GB44,UI_G,
-                                 UI_G,UI_RG44,UI_R,UI_G,UI_RG44,UI_R,UI_G,UI_RG44,UI_R,UI_G,UI_RG44,UI_R,UI_G,UI_RG44,UI_R,UI_G,UI_RG44,UI_R,UI_G,UI_RG44,UI_R,UI_G,UI_RG44,UI_R}},
-    {"BayerGB_RAW12_COMPACT",   {UI_G,UI_BG44,UI_B,UI_G,UI_BG44,UI_B,UI_G,UI_BG44,UI_B,UI_G,UI_BG44,UI_B,UI_G,UI_BG44,UI_B,UI_G,UI_BG44,UI_B,UI_G,UI_BG44,UI_B,UI_G,UI_BG44,UI_B,
-                                 UI_R,UI_GR44,UI_G,UI_R,UI_GR44,UI_G,UI_R,UI_GR44,UI_G,UI_R,UI_GR44,UI_G,UI_R,UI_GR44,UI_G,UI_R,UI_GR44,UI_G,UI_R,UI_GR44,UI_G,UI_R,UI_GR44,UI_G}},
-    {"BayerRG_RAW12_COMPACT",   {UI_R,UI_GR44,UI_G,UI_R,UI_GR44,UI_G,UI_R,UI_GR44,UI_G,UI_R,UI_GR44,UI_G,UI_R,UI_GR44,UI_G,UI_R,UI_GR44,UI_G,UI_R,UI_GR44,UI_G,UI_R,UI_GR44,UI_G,
-                                 UI_G,UI_BG44,UI_B,UI_G,UI_BG44,UI_B,UI_G,UI_BG44,UI_B,UI_G,UI_BG44,UI_B,UI_G,UI_BG44,UI_B,UI_G,UI_BG44,UI_B,UI_G,UI_BG44,UI_B,UI_G,UI_BG44,UI_B}},
-    {"BayerGR_RAW12_COMPACT",   {UI_G,UI_RG44,UI_R,UI_G,UI_RG44,UI_R,UI_G,UI_RG44,UI_R,UI_G,UI_RG44,UI_R,UI_G,UI_RG44,UI_R,UI_G,UI_RG44,UI_R,UI_G,UI_RG44,UI_R,UI_G,UI_RG44,UI_R,
-                                 UI_B,UI_GB44,UI_G,UI_B,UI_GB44,UI_G,UI_B,UI_GB44,UI_G,UI_B,UI_GB44,UI_G,UI_B,UI_GB44,UI_G,UI_B,UI_GB44,UI_G,UI_B,UI_GB44,UI_G,UI_B,UI_GB44,UI_G}},
-    {"BayerBG_RAW10_ALIGN16",   {UI_B,UI_B,UI_G,UI_G,UI_B,UI_B,UI_G,UI_G,UI_B,UI_B,UI_G,UI_G,UI_B,UI_B,UI_G,UI_G,UI_B,UI_B,UI_G,UI_G,UI_B,UI_B,UI_G,UI_G,
-                                 UI_G,UI_G,UI_R,UI_R,UI_G,UI_G,UI_R,UI_R,UI_G,UI_G,UI_R,UI_R,UI_G,UI_G,UI_R,UI_R,UI_G,UI_G,UI_R,UI_R,UI_G,UI_G,UI_R,UI_R}},
-    {"BayerGB_RAW10_ALIGN16",   {UI_G,UI_G,UI_B,UI_B,UI_G,UI_G,UI_B,UI_B,UI_G,UI_G,UI_B,UI_B,UI_G,UI_G,UI_B,UI_B,UI_G,UI_G,UI_B,UI_B,UI_G,UI_G,UI_B,UI_B,
-                                 UI_R,UI_R,UI_G,UI_G,UI_R,UI_R,UI_G,UI_G,UI_R,UI_R,UI_G,UI_G,UI_R,UI_R,UI_G,UI_G,UI_R,UI_R,UI_G,UI_G,UI_R,UI_R,UI_G,UI_G}},
-    {"BayerRG_RAW10_ALIGN16",   {UI_R,UI_R,UI_G,UI_G,UI_R,UI_R,UI_G,UI_G,UI_R,UI_R,UI_G,UI_G,UI_R,UI_R,UI_G,UI_G,UI_R,UI_R,UI_G,UI_G,UI_R,UI_R,UI_G,UI_G,
-                                 UI_G,UI_G,UI_B,UI_B,UI_G,UI_G,UI_B,UI_B,UI_G,UI_G,UI_B,UI_B,UI_G,UI_G,UI_B,UI_B,UI_G,UI_G,UI_B,UI_B,UI_G,UI_G,UI_B,UI_B}},
-    {"BayerGR_RAW10_ALIGN16",   {UI_G,UI_G,UI_R,UI_R,UI_G,UI_G,UI_R,UI_R,UI_G,UI_G,UI_R,UI_R,UI_G,UI_G,UI_R,UI_R,UI_G,UI_G,UI_R,UI_R,UI_G,UI_G,UI_R,UI_R,
-                                 UI_B,UI_B,UI_G,UI_G,UI_B,UI_B,UI_G,UI_G,UI_B,UI_B,UI_G,UI_G,UI_B,UI_B,UI_G,UI_G,UI_B,UI_B,UI_G,UI_G,UI_B,UI_B,UI_G,UI_G}},
-    {"BayerBG_RAW12_ALIGN16",   {UI_B,UI_B,UI_G,UI_G,UI_B,UI_B,UI_G,UI_G,UI_B,UI_B,UI_G,UI_G,UI_B,UI_B,UI_G,UI_G,UI_B,UI_B,UI_G,UI_G,UI_B,UI_B,UI_G,UI_G,
-                                 UI_G,UI_G,UI_R,UI_R,UI_G,UI_G,UI_R,UI_R,UI_G,UI_G,UI_R,UI_R,UI_G,UI_G,UI_R,UI_R,UI_G,UI_G,UI_R,UI_R,UI_G,UI_G,UI_R,UI_R}},
-    {"BayerGB_RAW12_ALIGN16",   {UI_G,UI_G,UI_B,UI_B,UI_G,UI_G,UI_B,UI_B,UI_G,UI_G,UI_B,UI_B,UI_G,UI_G,UI_B,UI_B,UI_G,UI_G,UI_B,UI_B,UI_G,UI_G,UI_B,UI_B,
-                                 UI_R,UI_R,UI_G,UI_G,UI_R,UI_R,UI_G,UI_G,UI_R,UI_R,UI_G,UI_G,UI_R,UI_R,UI_G,UI_G,UI_R,UI_R,UI_G,UI_G,UI_R,UI_R,UI_G,UI_G}},
-    {"BayerRG_RAW12_ALIGN16",   {UI_R,UI_R,UI_G,UI_G,UI_R,UI_R,UI_G,UI_G,UI_R,UI_R,UI_G,UI_G,UI_R,UI_R,UI_G,UI_G,UI_R,UI_R,UI_G,UI_G,UI_R,UI_R,UI_G,UI_G,
-                                 UI_G,UI_G,UI_B,UI_B,UI_G,UI_G,UI_B,UI_B,UI_G,UI_G,UI_B,UI_B,UI_G,UI_G,UI_B,UI_B,UI_G,UI_G,UI_B,UI_B,UI_G,UI_G,UI_B,UI_B}},
-    {"BayerGR_RAW12_ALIGN16",   {UI_G,UI_G,UI_R,UI_R,UI_G,UI_G,UI_R,UI_R,UI_G,UI_G,UI_R,UI_R,UI_G,UI_G,UI_R,UI_R,UI_G,UI_G,UI_R,UI_R,UI_G,UI_G,UI_R,UI_R,
-                                 UI_B,UI_B,UI_G,UI_G,UI_B,UI_B,UI_G,UI_G,UI_B,UI_B,UI_G,UI_G,UI_B,UI_B,UI_G,UI_G,UI_B,UI_B,UI_G,UI_G,UI_B,UI_B,UI_G,UI_G}},
-    {"PNG",                     {UI_A}},
+const QList<QPair<QString, QPair<QString, QList<YUVviewer::UICodePoint>>>> YUVviewer::YUVFormat_pattern = {
+    {"YV12",                    {"YUV", {UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,
+                                         UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,
+                                         UI_U,UI_U,UI_U,UI_U,UI_U,UI_U,UI_U,UI_U,UI_U,UI_U,UI_U,UI_U,UI_U,UI_U,UI_U,UI_U,UI_U,UI_U,UI_U,UI_U,UI_U,UI_U,UI_U,UI_U,
+                                         UI_V,UI_V,UI_V,UI_V,UI_V,UI_V,UI_V,UI_V,UI_V,UI_V,UI_V,UI_V,UI_V,UI_V,UI_V,UI_V,UI_V,UI_V,UI_V,UI_V,UI_V,UI_V,UI_V,UI_V}}},
+    {"YU12/I420",               {"YUV", {UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,
+                                         UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,
+                                         UI_V,UI_V,UI_V,UI_V,UI_V,UI_V,UI_V,UI_V,UI_V,UI_V,UI_V,UI_V,UI_V,UI_V,UI_V,UI_V,UI_V,UI_V,UI_V,UI_V,UI_V,UI_V,UI_V,UI_V,
+                                         UI_U,UI_U,UI_U,UI_U,UI_U,UI_U,UI_U,UI_U,UI_U,UI_U,UI_U,UI_U,UI_U,UI_U,UI_U,UI_U,UI_U,UI_U,UI_U,UI_U,UI_U,UI_U,UI_U,UI_U}}},
+    {"NV21",                    {"YUV", {UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,
+                                         UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,
+                                         UI_V,UI_U,UI_V,UI_U,UI_V,UI_U,UI_V,UI_U,UI_V,UI_U,UI_V,UI_U,UI_V,UI_U,UI_V,UI_U,UI_V,UI_U,UI_V,UI_U,UI_V,UI_U,UI_V,UI_U,
+                                         UI_V,UI_U,UI_V,UI_U,UI_V,UI_U,UI_V,UI_U,UI_V,UI_U,UI_V,UI_U,UI_V,UI_U,UI_V,UI_U,UI_V,UI_U,UI_V,UI_U,UI_V,UI_U,UI_V,UI_U}}},
+    {"NV12",                    {"YUV", {UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,
+                                         UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,UI_Y,
+                                         UI_U,UI_V,UI_U,UI_V,UI_U,UI_V,UI_U,UI_V,UI_U,UI_V,UI_U,UI_V,UI_U,UI_V,UI_U,UI_V,UI_U,UI_V,UI_U,UI_V,UI_U,UI_V,UI_U,UI_V,
+                                         UI_U,UI_V,UI_U,UI_V,UI_U,UI_V,UI_U,UI_V,UI_U,UI_V,UI_U,UI_V,UI_U,UI_V,UI_U,UI_V,UI_U,UI_V,UI_U,UI_V,UI_U,UI_V,UI_U,UI_V}}},
+    {"YUY2/YUYV",               {"YUV", {UI_Y,UI_U,UI_Y,UI_V}}},
+    {"YVYU",                    {"YUV", {UI_Y,UI_V,UI_Y,UI_U}}},
+    {"UYVY",                    {"YUV", {UI_U,UI_Y,UI_V,UI_Y}}},
+    {"4:4:4",                   {"YUV", {UI_Y,UI_U,UI_V}}},
+    {"RGB565_L",                {"RGB", {UI_GB35,UI_RG53}}},
+    {"RGB565_B",                {"RGB", {UI_RG53,UI_GB35}}},
+    {"BGR565_L",                {"RGB", {UI_GR35,UI_BG53}}},
+    {"BGR565_B",                {"RGB", {UI_BG53,UI_GR35}}},
+    {"RGB888",                  {"RGB", {UI_R,UI_G,UI_B}}},
+    {"BayerBG",                 {"RGB", {UI_B,UI_G,UI_B,UI_G,UI_B,UI_G,UI_B,UI_G,UI_B,UI_G,UI_B,UI_G,UI_B,UI_G,UI_B,UI_G,UI_B,UI_G,UI_B,UI_G,UI_B,UI_G,UI_B,UI_G,
+                                         UI_G,UI_R,UI_G,UI_R,UI_G,UI_R,UI_G,UI_R,UI_G,UI_R,UI_G,UI_R,UI_G,UI_R,UI_G,UI_R,UI_G,UI_R,UI_G,UI_R,UI_G,UI_R,UI_G,UI_R}}},
+    {"BayerGB",                 {"RGB", {UI_G,UI_B,UI_G,UI_B,UI_G,UI_B,UI_G,UI_B,UI_G,UI_B,UI_G,UI_B,UI_G,UI_B,UI_G,UI_B,UI_G,UI_B,UI_G,UI_B,UI_G,UI_B,UI_G,UI_B,
+                                         UI_R,UI_G,UI_R,UI_G,UI_R,UI_G,UI_R,UI_G,UI_R,UI_G,UI_R,UI_G,UI_R,UI_G,UI_R,UI_G,UI_R,UI_G,UI_R,UI_G,UI_R,UI_G,UI_R,UI_G}}},
+    {"BayerRG",                 {"RGB", {UI_R,UI_G,UI_R,UI_G,UI_R,UI_G,UI_R,UI_G,UI_R,UI_G,UI_R,UI_G,UI_R,UI_G,UI_R,UI_G,UI_R,UI_G,UI_R,UI_G,UI_R,UI_G,UI_R,UI_G,
+                                         UI_G,UI_B,UI_G,UI_B,UI_G,UI_B,UI_G,UI_B,UI_G,UI_B,UI_G,UI_B,UI_G,UI_B,UI_G,UI_B,UI_G,UI_B,UI_G,UI_B,UI_G,UI_B,UI_G,UI_B}}},
+    {"BayerGR",                 {"RGB", {UI_G,UI_R,UI_G,UI_R,UI_G,UI_R,UI_G,UI_R,UI_G,UI_R,UI_G,UI_R,UI_G,UI_R,UI_G,UI_R,UI_G,UI_R,UI_G,UI_R,UI_G,UI_R,UI_G,UI_R,
+                                         UI_B,UI_G,UI_B,UI_G,UI_B,UI_G,UI_B,UI_G,UI_B,UI_G,UI_B,UI_G,UI_B,UI_G,UI_B,UI_G,UI_B,UI_G,UI_B,UI_G,UI_B,UI_G,UI_B,UI_G}}},
+    {"BayerBG_RAW10_CSI",       {"RGB", {UI_A,UI_A,UI_B,UI_G,UI_B,UI_G,UI_BGBG2222,UI_B,UI_G,UI_B,UI_G,UI_BGBG2222,UI_B,UI_G,UI_B,UI_G,UI_BGBG2222,UI_B,UI_G,UI_B,UI_G,UI_BGBG2222,UI_A,UI_A,
+                                         UI_A,UI_A,UI_G,UI_R,UI_G,UI_R,UI_GRGR2222,UI_G,UI_R,UI_G,UI_R,UI_GRGR2222,UI_G,UI_R,UI_G,UI_R,UI_GRGR2222,UI_G,UI_R,UI_G,UI_R,UI_GRGR2222,UI_A,UI_A}}},
+    {"BayerGB_RAW10_CSI",       {"RGB", {UI_A,UI_A,UI_G,UI_B,UI_G,UI_B,UI_GBGB2222,UI_G,UI_B,UI_G,UI_B,UI_GBGB2222,UI_G,UI_B,UI_G,UI_B,UI_GBGB2222,UI_G,UI_B,UI_G,UI_B,UI_GBGB2222,UI_A,UI_A,
+                                         UI_A,UI_A,UI_R,UI_G,UI_R,UI_G,UI_RGRG2222,UI_R,UI_G,UI_R,UI_G,UI_RGRG2222,UI_R,UI_G,UI_R,UI_G,UI_RGRG2222,UI_R,UI_G,UI_R,UI_G,UI_RGRG2222,UI_A,UI_A}}},
+    {"BayerRG_RAW10_CSI",       {"RGB", {UI_A,UI_A,UI_R,UI_G,UI_R,UI_G,UI_RGRG2222,UI_R,UI_G,UI_R,UI_G,UI_RGRG2222,UI_R,UI_G,UI_R,UI_G,UI_RGRG2222,UI_R,UI_G,UI_R,UI_G,UI_RGRG2222,UI_A,UI_A,
+                                         UI_A,UI_A,UI_G,UI_B,UI_G,UI_B,UI_GBGB2222,UI_G,UI_B,UI_G,UI_B,UI_GBGB2222,UI_G,UI_B,UI_G,UI_B,UI_GBGB2222,UI_G,UI_B,UI_G,UI_B,UI_GBGB2222,UI_A,UI_A}}},
+    {"BayerGR_RAW10_CSI",       {"RGB", {UI_A,UI_A,UI_G,UI_R,UI_G,UI_R,UI_GRGR2222,UI_G,UI_R,UI_G,UI_R,UI_GRGR2222,UI_G,UI_R,UI_G,UI_R,UI_GRGR2222,UI_G,UI_R,UI_G,UI_R,UI_GRGR2222,UI_A,UI_A,
+                                         UI_A,UI_A,UI_B,UI_G,UI_B,UI_G,UI_BGBG2222,UI_B,UI_G,UI_B,UI_G,UI_BGBG2222,UI_B,UI_G,UI_B,UI_G,UI_BGBG2222,UI_B,UI_G,UI_B,UI_G,UI_BGBG2222,UI_A,UI_A}}},
+    {"BayerBG_RAW12_CSI",       {"RGB", {UI_B,UI_G,UI_BG44,UI_B,UI_G,UI_BG44,UI_B,UI_G,UI_BG44,UI_B,UI_G,UI_BG44,UI_B,UI_G,UI_BG44,UI_B,UI_G,UI_BG44,UI_B,UI_G,UI_BG44,UI_B,UI_G,UI_BG44,
+                                         UI_G,UI_R,UI_GR44,UI_G,UI_R,UI_GR44,UI_G,UI_R,UI_GR44,UI_G,UI_R,UI_GR44,UI_G,UI_R,UI_GR44,UI_G,UI_R,UI_GR44,UI_G,UI_R,UI_GR44,UI_G,UI_R,UI_GR44}}},
+    {"BayerGB_RAW12_CSI",       {"RGB", {UI_G,UI_B,UI_GB44,UI_G,UI_B,UI_GB44,UI_G,UI_B,UI_GB44,UI_G,UI_B,UI_GB44,UI_G,UI_B,UI_GB44,UI_G,UI_B,UI_GB44,UI_G,UI_B,UI_GB44,UI_G,UI_B,UI_GB44,
+                                         UI_R,UI_G,UI_RG44,UI_R,UI_G,UI_RG44,UI_R,UI_G,UI_RG44,UI_R,UI_G,UI_RG44,UI_R,UI_G,UI_RG44,UI_R,UI_G,UI_RG44,UI_R,UI_G,UI_RG44,UI_R,UI_G,UI_RG44}}},
+    {"BayerRG_RAW12_CSI",       {"RGB", {UI_R,UI_G,UI_RG44,UI_R,UI_G,UI_RG44,UI_R,UI_G,UI_RG44,UI_R,UI_G,UI_RG44,UI_R,UI_G,UI_RG44,UI_R,UI_G,UI_RG44,UI_R,UI_G,UI_RG44,UI_R,UI_G,UI_RG44,
+                                         UI_G,UI_B,UI_GB44,UI_G,UI_B,UI_GB44,UI_G,UI_B,UI_GB44,UI_G,UI_B,UI_GB44,UI_G,UI_B,UI_GB44,UI_G,UI_B,UI_GB44,UI_G,UI_B,UI_GB44,UI_G,UI_B,UI_GB44}}},
+    {"BayerGR_RAW12_CSI",       {"RGB", {UI_G,UI_R,UI_GR44,UI_G,UI_R,UI_GR44,UI_G,UI_R,UI_GR44,UI_G,UI_R,UI_GR44,UI_G,UI_R,UI_GR44,UI_G,UI_R,UI_GR44,UI_G,UI_R,UI_GR44,UI_G,UI_R,UI_GR44,
+                                         UI_B,UI_G,UI_BG44,UI_B,UI_G,UI_BG44,UI_B,UI_G,UI_BG44,UI_B,UI_G,UI_BG44,UI_B,UI_G,UI_BG44,UI_B,UI_G,UI_BG44,UI_B,UI_G,UI_BG44,UI_B,UI_G,UI_BG44}}},
+    {"BayerBG_RAW16",           {"RGB", {UI_B,UI_B,UI_G,UI_G,UI_B,UI_B,UI_G,UI_G,UI_B,UI_B,UI_G,UI_G,UI_B,UI_B,UI_G,UI_G,UI_B,UI_B,UI_G,UI_G,UI_B,UI_B,UI_G,UI_G,
+                                         UI_G,UI_G,UI_R,UI_R,UI_G,UI_G,UI_R,UI_R,UI_G,UI_G,UI_R,UI_R,UI_G,UI_G,UI_R,UI_R,UI_G,UI_G,UI_R,UI_R,UI_G,UI_G,UI_R,UI_R}}},
+    {"BayerGB_RAW16",           {"RGB", {UI_G,UI_G,UI_B,UI_B,UI_G,UI_G,UI_B,UI_B,UI_G,UI_G,UI_B,UI_B,UI_G,UI_G,UI_B,UI_B,UI_G,UI_G,UI_B,UI_B,UI_G,UI_G,UI_B,UI_B,
+                                         UI_R,UI_R,UI_G,UI_G,UI_R,UI_R,UI_G,UI_G,UI_R,UI_R,UI_G,UI_G,UI_R,UI_R,UI_G,UI_G,UI_R,UI_R,UI_G,UI_G,UI_R,UI_R,UI_G,UI_G}}},
+    {"BayerRG_RAW16",           {"RGB", {UI_R,UI_R,UI_G,UI_G,UI_R,UI_R,UI_G,UI_G,UI_R,UI_R,UI_G,UI_G,UI_R,UI_R,UI_G,UI_G,UI_R,UI_R,UI_G,UI_G,UI_R,UI_R,UI_G,UI_G,
+                                         UI_G,UI_G,UI_B,UI_B,UI_G,UI_G,UI_B,UI_B,UI_G,UI_G,UI_B,UI_B,UI_G,UI_G,UI_B,UI_B,UI_G,UI_G,UI_B,UI_B,UI_G,UI_G,UI_B,UI_B}}},
+    {"BayerGR_RAW16",           {"RGB", {UI_G,UI_G,UI_R,UI_R,UI_G,UI_G,UI_R,UI_R,UI_G,UI_G,UI_R,UI_R,UI_G,UI_G,UI_R,UI_R,UI_G,UI_G,UI_R,UI_R,UI_G,UI_G,UI_R,UI_R,
+                                         UI_B,UI_B,UI_G,UI_G,UI_B,UI_B,UI_G,UI_G,UI_B,UI_B,UI_G,UI_G,UI_B,UI_B,UI_G,UI_G,UI_B,UI_B,UI_G,UI_G,UI_B,UI_B,UI_G,UI_G}}},
+    {"BayerBG_RAW10_COMPACT",   {"RGB", {UI_A,UI_A,UI_B,UI_GGGB2222,UI_BBGG2222,UI_GBBB2222,UI_G,UI_B,UI_GGGB2222,UI_BBGG2222,UI_GBBB2222,UI_G,UI_B,UI_GGGB2222,UI_BBGG2222,UI_GBBB2222,UI_G,UI_B,UI_GGGB2222,UI_BBGG2222,UI_GBBB2222,UI_G,UI_A,UI_A,
+                                         UI_A,UI_A,UI_G,UI_RRRG2222,UI_GGRR2222,UI_RGGG2222,UI_R,UI_G,UI_RRRG2222,UI_GGRR2222,UI_RGGG2222,UI_R,UI_G,UI_RRRG2222,UI_GGRR2222,UI_RGGG2222,UI_R,UI_G,UI_RRRG2222,UI_GGRR2222,UI_RGGG2222,UI_R,UI_A,UI_A}}},
+    {"BayerGB_RAW10_COMPACT",   {"RGB", {UI_A,UI_A,UI_G,UI_BBBG2222,UI_GGBB2222,UI_BGGG2222,UI_B,UI_G,UI_BBBG2222,UI_GGBB2222,UI_BGGG2222,UI_B,UI_G,UI_BBBG2222,UI_GGBB2222,UI_BGGG2222,UI_B,UI_G,UI_BBBG2222,UI_GGBB2222,UI_BGGG2222,UI_B,UI_A,UI_A,
+                                         UI_A,UI_A,UI_R,UI_GGGR2222,UI_RRGG2222,UI_GRRR2222,UI_G,UI_R,UI_GGGR2222,UI_RRGG2222,UI_GRRR2222,UI_G,UI_R,UI_GGGR2222,UI_RRGG2222,UI_GRRR2222,UI_G,UI_R,UI_GGGR2222,UI_RRGG2222,UI_GRRR2222,UI_G,UI_A,UI_A}}},
+    {"BayerRG_RAW10_COMPACT",   {"RGB", {UI_A,UI_A,UI_R,UI_GGGR2222,UI_RRGG2222,UI_GRRR2222,UI_G,UI_R,UI_GGGR2222,UI_RRGG2222,UI_GRRR2222,UI_G,UI_R,UI_GGGR2222,UI_RRGG2222,UI_GRRR2222,UI_G,UI_R,UI_GGGR2222,UI_RRGG2222,UI_GRRR2222,UI_G,UI_A,UI_A,
+                                         UI_A,UI_A,UI_G,UI_BBBG2222,UI_GGBB2222,UI_BGGG2222,UI_B,UI_G,UI_BBBG2222,UI_GGBB2222,UI_BGGG2222,UI_B,UI_G,UI_BBBG2222,UI_GGBB2222,UI_BGGG2222,UI_B,UI_G,UI_BBBG2222,UI_GGBB2222,UI_BGGG2222,UI_B,UI_A,UI_A}}},
+    {"BayerGR_RAW10_COMPACT",   {"RGB", {UI_A,UI_A,UI_G,UI_RRRG2222,UI_GGRR2222,UI_RGGG2222,UI_R,UI_G,UI_RRRG2222,UI_GGRR2222,UI_RGGG2222,UI_R,UI_G,UI_RRRG2222,UI_GGRR2222,UI_RGGG2222,UI_R,UI_G,UI_RRRG2222,UI_GGRR2222,UI_RGGG2222,UI_R,UI_A,UI_A,
+                                         UI_A,UI_A,UI_B,UI_GGGB2222,UI_BBGG2222,UI_GBBB2222,UI_G,UI_B,UI_GGGB2222,UI_BBGG2222,UI_GBBB2222,UI_G,UI_B,UI_GGGB2222,UI_BBGG2222,UI_GBBB2222,UI_G,UI_B,UI_GGGB2222,UI_BBGG2222,UI_GBBB2222,UI_G,UI_A,UI_A}}},
+    {"BayerBG_RAW12_COMPACT",   {"RGB", {UI_B,UI_GB44,UI_G,UI_B,UI_GB44,UI_G,UI_B,UI_GB44,UI_G,UI_B,UI_GB44,UI_G,UI_B,UI_GB44,UI_G,UI_B,UI_GB44,UI_G,UI_B,UI_GB44,UI_G,UI_B,UI_GB44,UI_G,
+                                         UI_G,UI_RG44,UI_R,UI_G,UI_RG44,UI_R,UI_G,UI_RG44,UI_R,UI_G,UI_RG44,UI_R,UI_G,UI_RG44,UI_R,UI_G,UI_RG44,UI_R,UI_G,UI_RG44,UI_R,UI_G,UI_RG44,UI_R}}},
+    {"BayerGB_RAW12_COMPACT",   {"RGB", {UI_G,UI_BG44,UI_B,UI_G,UI_BG44,UI_B,UI_G,UI_BG44,UI_B,UI_G,UI_BG44,UI_B,UI_G,UI_BG44,UI_B,UI_G,UI_BG44,UI_B,UI_G,UI_BG44,UI_B,UI_G,UI_BG44,UI_B,
+                                         UI_R,UI_GR44,UI_G,UI_R,UI_GR44,UI_G,UI_R,UI_GR44,UI_G,UI_R,UI_GR44,UI_G,UI_R,UI_GR44,UI_G,UI_R,UI_GR44,UI_G,UI_R,UI_GR44,UI_G,UI_R,UI_GR44,UI_G}}},
+    {"BayerRG_RAW12_COMPACT",   {"RGB", {UI_R,UI_GR44,UI_G,UI_R,UI_GR44,UI_G,UI_R,UI_GR44,UI_G,UI_R,UI_GR44,UI_G,UI_R,UI_GR44,UI_G,UI_R,UI_GR44,UI_G,UI_R,UI_GR44,UI_G,UI_R,UI_GR44,UI_G,
+                                         UI_G,UI_BG44,UI_B,UI_G,UI_BG44,UI_B,UI_G,UI_BG44,UI_B,UI_G,UI_BG44,UI_B,UI_G,UI_BG44,UI_B,UI_G,UI_BG44,UI_B,UI_G,UI_BG44,UI_B,UI_G,UI_BG44,UI_B}}},
+    {"BayerGR_RAW12_COMPACT",   {"RGB", {UI_G,UI_RG44,UI_R,UI_G,UI_RG44,UI_R,UI_G,UI_RG44,UI_R,UI_G,UI_RG44,UI_R,UI_G,UI_RG44,UI_R,UI_G,UI_RG44,UI_R,UI_G,UI_RG44,UI_R,UI_G,UI_RG44,UI_R,
+                                         UI_B,UI_GB44,UI_G,UI_B,UI_GB44,UI_G,UI_B,UI_GB44,UI_G,UI_B,UI_GB44,UI_G,UI_B,UI_GB44,UI_G,UI_B,UI_GB44,UI_G,UI_B,UI_GB44,UI_G,UI_B,UI_GB44,UI_G}}},
+    {"BayerBG_RAW10_ALIGN16",   {"RGB", {UI_B,UI_B,UI_G,UI_G,UI_B,UI_B,UI_G,UI_G,UI_B,UI_B,UI_G,UI_G,UI_B,UI_B,UI_G,UI_G,UI_B,UI_B,UI_G,UI_G,UI_B,UI_B,UI_G,UI_G,
+                                         UI_G,UI_G,UI_R,UI_R,UI_G,UI_G,UI_R,UI_R,UI_G,UI_G,UI_R,UI_R,UI_G,UI_G,UI_R,UI_R,UI_G,UI_G,UI_R,UI_R,UI_G,UI_G,UI_R,UI_R}}},
+    {"BayerGB_RAW10_ALIGN16",   {"RGB", {UI_G,UI_G,UI_B,UI_B,UI_G,UI_G,UI_B,UI_B,UI_G,UI_G,UI_B,UI_B,UI_G,UI_G,UI_B,UI_B,UI_G,UI_G,UI_B,UI_B,UI_G,UI_G,UI_B,UI_B,
+                                         UI_R,UI_R,UI_G,UI_G,UI_R,UI_R,UI_G,UI_G,UI_R,UI_R,UI_G,UI_G,UI_R,UI_R,UI_G,UI_G,UI_R,UI_R,UI_G,UI_G,UI_R,UI_R,UI_G,UI_G}}},
+    {"BayerRG_RAW10_ALIGN16",   {"RGB", {UI_R,UI_R,UI_G,UI_G,UI_R,UI_R,UI_G,UI_G,UI_R,UI_R,UI_G,UI_G,UI_R,UI_R,UI_G,UI_G,UI_R,UI_R,UI_G,UI_G,UI_R,UI_R,UI_G,UI_G,
+                                         UI_G,UI_G,UI_B,UI_B,UI_G,UI_G,UI_B,UI_B,UI_G,UI_G,UI_B,UI_B,UI_G,UI_G,UI_B,UI_B,UI_G,UI_G,UI_B,UI_B,UI_G,UI_G,UI_B,UI_B}}},
+    {"BayerGR_RAW10_ALIGN16",   {"RGB", {UI_G,UI_G,UI_R,UI_R,UI_G,UI_G,UI_R,UI_R,UI_G,UI_G,UI_R,UI_R,UI_G,UI_G,UI_R,UI_R,UI_G,UI_G,UI_R,UI_R,UI_G,UI_G,UI_R,UI_R,
+                                         UI_B,UI_B,UI_G,UI_G,UI_B,UI_B,UI_G,UI_G,UI_B,UI_B,UI_G,UI_G,UI_B,UI_B,UI_G,UI_G,UI_B,UI_B,UI_G,UI_G,UI_B,UI_B,UI_G,UI_G}}},
+    {"BayerBG_RAW12_ALIGN16",   {"RGB", {UI_B,UI_B,UI_G,UI_G,UI_B,UI_B,UI_G,UI_G,UI_B,UI_B,UI_G,UI_G,UI_B,UI_B,UI_G,UI_G,UI_B,UI_B,UI_G,UI_G,UI_B,UI_B,UI_G,UI_G,
+                                         UI_G,UI_G,UI_R,UI_R,UI_G,UI_G,UI_R,UI_R,UI_G,UI_G,UI_R,UI_R,UI_G,UI_G,UI_R,UI_R,UI_G,UI_G,UI_R,UI_R,UI_G,UI_G,UI_R,UI_R}}},
+    {"BayerGB_RAW12_ALIGN16",   {"RGB", {UI_G,UI_G,UI_B,UI_B,UI_G,UI_G,UI_B,UI_B,UI_G,UI_G,UI_B,UI_B,UI_G,UI_G,UI_B,UI_B,UI_G,UI_G,UI_B,UI_B,UI_G,UI_G,UI_B,UI_B,
+                                         UI_R,UI_R,UI_G,UI_G,UI_R,UI_R,UI_G,UI_G,UI_R,UI_R,UI_G,UI_G,UI_R,UI_R,UI_G,UI_G,UI_R,UI_R,UI_G,UI_G,UI_R,UI_R,UI_G,UI_G}}},
+    {"BayerRG_RAW12_ALIGN16",   {"RGB", {UI_R,UI_R,UI_G,UI_G,UI_R,UI_R,UI_G,UI_G,UI_R,UI_R,UI_G,UI_G,UI_R,UI_R,UI_G,UI_G,UI_R,UI_R,UI_G,UI_G,UI_R,UI_R,UI_G,UI_G,
+                                         UI_G,UI_G,UI_B,UI_B,UI_G,UI_G,UI_B,UI_B,UI_G,UI_G,UI_B,UI_B,UI_G,UI_G,UI_B,UI_B,UI_G,UI_G,UI_B,UI_B,UI_G,UI_G,UI_B,UI_B}}},
+    {"BayerGR_RAW12_ALIGN16",   {"RGB", {UI_G,UI_G,UI_R,UI_R,UI_G,UI_G,UI_R,UI_R,UI_G,UI_G,UI_R,UI_R,UI_G,UI_G,UI_R,UI_R,UI_G,UI_G,UI_R,UI_R,UI_G,UI_G,UI_R,UI_R,
+                                         UI_B,UI_B,UI_G,UI_G,UI_B,UI_B,UI_G,UI_G,UI_B,UI_B,UI_G,UI_G,UI_B,UI_B,UI_G,UI_G,UI_B,UI_B,UI_G,UI_G,UI_B,UI_B,UI_G,UI_G}}},
+    {"PNG",                     {"PNG", {UI_A}}},
 };
 
 YUVviewer::YUVviewer(QWidget *parent) :
@@ -273,8 +273,8 @@ YUVviewer::YUVviewer(QWidget *parent) :
         }
 
         currentIndex = 0;
-        QList<YUVviewer::UICodePoint> color_list;
-        QList<QPair<QString, QList<YUVviewer::UICodePoint>>>::const_iterator yuvformat_it = YUVFormat_pattern.begin();
+        QPair<QString, QList<YUVviewer::UICodePoint>> color_list;
+        QList<QPair<QString, QPair<QString, QList<YUVviewer::UICodePoint>>>>::const_iterator yuvformat_it = YUVFormat_pattern.begin();
         while (yuvformat_it != YUVFormat_pattern.end()) {
             if(yuvformat_it->first == YUVviewerConfigFile->config_dict.YUVFormat) {
                 ui->YUVFormat_ComboBox->setCurrentIndex(currentIndex);
@@ -284,7 +284,7 @@ YUVviewer::YUVviewer(QWidget *parent) :
             currentIndex++;
             yuvformat_it++;
         }
-        updateUiSvg(color_list);
+        updateUiSvg(color_list->first,color_list->second);
     }
 
     QStringList frameRate_list = {"30", "60", "120"};
@@ -418,7 +418,7 @@ QString YUVviewer::getLegend(const QString &type) {
     }
 }
 
-void YUVviewer::updateUiSvg(QList<YUVviewer::UICodePoint> color_list) {
+void YUVviewer::updateUiSvg(QString legend, QList<YUVviewer::UICodePoint> color_list) {
     QXmlStreamReader svgXmlStreamReader(
         "<svg xmlns=\"http://www.w3.org/2000/svg\" version=\"1.1\">\n" +
         svgBoxArraySrc(10,10,40,5,24,4,color_list) +
@@ -432,20 +432,6 @@ void YUVviewer::updateUiSvg(QList<YUVviewer::UICodePoint> color_list) {
     ui->label_svgBox->setPixmap(svgPixmap);
     ui->label_svgBox->setAlignment(Qt::AlignCenter);
 
-    QString legend = getLegend("");
-    switch (color_list.at(0).color[0]&0xffffff)
-    {
-        case 0xFF0000:
-        case 0x00FF00:
-        case 0x0000FF:
-            legend = getLegend("RGB");
-            break;
-        case 0x808080:
-        case 0xFF00FF:
-        case 0x00FFFF:
-            legend = getLegend("YUV");
-            break;
-    }
     QXmlStreamReader svgXmlStreamReaderLegend(legend);
     QSvgRenderer svgRenderLegend;
     svgRenderLegend.load(&svgXmlStreamReaderLegend);
@@ -458,8 +444,8 @@ void YUVviewer::updateUiSvg(QList<YUVviewer::UICodePoint> color_list) {
 }
 
 void YUVviewer::changeFormat(const QString &text) {
-    QList<YUVviewer::UICodePoint> color_list;
-    QList<QPair<QString, QList<YUVviewer::UICodePoint>>>::const_iterator yuvformat_it = YUVFormat_pattern.begin();
+    QPair<QString, QList<YUVviewer::UICodePoint>> color_list;
+    QList<QPair<QString, QPair<QString, QList<YUVviewer::UICodePoint>>>>::const_iterator yuvformat_it = YUVFormat_pattern.begin();
     while (yuvformat_it != YUVFormat_pattern.end()) {
         if(yuvformat_it->first == text) {
             color_list = yuvformat_it->second;
@@ -467,7 +453,7 @@ void YUVviewer::changeFormat(const QString &text) {
         }
         yuvformat_it++;
     }
-    updateUiSvg(color_list);
+    updateUiSvg(color_list->first,color_list->second);
     if(text == "PNG") {
         ui->label_svgBox->setPixmap(QPixmap::fromImage(QImage(":/img/img/ico.png").scaled(480,80,Qt::KeepAspectRatio,Qt::SmoothTransformation)));
         ui->frameSize_Width_LineEdit->setText("\\");
