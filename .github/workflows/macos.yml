@@ -91,7 +91,7 @@ jobs:
           ruby - e  "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)" < /dev/null  2 > /dev/null
           brew install --build-from-source cmake@3.26.4
           git clone https://github.com/opencv/opencv.git --branch 4.0.0 --depth 1
-          cmake -S opencv -B opencv/build -D ENABLE_PRECOMPILED_HEADERS=OFF -D WITH_MSMF=OFF -D BUILD_PERF_TESTS=OFF -D BUILD_TESTS=OFF -D BUILD_WITH_DEBUG_INFO=OFF -D BUILD_DOCS=OFF -D WITH_JPEG=OFF -D WITH_FFMPEG=OFF -D CMAKE_BUILD_TYPE=RELEASE
+          cmake -S opencv -B opencv/build -D CMAKE_POLICY_VERSION_MINIMUM=3.5 -D ENABLE_PRECOMPILED_HEADERS=OFF -D WITH_MSMF=OFF -D BUILD_PERF_TESTS=OFF -D BUILD_TESTS=OFF -D BUILD_WITH_DEBUG_INFO=OFF -D BUILD_DOCS=OFF -D WITH_JPEG=OFF -D WITH_FFMPEG=OFF -D CMAKE_BUILD_TYPE=RELEASE
           cd ./opencv/build
           make
           sudo make install
