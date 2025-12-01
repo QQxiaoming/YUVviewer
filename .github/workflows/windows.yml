@@ -63,7 +63,10 @@ jobs:
           if(-not (Test-Path $c))
           {
             git clone https://github.com/opencv/opencv.git --branch 4.0.0 --depth 1
-            cmake -G "MinGW Makefiles" -S opencv -B opencv/build -D CMAKE_INSTALL_PREFIX=C:/opencv4.0.0 -D WITH_ADE=OFF -D BUILD_opencv_gapi=OFF -D BUILD_opencv_world=OFF -D ENABLE_PRECOMPILED_HEADERS=OFF -D WITH_MSMF=OFF -D BUILD_PERF_TESTS=OFF -D BUILD_TESTS=OFF -D BUILD_WITH_DEBUG_INFO=OFF -D BUILD_DOCS=OFF -D CMAKE_BUILD_TYPE=RELEASE
+            cd opencv
+            (Get-Content "3rdparty/ade/ade-0.1.1d/sources/ade/include/ade/typed_graph.hpp") -replace '#include "typed_metadata.hpp"', "#include ""typed_metadata.hpp""`n#include <cstdint>" | Set-Content "3rdparty/ade/ade-0.1.1d/sources/ade/include/ade/typed_graph.hpp"
+            cd ..
+            cmake -G "MinGW Makefiles" -S opencv -B opencv/build -D CMAKE_INSTALL_PREFIX=C:/opencv4.0.0 -D ENABLE_PRECOMPILED_HEADERS=OFF -D WITH_MSMF=OFF -D BUILD_PERF_TESTS=OFF -D BUILD_TESTS=OFF -D BUILD_WITH_DEBUG_INFO=OFF -D BUILD_DOCS=OFF -D CMAKE_BUILD_TYPE=RELEASE
             cd ./opencv/build
             mingw32-make
             mingw32-make install
