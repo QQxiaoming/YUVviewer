@@ -23,7 +23,7 @@ on:
 
 jobs:
   macos:
-    runs-on: macos-13
+    runs-on: macos-15-intel
 
     steps:
       - uses: actions/checkout@v6
@@ -43,7 +43,7 @@ jobs:
           brew install create-dmg
           ruby - e  "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)" < /dev/null  2 > /dev/null
           brew install --build-from-source cmake
-          git clone https://github.com/opencv/opencv.git --branch 4.0.0 --depth 1
+          git clone https://github.com/opencv/opencv.git --branch 4.12.0 --depth 1
           cmake -S opencv -B opencv/build -D ENABLE_PRECOMPILED_HEADERS=OFF -D WITH_MSMF=OFF -D BUILD_PERF_TESTS=OFF -D BUILD_TESTS=OFF -D BUILD_WITH_DEBUG_INFO=OFF -D BUILD_DOCS=OFF -D WITH_JPEG=OFF -D WITH_FFMPEG=OFF -D CMAKE_BUILD_TYPE=RELEASE
           cd ./opencv/build
           make
@@ -53,6 +53,7 @@ jobs:
         run: |
           git fetch --tags --force
           sed -i'.original' -e 's/--long --dirty/--long/g' ./tools/generate_info.sh
+          sed -i'.original' -e 's/4.0.dylib/4.12.dylib/g' ./build_dmg.sh
           sed -i'.original' -e 's/QT_DIR=\/opt\/Qt6.2.0\/6.2.0\/gcc_64/QT_DIR=$(cd "$(dirname "$0")";pwd)\/..\/Qt\/6.5.3\/macos/g' build_dmg.sh
           sed -i'.original' -e 's/\/home\/xiaoming\/Desktop\/opencv/\/usr\/local/g' build_dmg.sh
           sed -i'.original' -e 's/\/home\/xiaoming\/Desktop\/opencv/\/usr\/local/g' partform_unix.pri
@@ -90,7 +91,7 @@ jobs:
           brew install create-dmg
           ruby - e  "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)" < /dev/null  2 > /dev/null
           brew install --build-from-source cmake@3.26.4
-          git clone https://github.com/opencv/opencv.git --branch 4.0.0 --depth 1
+          git clone https://github.com/opencv/opencv.git --branch 4.12.0 --depth 1
           cmake -S opencv -B opencv/build -D CMAKE_POLICY_VERSION_MINIMUM=3.5 -D ENABLE_PRECOMPILED_HEADERS=OFF -D WITH_MSMF=OFF -D BUILD_PERF_TESTS=OFF -D BUILD_TESTS=OFF -D BUILD_WITH_DEBUG_INFO=OFF -D BUILD_DOCS=OFF -D WITH_JPEG=OFF -D WITH_FFMPEG=OFF -D CMAKE_BUILD_TYPE=RELEASE
           cd ./opencv/build
           make
@@ -100,6 +101,7 @@ jobs:
         run: |
           git fetch --tags --force
           sed -i'.original' -e 's/--long --dirty/--long/g' ./tools/generate_info.sh
+          sed -i'.original' -e 's/4.0.dylib/4.12.dylib/g' ./build_dmg.sh
           sed -i'.original' -e 's/QT_DIR=\/opt\/Qt6.2.0\/6.2.0\/gcc_64/QT_DIR=$(cd "$(dirname "$0")";pwd)\/..\/Qt\/6.5.3\/macos/g' build_dmg.sh
           sed -i'.original' -e 's/\/home\/xiaoming\/Desktop\/opencv/\/usr\/local/g' build_dmg.sh
           sed -i'.original' -e 's/\/home\/xiaoming\/Desktop\/opencv/\/usr\/local/g' partform_unix.pri

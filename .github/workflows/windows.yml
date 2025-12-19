@@ -41,7 +41,7 @@ jobs:
           cache-name: cache-opencv
         with:
           path: |
-            C:/opencv4.0.0
+            C:/opencv4.12.0
           key: ${{ runner.os }}-build-${{ env.cache-name }}
           restore-keys: |
             ${{ runner.os }}-build-
@@ -59,13 +59,13 @@ jobs:
 
       - name: build opencv
         run: |
-          $c="C:\opencv4.0.0"
+          $c="C:\opencv4.12.0"
           if(-not (Test-Path $c))
           {
-            git clone https://github.com/opencv/opencv.git --branch 4.0.0 --depth 1
+            git clone https://github.com/opencv/opencv.git --branch 4.12.0 --depth 1
 
             # 先运行 CMake，让 ADE 在 build 目录中被拉取/生成
-            cmake -G "MinGW Makefiles" -S opencv -B opencv/build -D CMAKE_INSTALL_PREFIX=C:/opencv4.0.0 -D ENABLE_PRECOMPILED_HEADERS=OFF -D WITH_MSMF=OFF -D BUILD_PERF_TESTS=OFF -D BUILD_TESTS=OFF -D BUILD_WITH_DEBUG_INFO=OFF -D BUILD_DOCS=OFF -D CMAKE_BUILD_TYPE=RELEASE
+            cmake -G "MinGW Makefiles" -S opencv -B opencv/build -D CMAKE_INSTALL_PREFIX=C:/opencv4.12.0 -D ENABLE_PRECOMPILED_HEADERS=OFF -D WITH_MSMF=OFF -D BUILD_PERF_TESTS=OFF -D BUILD_TESTS=OFF -D BUILD_WITH_DEBUG_INFO=OFF -D BUILD_DOCS=OFF -D CMAKE_BUILD_TYPE=RELEASE
 
             # 对 build 目录中的 ADE 头文件打补丁，加入 <cstdint>
             $adeHeader = "opencv/build/3rdparty/ade/ade-0.1.1d/sources/ade/include/ade/typed_graph.hpp"
@@ -85,11 +85,11 @@ jobs:
           ./tools/sed/sed.exe -i 's/--long --dirty/--long/g' ./tools/generate_info.ps1
           ./tools/sed/sed.exe -i "s/QT_DIR=C:\/Qt\/Qt6.2.0\/6.2.0\/mingw81_32\/bin/QT_DIR=%Qt5_Dir%/g" ./build_setup.bat
           ./tools/sed/sed.exe -i "s/QT_TOOLS_DIR=C:\/Qt\/Qt6.2.0\/Tools\/mingw810_32\/bin/QT_TOOLS_DIR=C:\/mingw64\/bin/g" ./build_setup.bat
-          ./tools/sed/sed.exe -i "s/OPENCV_DIR=D:\/Qt\/opencv4.2.0\/x64\/mingw\/bin/OPENCV_DIR=C:\/opencv4.0.0\/x64\/mingw\/bin/g" ./build_setup.bat
-          ./tools/sed/sed.exe -i "s/libopencv_imgproc420/libopencv_imgproc400/g" ./build_setup.bat
-          ./tools/sed/sed.exe -i "s/libopencv_imgcodecs420/libopencv_imgcodecs400/g" ./build_setup.bat
-          ./tools/sed/sed.exe -i "s/libopencv_core420/libopencv_core400/g" ./build_setup.bat
-          ./tools/sed/sed.exe -i "s/OPENCV_DIR=D:\\Qt\\opencv4.2.0/OPENCV_DIR=C:\\opencv4.0.0/g" ./partform_win32.pri
+          ./tools/sed/sed.exe -i "s/OPENCV_DIR=D:\/Qt\/opencv4.2.0\/x64\/mingw\/bin/OPENCV_DIR=C:\/opencv4.12.0\/x64\/mingw\/bin/g" ./build_setup.bat
+          ./tools/sed/sed.exe -i "s/libopencv_imgproc420/libopencv_imgproc4120/g" ./build_setup.bat
+          ./tools/sed/sed.exe -i "s/libopencv_imgcodecs420/libopencv_imgcodecs4120/g" ./build_setup.bat
+          ./tools/sed/sed.exe -i "s/libopencv_core420/libopencv_core4120/g" ./build_setup.bat
+          ./tools/sed/sed.exe -i "s/OPENCV_DIR=D:\\Qt\\opencv4.2.0/OPENCV_DIR=C:\\opencv4.12.0/g" ./partform_win32.pri
           ./tools/sed/sed.exe -i "s/build_info.inc/build_info.inc.bak/g" ./YUVviewer.pro
           c:/Windows/system32/WindowsPowerShell/v1.0/powershell.exe -ExecutionPolicy Bypass -NoLogo -NoProfile -File "./tools/generate_info.ps1" > ./build_info.inc.bak
           c:/Windows/system32/WindowsPowerShell/v1.0/powershell.exe -ExecutionPolicy Bypass -NoLogo -NoProfile -File "./tools/generate_info.ps1" > ./build_info.inc

@@ -37,7 +37,7 @@ jobs:
       - name: Setup OpenCV
         uses: Dovyski/setup-opencv-action@v1.1
         with:
-          opencv-version: 4.0.0
+          opencv-version: 4.12.0
           opencv-extra-modules: false
           install-deps: false
           WITH_TBB: OFF
@@ -60,7 +60,7 @@ jobs:
       - name: Upload build asserts
         uses: actions/upload-artifact@v5.0.0
         with:
-          name: YUVviewer_Ubuntu2004
+          name: YUVviewer_Ubuntu2204
           path: |
             ./dpkg/*.deb
 
