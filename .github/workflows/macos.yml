@@ -60,7 +60,7 @@ jobs:
           ./build_dmg.sh
 
       - name: Upload build asserts
-        uses: actions/upload-artifact@v5.0.0
+        uses: actions/upload-artifact@v6.0.0
         with:
           name: YUVviewer_macos
           path: |
@@ -108,7 +108,7 @@ jobs:
           ./build_dmg.sh
 
       - name: Upload build asserts
-        uses: actions/upload-artifact@v5.0.0
+        uses: actions/upload-artifact@v6.0.0
         with:
           name: YUVviewer_macos_arm64
           path: |
