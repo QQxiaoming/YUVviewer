@@ -53,7 +53,7 @@ jobs:
         run: |
           git fetch --tags --force
           sed -i'.original' -e 's/--long --dirty/--long/g' ./tools/generate_info.sh
-          sed -i'.original' -e 's/4.0.dylib/4.12.dylib/g' ./build_dmg.sh
+          sed -i'.original' -e 's/4.0.dylib/412.dylib/g' ./build_dmg.sh
           sed -i'.original' -e 's/QT_DIR=\/opt\/Qt6.2.0\/6.2.0\/gcc_64/QT_DIR=$(cd "$(dirname "$0")";pwd)\/..\/Qt\/6.5.3\/macos/g' build_dmg.sh
           sed -i'.original' -e 's/\/home\/xiaoming\/Desktop\/opencv/\/usr\/local/g' build_dmg.sh
           sed -i'.original' -e 's/\/home\/xiaoming\/Desktop\/opencv/\/usr\/local/g' partform_unix.pri
@@ -101,7 +101,7 @@ jobs:
         run: |
           git fetch --tags --force
           sed -i'.original' -e 's/--long --dirty/--long/g' ./tools/generate_info.sh
-          sed -i'.original' -e 's/4.0.dylib/4.12.dylib/g' ./build_dmg.sh
+          sed -i'.original' -e 's/4.0.dylib/412.dylib/g' ./build_dmg.sh
           sed -i'.original' -e 's/QT_DIR=\/opt\/Qt6.2.0\/6.2.0\/gcc_64/QT_DIR=$(cd "$(dirname "$0")";pwd)\/..\/Qt\/6.5.3\/macos/g' build_dmg.sh
           sed -i'.original' -e 's/\/home\/xiaoming\/Desktop\/opencv/\/usr\/local/g' build_dmg.sh
           sed -i'.original' -e 's/\/home\/xiaoming\/Desktop\/opencv/\/usr\/local/g' partform_unix.pri
